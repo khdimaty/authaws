@@ -12,17 +12,76 @@ import {
   Alert,
   Animated
 } from "react-native";
+import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
+const logo = require("../images/logo.png");
 export default class ForgetPasswordScreen extends React.Component {
   state = {
     username: "",
     authCode: "",
-    newPassword: ""
+    newPassword: "",
+    fadeIn: new Animated.Value(0), // Initial value for opacity: 0
+    fadeOut: new Animated.Value(1), // Initial value for opacity: 1
+    isHidden: false
   };
+  componentDidMount() {
+    this.fadeIn();
+  }
+  fadeIn() {
+    Animated.timing(this.state.fadeIn, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true
+    }).start();
+    this.setState({ isHidden: true });
+  }
+  fadeOut() {
+    Animated.timing(this.state.fadeOut, {
+      toValue: 0, // 1 in the SignInScreen component
+      duration: 700,
+      useNativeDriver: true
+    }).start();
+    this.setState({ isHidden: false });
+  }
   onChangeText(key, value) {
     this.setState({ [key]: value });
   }
+  // Request a new password
+  async forgotPassword() {
+    const { username } = this.state;
+    await Auth.forgotPassword(username)
+      .then(data => console.log("New code sent", data))
+      .catch(err => {
+        if (!err.message) {
+          console.log("Error while setting up the new password: ", err);
+          Alert.alert("Error while setting up the new password: ", err);
+        } else {
+          console.log("Error while setting up the new password: ", err.message);
+          Alert.alert("Error while setting up the new password: ", err.message);
+        }
+      });
+  }
+
+  // Upon confirmation redirect the user to the Sign In page
+  async forgotPasswordSubmit() {
+    const { username, authCode, newPassword } = this.state;
+    await Auth.forgotPasswordSubmit(username, authCode, newPassword)
+      .then(() => {
+        this.props.navigation.navigate("SignIn");
+        console.log("the New password submitted successfully");
+      })
+      .catch(err => {
+        if (!err.message) {
+          console.log("Error while confirming the new password: ", err);
+          Alert.alert("Error while confirming the new password: ", err);
+        } else {
+          console.log("Error while confirming the new password: ", err.message);
+          Alert.alert("Error while confirming the new password: ", err.message);
+        }
+      });
+  }
   render() {
+    let { fadeOut, fadeIn, isHidden } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />
@@ -54,9 +113,14 @@ export default class ForgetPasswordScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("username", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
-                  <TouchableOpacity style={styles.buttonStyle}>
+                  <TouchableOpacity
+                    onPress={() => this.forgotPassword()}
+                    style={styles.buttonStyle}
+                  >
                     <Text style={styles.buttonText}>Send Code</Text>
                   </TouchableOpacity>
                   {/* the New password section  */}
@@ -76,6 +140,8 @@ export default class ForgetPasswordScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("newPassword", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   {/* Code confirmation section  */}
@@ -94,9 +160,14 @@ export default class ForgetPasswordScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("authCode", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
-                  <TouchableOpacity style={styles.buttonStyle}>
+                  <TouchableOpacity
+                    onPress={() => this.forgotPasswordSubmit()}
+                    style={styles.buttonStyle}
+                  >
                     <Text style={styles.buttonText}>
                       Confirm the new password
                     </Text>

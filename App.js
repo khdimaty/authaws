@@ -11,6 +11,10 @@ import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/ProfileScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React from "react";
+// Amplify imports and config
+import Amplify from "@aws-amplify/core";
+import config from "./aws-exports";
+Amplify.configure(config);
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,

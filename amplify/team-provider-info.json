@@ -1,0 +1,31 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "authexp-test-20191013185352-authRole",
+            "UnauthRoleArn": "arn:aws:iam::740934193632:role/authexp-test-20191013185352-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::740934193632:role/authexp-test-20191013185352-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "authexp-test-20191013185352-deployment",
+            "UnauthRoleName": "authexp-test-20191013185352-unauthRole",
+            "StackName": "authexp-test-20191013185352",
+            "StackId": "arn:aws:cloudformation:eu-central-1:740934193632:stack/authexp-test-20191013185352/6c6c27d0-ede2-11e9-8558-0a62f85f92f4"
+        }
+    },
+    "testbis": {
+        "awscloudformation": {
+            "AuthRoleName": "authexp-testbis-20191013185700-authRole",
+            "UnauthRoleArn": "arn:aws:iam::740934193632:role/authexp-testbis-20191013185700-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::740934193632:role/authexp-testbis-20191013185700-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "authexp-testbis-20191013185700-deployment",
+            "UnauthRoleName": "authexp-testbis-20191013185700-unauthRole",
+            "StackName": "authexp-testbis-20191013185700",
+            "StackId": "arn:aws:cloudformation:eu-central-1:740934193632:stack/authexp-testbis-20191013185700/db7b3f30-ede2-11e9-9857-025adfcb1154"
+        },
+        "categories": {
+            "auth": {
+                "authexp8dbf4e98": {}
+            }
+        }
+    }
+}

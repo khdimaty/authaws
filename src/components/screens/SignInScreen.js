@@ -13,22 +13,60 @@ import {
   Alert,
   Animated
 } from "react-native";
+import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
+const logo = require("../images/logo.png");
+
 export default class SignInScreen extends React.Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    fadeIn: new Animated.Value(0),
+    fadeOut: new Animated.Value(0),
+    isHidden: false
   };
+  componentDidMount() {
+    this.fadeIn();
+  }
+  async signIn() {
+    const { username, password } = this.state;
+    await Auth.signIn(username, password)
+      .then(user => {
+        this.setState({ user });
+        this.props.navigation.navigate("AuthLoading");
+      })
+      .catch(err => {
+        if (!err.message) {
+          console.log("Error when signing in: ", err);
+          Alert.alert("Error when signing in: ", err);
+        } else {
+          console.log("Error when signing in: ", err.message);
+          Alert.alert("Error when signing in: ", err.message);
+        }
+      });
+  }
+  fadeIn() {
+    Animated.timing(this.state.fadeIn, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true
+    }).start();
+    this.setState({ isHidden: true });
+  }
+  fadeOut() {
+    Animated.timing(this.state.fadeOut, {
+      toValue: 0, // 1 in the SignInScreen component
+      duration: 700,
+      useNativeDriver: true
+    }).start();
+    this.setState({ isHidden: false });
+  }
   onChangeText(key, value) {
     this.setState({ [key]: value });
   }
-  signIn = async () => {
-    await AsyncStorage.setItem("userToke", "123456789");
-    await AsyncStorage.setItem("username", this.state.username);
 
-    this.props.navigation.navigate("App");
-  };
   render() {
+    let { fadeOut, fadeIn, isHidden } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />
@@ -60,6 +98,8 @@ export default class SignInScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("username", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   <Item rounded style={styles.itemStyle}>
@@ -76,6 +116,8 @@ export default class SignInScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("password", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   <TouchableOpacity

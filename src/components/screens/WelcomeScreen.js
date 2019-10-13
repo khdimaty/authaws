@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+const logo = require("../images/logo.png");
 export default class WelcomeScreen extends React.Component {
   handleRoute = async destination => {
     await this.props.navigation.navigate(destination);

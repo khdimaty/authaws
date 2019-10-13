@@ -14,19 +14,145 @@ import {
   FlatList,
   Animated
 } from "react-native";
+import Auth from "@aws-amplify/auth";
+import data from "../countrydata/countryCode";
 import { Container, Item, Input, Icon } from "native-base";
+const logo = require("../images/logo.png");
+
+// Default render of country flag
+const defaultFlag = data.filter(obj => obj.name === "United Kingdom")[0].flag;
+
+// Default render of country code
+const defaultCode = data.filter(obj => obj.name === "United Kingdom")[0]
+  .dial_code;
 export default class SignUpScreen extends React.Component {
   state = {
     username: "",
     password: "",
     email: "",
     phoneNumber: "",
+    authCode: "",
+    fadeIn: new Animated.Value(0), // Initial value for opacity: 0
+    fadeOut: new Animated.Value(1), // Initial value for opacity: 1
+    isHidden: false,
+    flag: defaultFlag,
+    modalVisible: false,
+    // users will receive a confirmation code
     authCode: ""
   };
+  // Sign up user with AWS Amplify Auth
+  async signUp() {
+    const { username, password, email, phoneNumber } = this.state;
+    // rename variable to conform with Amplify Auth field phone attribute
+    const phone_number = phoneNumber;
+    await Auth.signUp({
+      username,
+      password,
+      attributes: { email, phone_number }
+    })
+      .then(() => {
+        console.log("sign up successful!");
+        Alert.alert("Enter the confirmation code you received.");
+        //create user
+      })
+      .catch(err => {
+        if (!err.message) {
+          console.log("Error when signing up: ", err);
+          Alert.alert("Error when signing up: ", err);
+        } else {
+          console.log("Error when signing up: ", err.message);
+          Alert.alert("Error when signing up: ", err.message);
+        }
+      });
+  }
+
+  // Confirm users and redirect them to the SignIn page
+  async confirmSignUp() {
+    const { username, authCode } = this.state;
+    await Auth.confirmSignUp(username, authCode)
+      .then(() => {
+        this.props.navigation.navigate("SignIn");
+        console.log("Confirm sign up successful");
+      })
+      .catch(err => {
+        if (!err.message) {
+          console.log("Error when entering confirmation code: ", err);
+          Alert.alert("Error when entering confirmation code: ", err);
+        } else {
+          console.log("Error when entering confirmation code: ", err.message);
+          Alert.alert("Error when entering confirmation code: ", err.message);
+        }
+      });
+  }
+
+  // Resend code if not received already
+  async resendSignUp() {
+    const { username } = this.state;
+    await Auth.resendSignUp(username)
+      .then(() => console.log("Confirmation code resent successfully"))
+      .catch(err => {
+        if (!err.message) {
+          console.log("Error requesting new confirmation code: ", err);
+          Alert.alert("Error requesting new confirmation code: ", err);
+        } else {
+          console.log("Error requesting new confirmation code: ", err.message);
+          Alert.alert("Error requesting new confirmation code: ", err.message);
+        }
+      });
+  } // Functions for Phone Input
+  showModal() {
+    this.setState({ modalVisible: true });
+    console.log("Shown");
+  }
+  hideModal() {
+    this.setState({ modalVisible: false });
+    // Refocus on phone Input after modal is closed
+    this.refs.FourthInput._root.focus();
+    console.log("Hidden");
+  }
+  async getCountry(country) {
+    // Get the country flag and phone code from users selection
+    const countryData = await data;
+    try {
+      const countryCode = await countryData.filter(
+        obj => obj.name === country
+      )[0].dial_code;
+      const countryFlag = await countryData.filter(
+        obj => obj.name === country
+      )[0].flag;
+      // Set data from user choice of country
+      this.setState({ phoneNumber: countryCode, flag: countryFlag });
+      await this.hideModal();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  componentDidMount() {
+    this.fadeIn();
+  }
+  fadeIn() {
+    Animated.timing(this.state.fadeIn, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true
+    }).start();
+    this.setState({ isHidden: true });
+  }
+  fadeOut() {
+    Animated.timing(this.state.fadeOut, {
+      toValue: 0, // 1 in the SignInScreen component
+      duration: 700,
+      useNativeDriver: true
+    }).start();
+    this.setState({ isHidden: false });
+  }
   onChangeText(key, value) {
     this.setState({ [key]: value });
   }
   render() {
+    let { fadeOut, fadeIn, isHidden, flag } = this.state;
+
+    const countryData = data;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />
@@ -59,6 +185,8 @@ export default class SignUpScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("username", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   {/*  password section  */}
@@ -80,6 +208,8 @@ export default class SignUpScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("password", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   {/* email section */}
@@ -99,11 +229,24 @@ export default class SignUpScreen extends React.Component {
                         this.refs.FourthInput._root.focus();
                       }}
                       onChangeText={value => this.onChangeText("email", value)}
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   {/* phone section  */}
                   <Item rounded style={styles.itemStyle}>
                     <Icon active name="call" style={styles.iconStyle} />
+                    {/* country flag */}
+                    <View>
+                      <Text>{flag}</Text>
+                    </View>
+                    {/* open modal */}
+                    <Icon
+                      active
+                      name="md-arrow-dropdown"
+                      style={[styles.iconStyle, { marginLeft: 0 }]}
+                      onPress={() => this.showModal()}
+                    />
                     <Input
                       style={styles.input}
                       placeholder="+44766554433"
@@ -115,13 +258,74 @@ export default class SignUpScreen extends React.Component {
                       secureTextEntry={false}
                       ref="FourthInput"
                       value={this.state.phoneNumber}
-                      onChangeText={val =>
-                        this.onChangeText("phoneNumber", val)
-                      }
+                      onChangeText={val => {
+                        if (this.state.phoneNumber === "") {
+                          // render UK phone code by default when Modal is not open
+                          this.onChangeText("phoneNumber", defaultCode + val);
+                        } else {
+                          // render country code based on users choice with Modal
+                          this.onChangeText("phoneNumber", val);
+                        }
+                      }}
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
+                    {/* Modal for country code and flag */}
+                    <Modal
+                      animationType="slide" // fade
+                      transparent={false}
+                      visible={this.state.modalVisible}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <View
+                          style={{
+                            flex: 10,
+                            paddingTop: 80,
+                            backgroundColor: "#5059ae"
+                          }}
+                        >
+                          <FlatList
+                            data={countryData}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => (
+                              <TouchableWithoutFeedback
+                                onPress={() => this.getCountry(item.name)}
+                              >
+                                <View
+                                  style={[
+                                    styles.countryStyle,
+                                    {
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "space-between"
+                                    }
+                                  ]}
+                                >
+                                  <Text style={{ fontSize: 45 }}>
+                                    {item.flag}
+                                  </Text>
+                                  <Text style={{ fontSize: 20, color: "#fff" }}>
+                                    {item.name} ({item.dial_code})
+                                  </Text>
+                                </View>
+                              </TouchableWithoutFeedback>
+                            )}
+                          />
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => this.hideModal()}
+                          style={styles.closeButtonStyle}
+                        >
+                          <Text style={styles.textStyle}>Close</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </Modal>
                   </Item>
                   {/* End of phone input */}
-                  <TouchableOpacity style={styles.buttonStyle}>
+                  <TouchableOpacity
+                    onPress={() => this.signUp()}
+                    style={styles.buttonStyle}
+                  >
                     <Text style={styles.buttonText}>Sign Up</Text>
                   </TouchableOpacity>
                   {/* code confirmation section  */}
@@ -139,12 +343,20 @@ export default class SignUpScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("authCode", value)
                       }
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
-                  <TouchableOpacity style={styles.buttonStyle}>
+                  <TouchableOpacity
+                    onPress={() => this.confirmSignUp()}
+                    style={styles.buttonStyle}
+                  >
                     <Text style={styles.buttonText}>Confirm Sign Up</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonStyle}>
+                  <TouchableOpacity
+                    onPress={() => this.resendSignUp()}
+                    style={styles.buttonStyle}
+                  >
                     <Text style={styles.buttonText}>Resend code</Text>
                   </TouchableOpacity>
                 </View>
@@ -210,5 +422,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1
+  },
+  textStyle: {
+    padding: 5,
+    fontSize: 20,
+    color: "#fff",
+    fontWeight: "bold"
+  },
+  countryStyle: {
+    flex: 1,
+    backgroundColor: "#5059ae",
+    borderTopColor: "#211f",
+    borderTopWidth: 1,
+    padding: 12
+  },
+  closeButtonStyle: {
+    flex: 1,
+    padding: 12,
+    alignItems: "center",
+    backgroundColor: "#b44666"
   }
 });
