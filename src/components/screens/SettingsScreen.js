@@ -27,7 +27,10 @@ export default class SettingsScreen extends React.Component {
       .then(user => {
         return Auth.changePassword(user, password1, password2);
       })
-      .then(data => console.log("Password changed successfully", data))
+      .then(data => {
+        console.log("Password changed successfully", data);
+        Alert.alert("password changed successfully ! ");
+      })
       .catch(err => {
         if (!err.message) {
           console.log("Error changing password: ", err);
@@ -169,7 +172,7 @@ export default class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#aa73b7",
+    backgroundColor: "#FFFFFF7",
     justifyContent: "center",
     flexDirection: "column"
   },
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
-    backgroundColor: "#aa73b7"
+    backgroundColor: "#fff"
   },
   itemStyle: {
     marginBottom: 20

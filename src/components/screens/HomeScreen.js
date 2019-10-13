@@ -13,7 +13,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#aa73b7",
+    backgroundColor: "#FFFFFF7",
     alignItems: "center",
     justifyContent: "center"
   }

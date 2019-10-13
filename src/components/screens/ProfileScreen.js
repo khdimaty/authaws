@@ -13,16 +13,24 @@ import {
   Alert,
   Animated
 } from "react-native";
+import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
 export default class ProfileScreen extends React.Component {
   state = { username: "" };
   componentDidMount = async () => {
     await this.getusername();
   };
+  // Remember logged in users
   getusername = async () => {
-    const username = await AsyncStorage.getItem("username");
-    this.setState({ username: username });
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.setState({
+          username: user.username
+        });
+      })
+      .catch(err => console.log(err));
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -35,7 +43,7 @@ export default class ProfileScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#aa73b7",
+    backgroundColor: "#FFFFFF7",
     alignItems: "center",
     justifyContent: "center"
   }

@@ -21,6 +21,7 @@ export default class AuthLoadingScreen extends React.Component {
         this.setState({
           userToken: user.signInUserSession.accessToken.jwtToken
         });
+        console.log(user);
       })
       .catch(err => console.log(err));
     this.props.navigation.navigate(this.state.userToken ? "App" : "Auth");
@@ -36,7 +37,7 @@ export default class AuthLoadingScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#aa73b7",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
   }
