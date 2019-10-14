@@ -1,21 +1,19 @@
-import React from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
-//navigation imports
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
-//import Screens
-import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
-import WelcomeScreen from "./src/components/screens/WelcomeScreen";
-import SignUpScreen from "./src/components/screens/SignUpScreen";
-import SignInScreen from "./src/components/screens/SignInScreen";
-import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
-import HomeScreen from "./src/components/screens/HomeScreen";
-import SettingsScreen from "./src/components/screens/SettingsScreen";
-import ProfileScreen from "./src/components/screens/ProfileScreen";
+import AuthLoadingScreen from "../components/screens/AuthLoadingScreen";
+import WelcomeScreen from "../components/screens/WelcomeScreen";
+import SignUpScreen from "../components/screens/SignUpScreen";
+import SignInScreen from "../components/screens/SignInScreen";
+import ForgetPasswordScreen from "../components/screens/ForgetPasswordScreen";
+import HomeScreen from "../components/screens/HomeScreen";
+import SettingsScreen from "../components/screens/SettingsScreen";
+import ProfileScreen from "../components/screens/ProfileScreen";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import React from "react";
 // Amplify imports and config
 import Amplify from "@aws-amplify/core";
-import config from "./aws-exports";
+import config from "../../aws-exports";
 Amplify.configure(config);
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
@@ -69,7 +67,7 @@ const AppTabNavigator = createBottomTabNavigator(
         } else if (routeName === "Settings") {
           iconName = `ios-options`;
         } else if (routeName === "Profile") {
-          iconName = `ios-user`;
+          iconName = `ios-person`;
         }
 
         // You can return any component that you like here!
@@ -77,17 +75,14 @@ const AppTabNavigator = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      activeTintColor: "tomato",
       inactiveTintColor: "gray"
     }
   }
 );
-const AppNavigator = createSwitchNavigator({
+
+const Navigator = createSwitchNavigator({
   AuthLoading: AuthLoadingScreen,
   Auth: AuthStackNavigator,
   App: AppTabNavigator
 });
-const Navigator = createAppContainer(AppNavigator);
-export default function App() {
-  return <Navigator />;
-}
+export default titi;
