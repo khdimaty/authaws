@@ -13,8 +13,16 @@ import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen"
 import HomeScreen from "./src/components/screens/HomeScreen";
 import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/ProfileScreen";
+import TestScreen from "./src/components/screens/test";
+//graphql client
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+const client = new ApolloClient({
+  uri: "https://eu1.prisma.sh/public-quickmoth-103/khdimbackend/dev"
+});
 // Amplify imports and config
-import Amplify from "@aws-amplify/core";
+import Amplify, { Storage } from "@aws-amplify/core";
 import config from "./aws-exports";
 
 Amplify.configure(config);
@@ -71,7 +79,7 @@ const AppTabNavigator = createBottomTabNavigator(
         } else if (routeName === "Settings") {
           iconName = `ios-options`;
         } else if (routeName === "Profile") {
-          iconName = `ios-user`;
+          iconName = `ios-person`;
         }
 
         // You can return any component that you like here!
@@ -79,7 +87,6 @@ const AppTabNavigator = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      activeTintColor: "tomato",
       inactiveTintColor: "gray"
     }
   }
@@ -87,9 +94,14 @@ const AppTabNavigator = createBottomTabNavigator(
 const AppNavigator = createSwitchNavigator({
   AuthLoading: AuthLoadingScreen,
   Auth: AuthStackNavigator,
-  App: AppTabNavigator
+  App: AppTabNavigator,
+  test: TestScreen
 });
 const Navigator = createAppContainer(AppNavigator);
 export default function App() {
-  return <Navigator />;
+  return (
+    <ApolloProvider client={client}>
+      <Navigator />
+    </ApolloProvider>
+  );
 }

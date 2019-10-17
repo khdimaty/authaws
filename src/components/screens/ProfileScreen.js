@@ -35,6 +35,10 @@ export default class ProfileScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text>hello this is {this.state.username} Profile</Text>
+        <Text>
+          {" "}
+          {JSON.stringify(this.props.navigation.getParam("toto", "NO-toto"))}
+        </Text>
       </View>
     );
   }
