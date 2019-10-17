@@ -19,7 +19,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 const client = new ApolloClient({
-  uri: "https://eu1.prisma.sh/public-quickmoth-103/khdimbackend/dev"
+  uri: ""
 });
 // Amplify imports and config
 import Amplify, { Storage } from "@aws-amplify/core";
