@@ -14,7 +14,8 @@ import {
   Animated
 } from "react-native";
 import Auth from "@aws-amplify/auth";
-import { Container, Item, Input, Icon } from "native-base";
+import Test from "./test";
+import { Container, Header, Body, Title } from "native-base";
 export default class ProfileScreen extends React.Component {
   state = { username: "" };
   componentDidMount = async () => {
@@ -33,13 +34,21 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>hello this is {this.state.username} Profile</Text>
-        <Text>
-          {" "}
-          {JSON.stringify(this.props.navigation.getParam("toto", "NO-toto"))}
-        </Text>
-      </View>
+      <Container>
+        <Header>
+          <Body style={{ backgroundColor: "#fff" }}>
+            <Title
+              style={{
+                fontSize: 30,
+                color: "#000"
+              }}
+            >
+              Khdimaty
+            </Title>
+          </Body>
+        </Header>
+        <Test />
+      </Container>
     );
   }
 }

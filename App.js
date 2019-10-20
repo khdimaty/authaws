@@ -14,12 +14,13 @@ import HomeScreen from "./src/components/screens/HomeScreen";
 import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/ProfileScreen";
 import TestScreen from "./src/components/screens/test";
+import SurveyScreen from "./src/components/screens/survey/index";
 //graphql client
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 const client = new ApolloClient({
-  uri: ""
+  uri: "https://eu1.prisma.sh/public-quickmoth-103/khdimbackend/dev"
 });
 // Amplify imports and config
 import Amplify, { Storage } from "@aws-amplify/core";
@@ -95,7 +96,8 @@ const AppNavigator = createSwitchNavigator({
   AuthLoading: AuthLoadingScreen,
   Auth: AuthStackNavigator,
   App: AppTabNavigator,
-  test: TestScreen
+  test: TestScreen,
+  survey: SurveyScreen
 });
 const Navigator = createAppContainer(AppNavigator);
 export default function App() {

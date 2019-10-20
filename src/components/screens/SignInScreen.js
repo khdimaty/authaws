@@ -4,6 +4,7 @@ import {
   View,
   Text,
   AsyncStorage,
+  ImageBackground,
   TouchableOpacity,
   TouchableWithoutFeedback,
   SafeAreaView,
@@ -13,6 +14,7 @@ import {
   Alert,
   Animated
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
 const logo = require("../images/logo.png");
@@ -21,18 +23,15 @@ export default class SignInScreen extends React.Component {
   state = {
     username: "",
     password: "",
-    fadeIn: new Animated.Value(0),
-    fadeOut: new Animated.Value(0),
+
     isHidden: false
   };
-  componentDidMount() {
-    this.fadeIn();
-  }
+
   async signIn() {
     const { username, password } = this.state;
     await Auth.signIn(username, password)
       .then(user => {
-        this.setState({ user });
+        // this.setState({ user });
 
         this.props.navigation.navigate("AuthLoading");
       })
@@ -46,28 +45,12 @@ export default class SignInScreen extends React.Component {
         }
       });
   }
-  fadeIn() {
-    Animated.timing(this.state.fadeIn, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
-    }).start();
-    this.setState({ isHidden: true });
-  }
-  fadeOut() {
-    Animated.timing(this.state.fadeOut, {
-      toValue: 0, // 1 in the SignInScreen component
-      duration: 700,
-      useNativeDriver: true
-    }).start();
-    this.setState({ isHidden: false });
-  }
+
   onChangeText(key, value) {
     this.setState({ [key]: value });
   }
 
   render() {
-    let { fadeOut, fadeIn, isHidden } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />
@@ -81,6 +64,23 @@ export default class SignInScreen extends React.Component {
             onPress={Keyboard.dismiss}
           >
             <View style={styles.container}>
+              <View style={styles.Logo}>
+                <View
+                  style={{
+                    flex: 1
+                  }}
+                />
+                <View
+                  style={{
+                    marginBottom: 6,
+                    marginLeft: 2,
+                    marginRight: 3
+                  }}
+                >
+                  <Text style={styles.text3}>KHDIMATY</Text>
+                  <View style={styles.rect7} />
+                </View>
+              </View>
               <Container style={styles.infoContainer}>
                 <View style={styles.container}>
                   <Item rounded style={styles.itemStyle}>
@@ -99,8 +99,6 @@ export default class SignInScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("username", value)
                       }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   <Item rounded style={styles.itemStyle}>
@@ -117,8 +115,6 @@ export default class SignInScreen extends React.Component {
                       onChangeText={value =>
                         this.onChangeText("password", value)
                       }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
                   <TouchableOpacity
@@ -144,6 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column"
   },
+
   input: {
     flex: 1,
     fontSize: 17,
@@ -174,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#667292",
     padding: 14,
-    marginBottom: 20,
+    marginBottom: 100,
     borderRadius: 24
   },
   buttonText: {
@@ -191,5 +188,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1
+  },
+  Logo: {
+    height: 111,
+    alignSelf: "center",
+    marginBottom: 300
+  },
+  text3: {
+    color: "#25cdec",
+    fontSize: 50,
+    marginBottom: 4
+  },
+  rect7: {
+    height: 8,
+    backgroundColor: "#01A7C2"
   }
 });
