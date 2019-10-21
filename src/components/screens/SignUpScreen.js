@@ -17,7 +17,6 @@ import {
 import Auth from "@aws-amplify/auth";
 import data from "../countrydata/countryCode";
 import { Container, Item, Input, Icon } from "native-base";
-const logo = require("../images/logo.png");
 
 // Default render of country flag
 const defaultFlag = data.filter(obj => obj.name === "United Kingdom")[0].flag;

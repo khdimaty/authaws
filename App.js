@@ -4,17 +4,18 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
+import { fromLeft } from "react-navigation-transitions";
 //import Screens
 import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import WelcomeScreen from "./src/components/screens/WelcomeScreen";
 import SignUpScreen from "./src/components/screens/SignUpScreen";
 import SignInScreen from "./src/components/screens/SignInScreen";
 import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
-import HomeScreen from "./src/components/screens/HomeScreen";
+import HomeScreen from "./src/components/screens/Home/HomeScreen";
 import SettingsScreen from "./src/components/screens/SettingsScreen";
-import ProfileScreen from "./src/components/screens/ProfileScreen";
-import TestScreen from "./src/components/screens/test";
+import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
+
 //graphql client
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
@@ -92,13 +93,18 @@ const AppTabNavigator = createBottomTabNavigator(
     }
   }
 );
-const AppNavigator = createSwitchNavigator({
-  AuthLoading: AuthLoadingScreen,
-  Auth: AuthStackNavigator,
-  App: AppTabNavigator,
-  test: TestScreen,
-  survey: SurveyScreen
-});
+const AppNavigator = createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    Auth: AuthStackNavigator,
+    App: AppTabNavigator,
+
+    survey: SurveyScreen
+  },
+  {
+    transitionConfig: () => fromLeft(1000)
+  }
+);
 const Navigator = createAppContainer(AppNavigator);
 export default function App() {
   return (

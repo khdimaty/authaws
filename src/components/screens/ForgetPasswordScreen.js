@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
-const logo = require("../images/logo.png");
+
 export default class ForgetPasswordScreen extends React.Component {
   state = {
     username: "",

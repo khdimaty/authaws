@@ -17,7 +17,6 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
-const logo = require("../images/logo.png");
 
 export default class SignInScreen extends React.Component {
   state = {
