@@ -19,9 +19,9 @@ import SurveyScreen from "./src/components/screens/survey/index";
 //graphql client
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-
+import prismauri from "./apiVariable";
 const client = new ApolloClient({
-  uri: "https://eu1.prisma.sh/public-quickmoth-103/khdimbackend/dev"
+  uri: prismauri
 });
 // Amplify imports and config
 import Amplify, { Storage } from "@aws-amplify/core";
