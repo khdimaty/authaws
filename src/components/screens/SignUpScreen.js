@@ -18,6 +18,17 @@ import Auth from "@aws-amplify/auth";
 import data from "../countrydata/countryCode";
 import { Container, Item, Input, Icon } from "native-base";
 
+import gql from "graphql-tag";
+import { Mutation } from "@apollo/react-components";
+
+const createUser = gql`
+  mutation createUser($username: String!, $email: String!) {
+    createUser(data: { username: $username, email: $email }) {
+      id
+      username
+    }
+  }
+`;
 // Default render of country flag
 const defaultFlag = data.filter(obj => obj.name === "United Kingdom")[0].flag;
 
@@ -66,12 +77,14 @@ export default class SignUpScreen extends React.Component {
   }
 
   // Confirm users and redirect them to the SignIn page
-  async confirmSignUp() {
-    const { username, authCode } = this.state;
+  async confirmSignUp(mutation, data) {
+    const { username, authCode, email, phoneNumber } = this.state;
     await Auth.confirmSignUp(username, authCode)
       .then(() => {
         this.props.navigation.navigate("SignIn");
+
         console.log("Confirm sign up successful");
+        mutation({ variables: { username: username, email: email } });
       })
       .catch(err => {
         if (!err.message) {
@@ -346,12 +359,17 @@ export default class SignUpScreen extends React.Component {
                       onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
-                  <TouchableOpacity
-                    onPress={() => this.confirmSignUp()}
-                    style={styles.buttonStyle}
-                  >
-                    <Text style={styles.buttonText}>Confirm Sign Up</Text>
-                  </TouchableOpacity>
+                  <Mutation mutation={createUser}>
+                    {(createuser, { data }) => (
+                      <TouchableOpacity
+                        onPress={() => this.confirmSignUp(createuser)}
+                        style={styles.buttonStyle}
+                      >
+                        <Text style={styles.buttonText}>Confirm Sign Up</Text>
+                      </TouchableOpacity>
+                    )}
+                  </Mutation>
+
                   <TouchableOpacity
                     onPress={() => this.resendSignUp()}
                     style={styles.buttonStyle}
