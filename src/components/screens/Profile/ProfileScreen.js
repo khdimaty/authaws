@@ -20,6 +20,7 @@ export default class ProfileScreen extends React.Component {
   state = { username: "" };
   componentDidMount = async () => {
     await this.getusername();
+    //use this to query user info
   };
   // Remember logged in users
   getusername = async () => {
@@ -33,6 +34,7 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
+    // console.log(this.state.username);
     return (
       <Container>
         <Header>
@@ -47,17 +49,18 @@ export default class ProfileScreen extends React.Component {
             </Title>
           </Body>
         </Header>
-        <Profile />
+        <Profile
+          username={"Marwa"}
+          age={20}
+          sex={"Femme"}
+          statut={"Student"}
+          local={"Bengherir,Morocco"}
+          level={4}
+          score={200}
+          mytaskCount={23}
+          interests={[{ value: "Shopping" }]}
+        />
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF7",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

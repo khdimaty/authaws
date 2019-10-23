@@ -8,6 +8,7 @@ import {
   StatusBar,
   TouchableOpacity
 } from "react-native";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Animatable from "react-native-animatable";
 const survey = require("../Home/assets/appstore.png");

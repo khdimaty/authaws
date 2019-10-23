@@ -22,16 +22,9 @@ const GetTask = gql`
   }
 `;
 export default class Surveyscreen extends React.Component {
-  // better use query to have data then wrap survey comp
-  state = { isfirst: true };
-  start() {
-    this.setState({
-      isfirst: false
-    });
-  }
   render() {
     const name = this.props.navigation.getParam("name", "NO-name");
-    console.log(this.state.isfirst);
+
     //console.log(this.props.navigation.getParam("name", "NO-name"));
     return (
       <Query
@@ -46,21 +39,11 @@ export default class Surveyscreen extends React.Component {
 
           return (
             <>
-              {this.state.isfirst ? (
-                <Starter
-                  start={this.start.bind(this)}
-                  taskname={name}
-                  description={data.task.description}
-                  type={data.task.type}
-                  navigation={this.props.navigation}
-                />
-              ) : (
-                <Survey
-                  data={data.task.questions}
-                  taskname={name}
-                  navigation={this.props.navigation}
-                />
-              )}
+              <Survey
+                data={data.task.questions}
+                taskname={name}
+                navigation={this.props.navigation}
+              />
             </>
           );
         }}

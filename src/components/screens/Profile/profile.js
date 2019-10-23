@@ -7,41 +7,46 @@ import {
   Image,
   ScrollView
 } from "react-native";
+const Havatar = require("./assets/Havatar.png");
+const Favatar = require("./assets/Favatar.png");
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-
-export default function Profile() {
+import { Accordion, Badge, Button, H1 } from "native-base";
+export default function Profile(props) {
+  let {
+    age,
+    score,
+    local,
+    mytaskCount,
+    username,
+    statut,
+    sex,
+    level,
+    interests
+  } = props;
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ alignSelf: "center" }}>
           <View style={styles.profileImage}>
             <Image
-              source={require("./assets/profile.png")}
+              source={sex == "Homme" ? Havatar : Favatar}
               style={styles.Image}
               resizeMode="center"
             ></Image>
-          </View>
-          <View style={styles.edit}>
-            <Ionicons
-              name="ios-camera"
-              size={30}
-              color="#DFD8C8"
-              styles={{ marginTop: 7, marginLeft: 3 }}
-            ></Ionicons>
           </View>
         </View>
 
         <View style={styles.infoContainer}>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-            Julie Nitchud
+            {username}
           </Text>
           <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>
-            PHD Student
+            {statut}
           </Text>
         </View>
         <View style={styles.statsContainer}>
           <View style={styles.statbox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>7</Text>
+            <Text style={[styles.text, { fontSize: 24 }]}>{level}</Text>
             <Text style={[styles.text, styles.subText]}>Niveau</Text>
           </View>
           <View
@@ -54,11 +59,11 @@ export default function Profile() {
               }
             ]}
           >
-            <Text style={[styles.text, { fontSize: 24 }]}>23K</Text>
+            <Text style={[styles.text, { fontSize: 24 }]}>{score}</Text>
             <Text style={[styles.text, styles.subText]}>Score</Text>
           </View>
           <View style={styles.statbox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>20</Text>
+            <Text style={[styles.text, { fontSize: 24 }]}>{mytaskCount}</Text>
             <Text style={[styles.text, styles.subText]}>Tâches</Text>
           </View>
         </View>
@@ -81,44 +86,23 @@ export default function Profile() {
               </Text>
             </View>
             <View style={styles.infospers}>
-              <Text style={[styles.text, { fontSize: 18 }]}>Femme</Text>
+              <Text style={[styles.text, { fontSize: 18 }]}>{sex}</Text>
               <Text style={[styles.text, { fontSize: 18, marginTop: 10 }]}>
-                23ans
+                {age}
               </Text>
               <Text style={[styles.text, { fontSize: 18, marginTop: 10 }]}>
-                Casablanca, Californie
+                {local}
               </Text>
             </View>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.interets}>
-              <Image
-                source={require("./assets/shopping.png")}
-                style={styles.Image}
-                resizeMode="cover"
-              ></Image>
-            </View>
-            <View style={styles.interets}>
-              <Image
-                source={require("./assets/shopping.png")}
-                style={styles.Image}
-                resizeMode="cover"
-              ></Image>
-            </View>
-            <View style={styles.interets}>
-              <Image
-                source={require("./assets/shopping.png")}
-                style={styles.Image}
-                resizeMode="cover"
-              ></Image>
-            </View>
-            <View style={styles.interets}>
-              <Image
-                source={require("./assets/shopping.png")}
-                style={styles.Image}
-                resizeMode="cover"
-              ></Image>
-            </View>
+            {interests.map(interest => (
+              <View style={styles.interets} key={interest.value}>
+                <Button dark large bordered>
+                  <H1 style={{ paddingHorizontal: 5 }}>{interest.value}</H1>
+                </Button>
+              </View>
+            ))}
           </ScrollView>
         </View>
       </ScrollView>
@@ -212,10 +196,11 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   interets: {
-    width: 150,
-    height: 100,
-    borderRadius: 12,
-    overflow: "hidden",
     marginHorizontal: 10
+  },
+  badgeText: {
+    fontSize: 25,
+    paddingHorizontal: 5,
+    fontFamily: "bold"
   }
 });
