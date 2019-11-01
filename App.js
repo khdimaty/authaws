@@ -93,18 +93,13 @@ const AppTabNavigator = createBottomTabNavigator(
     }
   }
 );
-const AppNavigator = createSwitchNavigator(
-  {
-    AuthLoading: AuthLoadingScreen,
-    Auth: AuthStackNavigator,
-    App: AppTabNavigator,
-    test: Test,
-    survey: SurveyScreen
-  },
-  {
-    transitionConfig: () => fromLeft(1000)
-  }
-);
+const AppNavigator = createSwitchNavigator({
+  AuthLoading: AuthLoadingScreen,
+  Auth: AuthStackNavigator,
+  App: AppTabNavigator,
+  test: Test,
+  survey: SurveyScreen
+});
 const Navigator = createAppContainer(AppNavigator);
 export default function App() {
   return (
