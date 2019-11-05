@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { Button } from "native-base";
+import { StyleSheet, View, Text, Image } from "react-native";
+import { Button, Spinner } from "native-base";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 import Survey from "./survey";
@@ -34,7 +34,16 @@ export default class Surveyscreen extends React.Component {
         }}
       >
         {({ loading, error, data }) => {
-          if (loading) return <Text>Loading...</Text>;
+          if (loading)
+            return (
+              <View style={styles.container}>
+                <Image
+                  source={require("./appstore.png")}
+                  style={styles.Images}
+                ></Image>
+                <Spinner color="white" style={{ marginTop: 100 }} />
+              </View>
+            );
           if (error) return <Text>{error}</Text>;
 
           return (
@@ -53,8 +62,13 @@ export default class Surveyscreen extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
 
-    alignItems: "center"
+    //alignItems: "center"
+  },
+  Images: {
+    position: "absolute",
+    alignSelf: "stretch",
+    height: "100%"
   }
 });

@@ -72,7 +72,7 @@ export default function Mymodal(props) {
       </ImageBackground>
       <View
         style={{
-          flex: 0.15,
+          flex: 0.2,
           flexDirection: "row",
           justifyContent: "space-between",
           width: w

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "khdimaty-01",
-    "slug": "khdimaty-01",
+    "name": "khdimaty",
+    "slug": "khdimaty01",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -26,6 +26,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": ""
+    "description": "\n"
   }
 }

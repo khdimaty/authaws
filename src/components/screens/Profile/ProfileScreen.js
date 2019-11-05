@@ -36,29 +36,20 @@ export default class ProfileScreen extends React.Component {
   render() {
     // console.log(this.state.username);
     return (
-      <Container>
-        <Header>
-          <Body>
-            <Title
-              style={{
-                fontSize: 30,
-                color: "#000"
-              }}
-            >
-              Khdimaty
-            </Title>
-          </Body>
+      <Container style={{ marginVertical: 15 }}>
+        <Header style={{ backgroundColor: "#fff", alignItems: "center" }}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Khdimaty</Text>
         </Header>
         <Profile
-          username={"Marwa"}
+          username={"ANASIO"}
           age={20}
-          sex={"Femme"}
+          sex={"Homme"}
           statut={"Student"}
           local={"Bengherir,Morocco"}
           level={4}
           score={200}
           mytaskCount={23}
-          interests={[{ value: "Shopping" }]}
+          interests={[]}
         />
       </Container>
     );

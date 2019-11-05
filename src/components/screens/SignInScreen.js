@@ -14,7 +14,7 @@ import {
   Alert,
   Animated
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+
 import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
 
@@ -82,6 +82,7 @@ export default class SignInScreen extends React.Component {
               </View>
               <Container style={styles.infoContainer}>
                 <View style={styles.container}>
+                  <View style={{ height: 200 }}></View>
                   <Item rounded style={styles.itemStyle}>
                     <Icon active name="person" style={styles.iconStyle} />
                     <Input

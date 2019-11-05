@@ -1,15 +1,12 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Image } from "react-native";
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Body,
-  Title,
-  Spinner
-} from "native-base";
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  RefreshControl
+} from "react-native";
+import Amplify, { Storage } from "@aws-amplify/core";
+import { Container, Header, Text, Spinner } from "native-base";
 import Modal from "react-native-modal";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
@@ -21,7 +18,7 @@ import { Accordion, Badge, Button } from "native-base";
 import { TouchableHighlight } from "react-native";
 const Tasks = gql`
   {
-    tasks {
+    tasks(orderBy: name_ASC) {
       id
       name
       taskScore
@@ -30,21 +27,15 @@ const Tasks = gql`
     }
   }
 `;
-const dataArray = [
-  {
-    title: "Description",
-    content:
-      "We welcome edits that make the post easier to understand and more valuable for readers. Because community members review edits, please try to make the post substantially better than how you found it, for example, by fixing grammar or adding additional resources and hyperlinks."
-  }
-];
-const other = require("./assets/appstore.png");
+
 const w = Dimensions.get("window").width;
 export default class HomeScreen extends React.Component {
   state = {
     isModalVisible: false,
     taskname: "",
     description: "",
-    type: "survey"
+    type: "survey",
+    refreshing: true
   };
   toTask(props) {
     //navigate to screentype task with name as element {to query task by name }
@@ -66,23 +57,16 @@ export default class HomeScreen extends React.Component {
       score: props.taskScore
     });
   };
+  onRefresh() {}
   state = { activea: 1, activeb: 0, activec: 0 };
   render() {
     let { activea, activeb, activec } = this.state;
     return (
       <Container>
-        <Header style={{ backgroundColor: "#fff" }}>
-          <Body>
-            <Title
-              style={{
-                fontSize: 30,
-                color: "#000"
-              }}
-            >
-              Khdimaty
-            </Title>
-          </Body>
+        <Header style={{ backgroundColor: "#fff", alignItems: "center" }}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Khdimaty</Text>
         </Header>
+
         <View style={styles.Tabs}>
           <TouchableOpacity
             style={[styles.nav, { borderWidth: activea }]}
@@ -109,34 +93,48 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.text}>Explore</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          <Query query={Tasks}>
-            {({ loading, error, data }) => {
-              if (loading) return <Spinner color="blue" />;
-              if (error) return <Text>`Error! ${error.message}`</Text>;
 
-              return (
-                <View>
-                  {data.tasks.map(task => (
-                    <TouchableHighlight
-                      onPress={() => this.toTask(task)}
-                      underlayColor="white"
-                    >
-                      <Ascard
-                        key={task.id}
-                        name={task.name}
-                        score={task.taskScore}
-                        type={task.type}
-                        navigation={this.props.navigation}
-                        modal={this.toggleModal}
-                      />
-                    </TouchableHighlight>
-                  ))}
-                </View>
-              );
-            }}
-          </Query>
-        </ScrollView>
+        <Query query={Tasks}>
+          {({ loading, error, data, refetch, networkStatus }) => {
+            if (loading) return <Spinner color="blue" />;
+            if (error) return <Text>`Error! ${error.message}`</Text>;
+
+            return (
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    //refresh control used for the Pull to Refresh
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                      //console.log(networkStatus);
+
+                      refetch();
+                      this.setState({
+                        refreshing: false
+                      });
+                    }}
+                  />
+                }
+              >
+                {data.tasks.map(task => (
+                  <TouchableHighlight
+                    onPress={() => this.toTask(task)}
+                    underlayColor="white"
+                    key={task.id}
+                  >
+                    <Ascard
+                      name={task.name}
+                      score={task.taskScore}
+                      type={task.type}
+                      navigation={this.props.navigation}
+                      modal={this.toggleModal}
+                    />
+                  </TouchableHighlight>
+                ))}
+              </ScrollView>
+            );
+          }}
+        </Query>
 
         <Modal
           isVisible={this.state.isModalVisible}
@@ -166,11 +164,10 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-    // backgroundColor: "#FFFFFF"
+    // backgroundColor: "#FFF"
   },
   Tabs: {
     height: 70,
-    backgroundColor: "transparent",
 
     flexDirection: "row",
     alignItems: "center",

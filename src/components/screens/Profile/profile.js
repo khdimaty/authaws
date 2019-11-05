@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   text: {
-    fontFamily: "HelveticaNeue",
     color: "#52575D"
   },
   subText: {

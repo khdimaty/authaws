@@ -51,10 +51,9 @@ const Title = styled.Text`
   top: 20px;
   left: 20px;
   font-size: 30px;
-  font-weight: Bold;
+  font-weight: bold;
   color: white;
   width: 300px;
-  font-family: Impact;
 `;
 
 const Author = styled.Text`
