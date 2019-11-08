@@ -9,6 +9,7 @@ import Starter from "./starter";
 const GetTask = gql`
   query task($name: String!) {
     task(where: { name: $name }) {
+      id
       questions {
         questionText
         options {
@@ -51,6 +52,7 @@ export default class Surveyscreen extends React.Component {
               <Survey
                 data={data.task.questions}
                 taskname={name}
+                taskid={data.task.id}
                 navigation={this.props.navigation}
               />
             </>

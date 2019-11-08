@@ -1,17 +1,52 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { Button } from "native-base";
-//import { CheckBox } from "react-native-elements";
+
+import gql from "graphql-tag";
+import { Mutation } from "@apollo/react-components";
+
+const createMytask = gql`
+  mutation createMytask($taskid: ID!, $metadata: String!) {
+    createMytask(
+      data: {
+        user: { connect: { username: "anasio" } }
+        task: { connect: { id: $taskid } }
+        metadata: $metadata
+      }
+    ) {
+      id
+    }
+  }
+`;
 export default class Survey extends React.Component {
   state = {
     questionNumber: 0,
     taskquestionCount: this.props.data.length - 1,
     value: null,
     metadata: {},
-    press: false
+    press: false,
+    optionText: ""
   };
-  click() {
+  async click(mutation) {
+    //let quest = this.state.questionNumber;
+    await this.setState((prevState, props) => {
+      return {
+        metadata: {
+          ...prevState.metadata,
+          ...{ [prevState.questionNumber]: prevState.resp }
+        }
+      };
+    });
+
     if (this.state.questionNumber == this.state.taskquestionCount) {
+      // console.log(JSON.stringify(this.state.metadata));
+      await mutation({
+        variables: {
+          metadata: JSON.stringify(this.state.metadata),
+          taskid: this.props.taskid
+        }
+      });
+      // createmy task will update if my task with userid and name exist
       this.props.navigation.navigate("Home");
     } else {
       this.setState({
@@ -50,7 +85,8 @@ export default class Survey extends React.Component {
               <TouchableOpacity
                 key={id}
                 onPress={() => {
-                  this.setState({ value: id, press: true });
+                  this.setState({ value: id, press: true, resp: optionText });
+                  // console.log(this.state.optionText);
                 }}
               >
                 <View style={[styles.Rsp1, added]}>
@@ -63,16 +99,22 @@ export default class Survey extends React.Component {
 
         <View style={styles.buttons}>
           {this.state.press && (
-            <Button
-              onPress={() => this.click()}
-              style={{ backgroundColor: "#0033EE" }}
-            >
-              <Text style={{ marginLeft: 50, marginRight: 50, color: "#fff" }}>
-                {this.state.taskquestionCount == this.state.questionNumber
-                  ? "finish"
-                  : "Next"}
-              </Text>
-            </Button>
+            <Mutation mutation={createMytask}>
+              {(createMytask, { data }) => (
+                <Button
+                  onPress={() => this.click(createMytask)}
+                  style={{ backgroundColor: "#0033EE" }}
+                >
+                  <Text
+                    style={{ marginLeft: 50, marginRight: 50, color: "#fff" }}
+                  >
+                    {this.state.taskquestionCount == this.state.questionNumber
+                      ? "finish"
+                      : "Next"}
+                  </Text>
+                </Button>
+              )}
+            </Mutation>
           )}
         </View>
       </View>

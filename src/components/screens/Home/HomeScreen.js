@@ -20,7 +20,7 @@ import Constants from "expo-constants";
 import { Icon } from "react-native-elements";
 const Tasks = gql`
   {
-    tasks(orderBy: name_ASC) {
+    tasks {
       id
       name
       taskScore
@@ -63,16 +63,20 @@ export default class HomeScreen extends React.Component {
   state = { activea: "white", activeb: "black", activec: "black" };
   render() {
     let { activea, activeb, activec } = this.state;
+    let inputRef = React.createRef();
     return (
       <View style={styles.container}>
         <Query query={Tasks}>
           {({ loading, error, data, refetch, networkStatus }) => {
-            if (loading) return <Spinner color="blue" />;
+            if (loading)
+              return <Spinner style={{ marginTop: 300 }} color="blue" />;
             if (error) return <Text>`Error! ${error.message}`</Text>;
 
             return (
               <ScrollView
                 style={{ paddingTop: 70 }}
+                scrollsToTop={true}
+                ref={inputRef}
                 refreshControl={
                   <RefreshControl
                     //refresh control used for the Pull to Refresh
@@ -155,8 +159,11 @@ export default class HomeScreen extends React.Component {
         </Query>
         <BlurView tint="default" intensity={100} style={styles.static}>
           <View style={styles.header}>
-            <Icon name="tram" size={35} />
-
+            <TouchableOpacity
+              onPress={() => inputRef.current.scrollTo({ animated: true }, 0)}
+            >
+              <Icon name="tram" size={35} />
+            </TouchableOpacity>
             <Text style={{ fontSize: 35 }}>Khdimaty</Text>
             <Icon name="search" size={35} />
           </View>
