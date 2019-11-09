@@ -5,7 +5,6 @@ import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 import Survey from "./survey";
 
-import Starter from "./starter";
 const GetTask = gql`
   query task($name: String!) {
     task(where: { name: $name }) {
