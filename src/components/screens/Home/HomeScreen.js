@@ -36,8 +36,11 @@ export default class HomeScreen extends React.Component {
     isModalVisible: false,
     taskname: "",
     description: "",
-    type: "survey",
-    refreshing: true
+    type: "",
+    refreshing: true,
+    activea: "white",
+    activeb: "black",
+    activec: "black"
   };
   toTask(props) {
     //navigate to screentype task with name as element {to query task by name }
@@ -52,17 +55,22 @@ export default class HomeScreen extends React.Component {
 
   toggleModal = props => {
     this.setState({
-      isModalVisible: !this.state.isModalVisible,
+      isModalVisible: true,
       taskname: props.name,
       description: props.description,
       type: props.type,
       score: props.taskScore
     });
   };
-  onRefresh() {}
-  state = { activea: "white", activeb: "black", activec: "black" };
+
+  toggleModal_() {
+    console.log("toggle");
+    this.setState({
+      isModalVisible: false
+    });
+  }
+
   render() {
-    let { activea, activeb, activec } = this.state;
     let inputRef = React.createRef();
     return (
       <View style={styles.container}>
@@ -103,7 +111,7 @@ export default class HomeScreen extends React.Component {
                       })
                     }
                   >
-                    <Text style={[styles.text, { color: activea }]}>
+                    <Text style={[styles.text, { color: this.state.activea }]}>
                       Newest
                     </Text>
                   </TouchableOpacity>
@@ -117,7 +125,7 @@ export default class HomeScreen extends React.Component {
                       })
                     }
                   >
-                    <Text style={[styles.text, { color: activeb }]}>
+                    <Text style={[styles.text, { color: this.state.activeb }]}>
                       Popular
                     </Text>
                   </TouchableOpacity>
@@ -131,7 +139,7 @@ export default class HomeScreen extends React.Component {
                       })
                     }
                   >
-                    <Text style={[styles.text, { color: activec }]}>
+                    <Text style={[styles.text, { color: this.state.activec }]}>
                       Favorite
                     </Text>
                   </TouchableOpacity>
@@ -148,7 +156,6 @@ export default class HomeScreen extends React.Component {
                         score={task.taskScore}
                         type={task.type}
                         navigation={this.props.navigation}
-                        modal={this.toggleModal}
                       />
                     </TouchableHighlight>
                   ))}
@@ -172,7 +179,11 @@ export default class HomeScreen extends React.Component {
         <Modal
           isVisible={this.state.isModalVisible}
           swipeDirection={["down"]}
-          onSwipeComplete={this.toggleModal}
+          onSwipeComplete={() => {
+            this.setState({
+              isModalVisible: false
+            });
+          }}
           style={{
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
@@ -188,6 +199,7 @@ export default class HomeScreen extends React.Component {
             navigation={this.props.navigation}
             score={this.state.score}
             type={this.state.type}
+            toggle={this.toggleModal_.bind(this)}
           />
         </Modal>
       </View>

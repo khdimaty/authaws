@@ -40,6 +40,22 @@ export default function Mymodal(props) {
         }}
         source={type == "survey" ? survey : other}
       >
+        <TouchableOpacity onPress={() => props.toggle()}>
+          <View
+            style={{
+              marginLeft: w - 57,
+              width: 30,
+              height: 30,
+              borderRadius: 30 / 2,
+              marginTop: 20,
+              alignContent: "center",
+              alignItems: "center",
+              backgroundColor: "#e7eff6"
+            }}
+          >
+            <Icon name="close" size={30} />
+          </View>
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: "row",
