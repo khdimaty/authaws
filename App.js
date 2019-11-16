@@ -16,6 +16,7 @@ import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Test from "./src/components/screens/test/Test";
+import Profile from "./src/components/screens/profileTest/profile";
 //graphql client
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
@@ -67,8 +68,11 @@ const AppTabNavigator = createBottomTabNavigator(
     Settings: {
       screen: SettingsScreen
     },
-    Test: {
+    Testh: {
       screen: Test
+    },
+    Testp: {
+      screen: Profile
     }
   },
   {
