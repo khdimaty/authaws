@@ -9,7 +9,8 @@ export default function Profile() {
         <View
           style={{
             flex: 0.2,
-            marginTop: 40,
+            marginTop: 20,
+            padding: 15,
 
             // alignContent: "space-between",
             alignItems: "center"
@@ -17,9 +18,8 @@ export default function Profile() {
         >
           <Text
             style={{
-              fontWeight: "bold",
               //alignSelf: "center",
-              fontSize: 30
+              fontSize: 35
             }}
           >
             Khdimaty

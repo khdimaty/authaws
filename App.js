@@ -6,13 +6,13 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import { fromLeft } from "react-navigation-transitions";
 //import Screens
-import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
+//import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import WelcomeScreen from "./src/components/screens/WelcomeScreen";
-import SignUpScreen from "./src/components/screens/SignUpScreen";
-import SignInScreen from "./src/components/screens/SignInScreen";
-import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
+//import SignUpScreen from "./src/components/screens/SignUpScreen";
+//import SignInScreen from "./src/components/screens/SignInScreen";
+//import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
 import HomeScreen from "./src/components/screens/Home/HomeScreen";
-import SettingsScreen from "./src/components/screens/SettingsScreen";
+//import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Test from "./src/components/screens/test/Test";
@@ -25,10 +25,10 @@ const client = new ApolloClient({
   uri: prismauri
 });
 // Amplify imports and config
-import Amplify, { Storage } from "@aws-amplify/core";
-import config from "./aws-exports";
+//import Amplify, { Storage } from "@aws-amplify/core";
+//import config from "./aws-exports";
 
-Amplify.configure(config);
+//Amplify.configure(config);
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
@@ -101,8 +101,8 @@ const AppTabNavigator = createBottomTabNavigator(
   }
 );
 const AppNavigator = createSwitchNavigator({
-  AuthLoading: AuthLoadingScreen,
-  Auth: AuthStackNavigator,
+  //AuthLoading: AuthLoadingScreen,
+  //Auth: AuthStackNavigator,
   App: AppTabNavigator,
   test: Test,
   survey: SurveyScreen
