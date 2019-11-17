@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 
     marginBottom: 5,
     //alignSelf: "center",
-    paddingTop: 30
+    paddingTop: 50
     // backgroundColor: "black"
   },
   question: {
@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
   Images: {
     position: "absolute",
     alignSelf: "stretch",
-    height: "100%"
+    height: "100%",
+    width: "100%"
   }
 });

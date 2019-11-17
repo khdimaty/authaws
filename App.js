@@ -1,22 +1,24 @@
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Button, Platform, Image, View, Text } from "react-native";
 //navigation imports
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import { fromLeft } from "react-navigation-transitions";
 //import Screens
-//import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
+import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import WelcomeScreen from "./src/components/screens/WelcomeScreen";
-//import SignUpScreen from "./src/components/screens/SignUpScreen";
-//import SignInScreen from "./src/components/screens/SignInScreen";
-//import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
+import SignUpScreen from "./src/components/screens/SignUpScreen";
+import SignInScreen from "./src/components/screens/SignInScreen";
+import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
 import HomeScreen from "./src/components/screens/Home/HomeScreen";
-//import SettingsScreen from "./src/components/screens/SettingsScreen";
+import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Test from "./src/components/screens/test/Test";
 import Profile from "./src/components/screens/profileTest/profile";
+import Mymodal from "./src/components/screens/Home/components/modal";
 //graphql client
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
@@ -25,13 +27,12 @@ const client = new ApolloClient({
   uri: prismauri
 });
 // Amplify imports and config
-//import Amplify, { Storage } from "@aws-amplify/core";
-//import config from "./aws-exports";
+import Amplify, { Storage } from "@aws-amplify/core";
+import config from "./aws-exports";
 
-//Amplify.configure(config);
+Amplify.configure(config);
 
-{
-  /*const AuthStackNavigator = createStackNavigator({
+const AuthStackNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
     navigationOptions: () => ({
@@ -57,24 +58,88 @@ const client = new ApolloClient({
       title: `Create a new password`
     })
   }
-});*/
+});
+class Home extends React.Component {
+  componentWillMount() {
+    this.props.navigation.setParams({ increaseCount: this._increaseCount });
+  }
+
+  state = {
+    count: 0
+  };
+
+  _increaseCount = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Home Screen</Text>
+        <Text>Count: {this.state.count}</Text>
+        <Button
+          onPress={() => this.props.navigation.navigate("MyModal")}
+          title="Info"
+          color={Platform.OS === "ios" ? "#000" : null}
+        />
+      </View>
+    );
+  }
 }
+
+class ModalScreen extends React.Component {
+  render() {
+    return (
+      <View
+        style={{
+          flex: 1,
+          //flexDirection: "column-reverse",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "red",
+          paddingTop: 100,
+          overflow: "hidden",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20
+        }}
+      >
+        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+        <Button
+          onPress={() => this.props.navigation.goBack()}
+          title="Dismiss"
+        />
+      </View>
+    );
+  }
+}
+const HomeStack = createStackNavigator(
+  {
+    Main: {
+      screen: HomeScreen
+    },
+    MyModal: {
+      screen: Mymodal,
+      navigationOptions: {
+        gestureResponseDistance: { vertical: 1000 } // default is 135 },
+      }
+    }
+  },
+  {
+    mode: "modal",
+    headerMode: "none",
+    transparentCard: true
+  }
+);
 const AppTabNavigator = createBottomTabNavigator(
   {
     Home: {
-      screen: HomeScreen
+      screen: HomeStack
     },
     Profile: {
-      screen: ProfileScreen
+      screen: Profile
     },
     Settings: {
       screen: SettingsScreen
-    },
-    Testh: {
-      screen: Test
-    },
-    Testp: {
-      screen: Profile
     }
   },
   {

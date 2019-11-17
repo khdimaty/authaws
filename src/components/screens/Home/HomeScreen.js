@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -29,183 +29,123 @@ const Tasks = gql`
     }
   }
 `;
-
-const w = Dimensions.get("window").width;
-export default class HomeScreen extends React.Component {
-  state = {
-    isModalVisible: false,
-    taskname: "",
-    description: "",
-    type: "",
-    refreshing: true,
+export default function HomeScreen(props) {
+  let inputRef = React.createRef();
+  const [active, setactive] = useState({
     activea: "white",
     activeb: "black",
     activec: "black"
-  };
-  toTask(props) {
-    //navigate to screentype task with name as element {to query task by name }
-    console.log(props);
-    //this.props.navigation.navigate("survey", {
-    //name: props.name
-    //});
+  });
+  const [refreshing, setrefreshing] = useState(false);
+  return (
+    <View style={styles.container}>
+      <Query query={Tasks}>
+        {({ loading, error, data, refetch, networkStatus }) => {
+          if (loading)
+            return <Spinner style={{ marginTop: 300 }} color="blue" />;
+          if (error) return <Text>`Error! ${error.message}`</Text>;
 
-    //this feature is for modal ios style to be added in ver 2
-    this.toggleModal(props);
-  }
+          return (
+            <ScrollView
+              style={{ paddingTop: 70 }}
+              scrollsToTop={true}
+              ref={inputRef}
+              refreshControl={
+                <RefreshControl
+                  //refresh control used for the Pull to Refresh
+                  refreshing={refreshing}
+                  onRefresh={() => {
+                    //console.log(networkStatus);
 
-  toggleModal = props => {
-    this.setState({
-      isModalVisible: true,
-      taskname: props.name,
-      description: props.description,
-      type: props.type,
-      score: props.taskScore
-    });
-  };
-
-  toggleModal_() {
-    console.log("toggle");
-    this.setState({
-      isModalVisible: false
-    });
-  }
-
-  render() {
-    let inputRef = React.createRef();
-    return (
-      <View style={styles.container}>
-        <Query query={Tasks}>
-          {({ loading, error, data, refetch, networkStatus }) => {
-            if (loading)
-              return <Spinner style={{ marginTop: 300 }} color="blue" />;
-            if (error) return <Text>`Error! ${error.message}`</Text>;
-
-            return (
-              <ScrollView
-                style={{ paddingTop: 70 }}
-                scrollsToTop={true}
-                ref={inputRef}
-                refreshControl={
-                  <RefreshControl
-                    //refresh control used for the Pull to Refresh
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                      //console.log(networkStatus);
-
-                      refetch();
-                      this.setState({
-                        refreshing: false
-                      });
-                    }}
-                  />
-                }
-              >
-                <View style={styles.Tabs}>
-                  <TouchableOpacity
-                    style={[styles.nav]}
-                    onPress={() =>
-                      this.setState({
-                        activea: "white",
-                        activeb: "black",
-                        activec: "black"
-                      })
-                    }
-                  >
-                    <Text style={[styles.text, { color: this.state.activea }]}>
-                      Newest
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.nav]}
-                    onPress={() =>
-                      this.setState({
-                        activea: "black",
-                        activeb: "white",
-                        activec: "black"
-                      })
-                    }
-                  >
-                    <Text style={[styles.text, { color: this.state.activeb }]}>
-                      Popular
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.nav]}
-                    onPress={() =>
-                      this.setState({
-                        activea: "black",
-                        activeb: "black",
-                        activec: "white"
-                      })
-                    }
-                  >
-                    <Text style={[styles.text, { color: this.state.activec }]}>
-                      Favorite
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View>
-                  {data.tasks.map(task => (
-                    <TouchableHighlight
-                      onPress={() => this.toTask(task)}
-                      underlayColor="white"
-                      key={task.id}
-                    >
-                      <Ascard
-                        name={task.name}
-                        score={task.taskScore}
-                        type={task.type}
-                        navigation={this.props.navigation}
-                      />
-                    </TouchableHighlight>
-                  ))}
-                </View>
-              </ScrollView>
-            );
-          }}
-        </Query>
-        <BlurView tint="default" intensity={100} style={styles.static}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => inputRef.current.scrollTo({ animated: true }, 0)}
+                    refetch();
+                    setrefreshing(false);
+                  }}
+                />
+              }
             >
-              <Icon name="tram" size={35} />
-            </TouchableOpacity>
-            <Text style={{ fontSize: 35 }}>Khdimaty</Text>
-            <Icon name="search" size={35} />
-          </View>
-        </BlurView>
-
-        <Modal
-          isVisible={this.state.isModalVisible}
-          swipeDirection={["down"]}
-          onSwipeComplete={() => {
-            this.setState({
-              isModalVisible: false
-            });
-          }}
-          style={{
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            backgroundColor: "white",
-            marginHorizontal: 0,
-            marginTop: 50,
-            marginBottom: 0
-          }}
-        >
-          <Mymodal
-            taskname={this.state.taskname}
-            description={this.state.description}
-            navigation={this.props.navigation}
-            score={this.state.score}
-            type={this.state.type}
-            toggle={this.toggleModal_.bind(this)}
-          />
-        </Modal>
-      </View>
-    );
-  }
+              <View style={styles.Tabs}>
+                <TouchableOpacity
+                  style={[styles.nav]}
+                  onPress={() =>
+                    setactive({
+                      activea: "white",
+                      activeb: "black",
+                      activec: "black"
+                    })
+                  }
+                >
+                  <Text style={[styles.text, { color: active.activea }]}>
+                    Newest
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.nav]}
+                  onPress={() =>
+                    setactive({
+                      activea: "black",
+                      activeb: "white",
+                      activec: "black"
+                    })
+                  }
+                >
+                  <Text style={[styles.text, { color: active.activeb }]}>
+                    Popular
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.nav]}
+                  onPress={() =>
+                    setactive({
+                      activea: "black",
+                      activeb: "black",
+                      activec: "white"
+                    })
+                  }
+                >
+                  <Text style={[styles.text, { color: active.activec }]}>
+                    Favorite
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                {data.tasks.map(task => (
+                  <TouchableHighlight
+                    onPress={() =>
+                      props.navigation.navigate("MyModal", {
+                        taskinfo: task
+                      })
+                    }
+                    underlayColor="white"
+                    key={task.id}
+                  >
+                    <Ascard
+                      name={task.name}
+                      score={task.taskScore}
+                      type={task.type}
+                      navigation={props.navigation}
+                    />
+                  </TouchableHighlight>
+                ))}
+              </View>
+            </ScrollView>
+          );
+        }}
+      </Query>
+      <BlurView tint="default" intensity={100} style={styles.static}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => inputRef.current.scrollTo({ animated: true }, 0)}
+          >
+            <Icon name="tram" size={35} />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 35 }}>Khdimaty</Text>
+          <Icon name="search" size={35} />
+        </View>
+      </BlurView>
+    </View>
+  );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
