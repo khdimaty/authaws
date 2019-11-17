@@ -6,16 +6,16 @@ import {
   RefreshControl
 } from "react-native";
 //import Amplify, { Storage } from "@aws-amplify/core";
-import { Container, Header, Text, Spinner } from "native-base";
-import Modal from "react-native-modal";
+import { Text, Spinner } from "native-base";
+
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
-import { Dimensions } from "react-native";
+
 import Ascard from "./components/appstorecard";
-import Mymodal from "./components/modal";
+
 import { ScrollView } from "react-native-gesture-handler";
 import { BlurView } from "expo-blur";
-import { TouchableHighlight } from "react-native";
+import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 import Constants from "expo-constants";
 import { Icon } from "react-native-elements";
 const Tasks = gql`
@@ -31,11 +31,8 @@ const Tasks = gql`
 `;
 export default function HomeScreen(props) {
   let inputRef = React.createRef();
-  const [active, setactive] = useState({
-    activea: "white",
-    activeb: "black",
-    activec: "black"
-  });
+  const [value, setvalue] = useState("Newest");
+
   const [refreshing, setrefreshing] = useState(false);
   return (
     <View style={styles.container}>
@@ -64,48 +61,25 @@ export default function HomeScreen(props) {
               }
             >
               <View style={styles.Tabs}>
-                <TouchableOpacity
-                  style={[styles.nav]}
-                  onPress={() =>
-                    setactive({
-                      activea: "white",
-                      activeb: "black",
-                      activec: "black"
-                    })
-                  }
-                >
-                  <Text style={[styles.text, { color: active.activea }]}>
-                    Newest
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.nav]}
-                  onPress={() =>
-                    setactive({
-                      activea: "black",
-                      activeb: "white",
-                      activec: "black"
-                    })
-                  }
-                >
-                  <Text style={[styles.text, { color: active.activeb }]}>
-                    Popular
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.nav]}
-                  onPress={() =>
-                    setactive({
-                      activea: "black",
-                      activeb: "black",
-                      activec: "white"
-                    })
-                  }
-                >
-                  <Text style={[styles.text, { color: active.activec }]}>
-                    Favorite
-                  </Text>
-                </TouchableOpacity>
+                {["Newest", "Popular", "Favorite"].map(elem => {
+                  let added =
+                    value === elem
+                      ? {
+                          color: "#fff"
+                        }
+                      : {};
+                  return (
+                    <TouchableWithoutFeedback
+                      style={[styles.nav]}
+                      key={elem}
+                      onPress={() => {
+                        setvalue(elem);
+                      }}
+                    >
+                      <Text style={[styles.text, added]}>{elem}</Text>
+                    </TouchableWithoutFeedback>
+                  );
+                })}
               </View>
               <View>
                 {data.tasks.map(task => (
@@ -193,7 +167,6 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   text: {
-    color: "#000",
     alignSelf: "center"
   },
   notBlurred: {

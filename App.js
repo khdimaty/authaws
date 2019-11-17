@@ -59,59 +59,7 @@ const AuthStackNavigator = createStackNavigator({
     })
   }
 });
-class Home extends React.Component {
-  componentWillMount() {
-    this.props.navigation.setParams({ increaseCount: this._increaseCount });
-  }
 
-  state = {
-    count: 0
-  };
-
-  _increaseCount = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Home Screen</Text>
-        <Text>Count: {this.state.count}</Text>
-        <Button
-          onPress={() => this.props.navigation.navigate("MyModal")}
-          title="Info"
-          color={Platform.OS === "ios" ? "#000" : null}
-        />
-      </View>
-    );
-  }
-}
-
-class ModalScreen extends React.Component {
-  render() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          //flexDirection: "column-reverse",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "red",
-          paddingTop: 100,
-          overflow: "hidden",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20
-        }}
-      >
-        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
-        <Button
-          onPress={() => this.props.navigation.goBack()}
-          title="Dismiss"
-        />
-      </View>
-    );
-  }
-}
 const HomeStack = createStackNavigator(
   {
     Main: {
