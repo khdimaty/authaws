@@ -388,7 +388,7 @@ export default class SignUpScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#4995cd",
     justifyContent: "center",
     flexDirection: "column"
   },
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
-    backgroundColor: "#fff"
+    backgroundColor: "#4995cd"
   },
   itemStyle: {
     marginBottom: 20

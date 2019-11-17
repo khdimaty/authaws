@@ -34,28 +34,56 @@ Amplify.configure(config);
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
-    screen: WelcomeScreen,
+    screen: Test,
     navigationOptions: () => ({
       title: `Welcome to this App`,
-      headerBackTitle: "Back"
+      headerBackTitle: "Back",
+      headerStyle: {
+        backgroundColor: "#4995cd"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   },
   SignUp: {
     screen: SignUpScreen,
     navigationOptions: () => ({
-      title: `Create a new account`
+      title: `Create a new account`,
+      headerStyle: {
+        backgroundColor: "#4995cd"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   },
   SignIn: {
     screen: SignInScreen,
     navigationOptions: () => ({
-      title: `Log in to your account`
+      title: `Log in to your account`,
+      headerStyle: {
+        backgroundColor: "#4995cd"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   },
   ForgetPassword: {
     screen: ForgetPasswordScreen,
     navigationOptions: () => ({
-      title: `Create a new password`
+      title: `Create a new password`,
+      headerStyle: {
+        backgroundColor: "#4995cd"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 });
@@ -116,8 +144,8 @@ const AppTabNavigator = createBottomTabNavigator(
   }
 );
 const AppNavigator = createSwitchNavigator({
-  //AuthLoading: AuthLoadingScreen,
-  //Auth: AuthStackNavigator,
+  AuthLoading: AuthLoadingScreen,
+  Auth: AuthStackNavigator,
   App: AppTabNavigator,
   test: Test,
   survey: SurveyScreen
