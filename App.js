@@ -30,7 +30,8 @@ const client = new ApolloClient({
 
 //Amplify.configure(config);
 
-const AuthStackNavigator = createStackNavigator({
+{
+  /*const AuthStackNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
     navigationOptions: () => ({
@@ -56,7 +57,8 @@ const AuthStackNavigator = createStackNavigator({
       title: `Create a new password`
     })
   }
-});
+});*/
+}
 const AppTabNavigator = createBottomTabNavigator(
   {
     Home: {
