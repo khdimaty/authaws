@@ -6,7 +6,8 @@ import {
   Dimensions,
   ImageBackground,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  SafeAreaView
 } from "react-native";
 
 const other = require("../assets/test.png");
@@ -15,32 +16,29 @@ const w = Dimensions.get("window").width;
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Accordion, Badge, Button } from "native-base";
 export default function Mymodal(props) {
-  let { taskname, description, type, score } = props;
+  let { name, description, type, taskScore } = props.navigation.getParam(
+    "taskinfo",
+    "null"
+  );
+
   [color, setcolor] = useState("white");
   const dataArray = [
     {
-      title: taskname,
+      title: name,
       content: description
     }
   ];
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        overflow: "hidden",
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
-      }}
-    >
+    <View style={styles.innerContainer}>
       <ImageBackground
         style={{
           flex: 0.4,
           width: w
         }}
-        source={type == "survey" ? survey : other}
+        source={type === "survey" ? survey : other}
       >
-        <TouchableOpacity onPress={() => props.toggle()}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
           <View
             style={{
               marginLeft: w - 57,
@@ -72,7 +70,7 @@ export default function Mymodal(props) {
               marginLeft: 20
             }}
           >
-            {taskname}
+            {name}
           </Text>
           <View style={{ flex: 0.2, marginLeft: 20 }}>
             <TouchableOpacity
@@ -97,7 +95,7 @@ export default function Mymodal(props) {
         <Text style={{ fontSize: 30, margin: 20 }}>Score </Text>
         <Badge style={{ backgroundColor: "black", margin: 28 }}>
           <Text style={{ color: "white", fontSize: 15 }}>
-            {score} <Text>pt</Text>
+            {taskScore} <Text>pt</Text>
           </Text>
         </Badge>
       </View>
@@ -112,7 +110,7 @@ export default function Mymodal(props) {
         <Button
           onPress={() =>
             props.navigation.navigate("survey", {
-              name: taskname
+              name: name
             })
           }
           bordered
@@ -124,8 +122,19 @@ export default function Mymodal(props) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   icon: {
     fontSize: 40
+  },
+
+  innerContainer: {
+    flex: 1,
+    backgroundColor: "transparent",
+    marginTop: 90,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    overflow: "hidden"
   }
 });
