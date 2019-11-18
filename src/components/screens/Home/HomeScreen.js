@@ -22,7 +22,7 @@ import Constants from "expo-constants";
 import { Icon } from "react-native-elements";
 const Tasks = gql`
   {
-    tasks {
+    tasks(orderBy: createdAt_DESC) {
       id
       name
       taskScore
@@ -38,10 +38,35 @@ export default function HomeScreen(props) {
   const [refreshing, setrefreshing] = useState(false);
   return (
     <View style={styles.container}>
-      <Query query={Tasks}>
+      <Query query={Tasks} fetchPolicy={"cache-and-network"}>
         {({ loading, error, data, refetch, networkStatus }) => {
           if (loading)
-            return <Spinner style={{ marginTop: 300 }} color="blue" />;
+            return (
+              <View>
+                <View style={styles.Tabs}>
+                  {["Newest", "Popular", "Favorite"].map(elem => {
+                    let added =
+                      value === elem
+                        ? {
+                            color: "#fff"
+                          }
+                        : {};
+                    return (
+                      <TouchableWithoutFeedback
+                        style={[styles.nav]}
+                        key={elem}
+                        onPress={() => {
+                          setvalue(elem);
+                        }}
+                      >
+                        <Text style={[styles.text, added]}>{elem}</Text>
+                      </TouchableWithoutFeedback>
+                    );
+                  })}
+                </View>
+                <Spinner style={{ marginTop: 300 }} color="blue" />
+              </View>
+            );
           if (error) return <Text>`Error! ${error.message}`</Text>;
 
           return (
@@ -58,6 +83,7 @@ export default function HomeScreen(props) {
 
                     refetch();
                     setrefreshing(false);
+                    //console.log("refetch");
                   }}
                 />
               }

@@ -12,7 +12,9 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Alert,
-  Animated
+  Animated,
+  Image,
+  TextInput
 } from "react-native";
 
 import Auth from "@aws-amplify/auth";
@@ -51,84 +53,89 @@ export default class SignInScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar />
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior="padding"
-          enabled
-        >
-          <TouchableWithoutFeedback
+      <ImageBackground
+        source={require("./assets/tramlogin.jpeg")}
+        style={styles.container}
+        blurRadius={10}
+      >
+        <SafeAreaView style={styles.container}>
+          <StatusBar />
+          <KeyboardAvoidingView
             style={styles.container}
-            onPress={Keyboard.dismiss}
+            behavior="padding"
+            enabled
           >
-            <View style={styles.container}>
-              <View style={styles.Logo}>
+            <TouchableWithoutFeedback
+              style={styles.container}
+              onPress={Keyboard.dismiss}
+            >
+              <View style={styles.container}>
+                <View style={styles.Logo}>
+                  <View
+                    style={{
+                      flex: 1
+                    }}
+                  />
+                  <View
+                    style={{
+                      marginBottom: 6,
+                      marginLeft: 2,
+                      marginRight: 3
+                    }}
+                  >
+                    <Image
+                      source={require("./assets/tram_.png")}
+                      style={styles.images}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </View>
+
                 <View
                   style={{
-                    flex: 1
-                  }}
-                />
-                <View
-                  style={{
-                    marginBottom: 6,
-                    marginLeft: 2,
-                    marginRight: 3
+                    marginTop: 30,
+                    marginBottom: 30,
+                    alignItems: "center",
+                    alignContent: "center"
                   }}
                 >
-                  <Text style={styles.text3}>KHDIMATY</Text>
-                  <View style={styles.rect7} />
-                </View>
-              </View>
-              <Container style={styles.infoContainer}>
-                <View style={styles.container}>
-                  <View style={{ height: 200 }}></View>
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="person" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Username"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"email-address"}
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      onSubmitEditing={event => {
-                        this.refs.SecondInput._root.focus();
-                      }}
-                      onChangeText={value =>
-                        this.onChangeText("username", value)
-                      }
-                    />
-                  </Item>
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="lock" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Password"
-                      placeholderTextColor="#adb4bc"
-                      returnKeyType="go"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      ref="SecondInput"
-                      onChangeText={value =>
-                        this.onChangeText("password", value)
-                      }
-                    />
-                  </Item>
+                  <TextInput
+                    style={styles.input}
+                    underlineColorAndroid="transparent"
+                    placeholder="Username"
+                    placeholderTextColor="#ffff"
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    onChangeText={value => this.onChangeText("username", value)}
+                  />
+
+                  <TextInput
+                    style={styles.input}
+                    underlineColorAndroid="transparent"
+                    placeholder="Password"
+                    placeholderTextColor="#ffff"
+                    autoCapitalize="none"
+                    returnKeyType="go"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    ref="SecondInput"
+                    onChangeText={value => this.onChangeText("password", value)}
+                  />
                   <TouchableOpacity
+                    style={styles.submitButton}
                     onPress={() => this.signIn()}
-                    style={styles.buttonStyle}
                   >
-                    <Text style={styles.buttonText}>Sign In</Text>
+                    <Text style={styles.submitButtonText}> LOGIN </Text>
                   </TouchableOpacity>
                 </View>
-              </Container>
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+              </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </ImageBackground>
     );
   }
 }
@@ -136,49 +143,11 @@ export default class SignInScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#4995cd",
+
     justifyContent: "center",
     flexDirection: "column"
   },
 
-  input: {
-    flex: 1,
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#5a52a5"
-  },
-  infoContainer: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    height: 200,
-    bottom: 25,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30,
-    backgroundColor: "#4995cd"
-  },
-  itemStyle: {
-    marginBottom: 20
-  },
-  iconStyle: {
-    color: "#5a52a5",
-    fontSize: 28,
-    marginLeft: 15
-  },
-  buttonStyle: {
-    alignItems: "center",
-    backgroundColor: "#667292",
-    padding: 14,
-    marginBottom: 100,
-    borderRadius: 24
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff"
-  },
   logoContainer: {
     position: "absolute",
     left: 0,
@@ -191,16 +160,40 @@ const styles = StyleSheet.create({
   },
   Logo: {
     height: 111,
-    alignSelf: "center",
-    marginBottom: 300
+    alignSelf: "center"
   },
-  text3: {
-    color: "#25cdec",
-    fontSize: 50,
-    marginBottom: 4
+
+  images: {
+    width: 120,
+    height: 120
   },
-  rect7: {
-    height: 8,
-    backgroundColor: "#01A7C2"
+  input: {
+    margin: 15,
+    fontSize: 16,
+    height: 52,
+    width: "80%",
+    paddingLeft: 20,
+
+    backgroundColor: "rgba(255,255,255,0.4)",
+    borderRadius: 10
+  },
+  submitButton: {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 10,
+    alignContent: "center",
+    alignItems: "center",
+    margin: 30,
+    height: 52,
+    width: "80%",
+    borderColor: "white"
+  },
+  submitButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "white",
+
+    paddingTop: 5
   }
 });

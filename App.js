@@ -117,9 +117,6 @@ const AppTabNavigator = createBottomTabNavigator(
     },
     Settings: {
       screen: SettingsScreen
-    },
-    Test: {
-      screen: Log
     }
   },
   {

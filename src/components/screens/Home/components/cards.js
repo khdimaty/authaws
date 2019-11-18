@@ -65,7 +65,7 @@ export default class Cards extends Component {
                     <View style={styles.cardContent}>
                       <View>
                         <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.time}>test</Text>
+                        <Text style={styles.time}>By khdimaty</Text>
                       </View>
 
                       <View style={styles.cardFooter}>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   separator: {
-    marginTop: 50
+    marginTop: 80
   },
   /******** card **************/
   card: {
