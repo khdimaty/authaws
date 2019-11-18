@@ -17,6 +17,7 @@ import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Test from "./src/components/screens/test/Test";
+import Log from "./src/components/screens/test/tit";
 import Profile from "./src/components/screens/profileTest/profile";
 import Mymodal from "./src/components/screens/Home/components/modal";
 //graphql client
@@ -116,6 +117,9 @@ const AppTabNavigator = createBottomTabNavigator(
     },
     Settings: {
       screen: SettingsScreen
+    },
+    Test: {
+      screen: Log
     }
   },
   {
