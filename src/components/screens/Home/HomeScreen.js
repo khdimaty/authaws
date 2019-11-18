@@ -12,6 +12,8 @@ import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 
 import Ascard from "./components/appstorecard";
+import Xdcard from "./components/xdcard";
+import Cards from "./components/cards";
 
 import { ScrollView } from "react-native-gesture-handler";
 import { BlurView } from "expo-blur";
@@ -44,7 +46,7 @@ export default function HomeScreen(props) {
 
           return (
             <ScrollView
-              style={{ paddingTop: 70 }}
+              style={{ backgroundColor: "#fff" }}
               scrollsToTop={true}
               ref={inputRef}
               refreshControl={
@@ -81,26 +83,8 @@ export default function HomeScreen(props) {
                   );
                 })}
               </View>
-              <View>
-                {data.tasks.map(task => (
-                  <TouchableHighlight
-                    onPress={() =>
-                      props.navigation.navigate("MyModal", {
-                        taskinfo: task
-                      })
-                    }
-                    underlayColor="white"
-                    key={task.id}
-                  >
-                    <Ascard
-                      name={task.name}
-                      score={task.taskScore}
-                      type={task.type}
-                      navigation={props.navigation}
-                    />
-                  </TouchableHighlight>
-                ))}
-              </View>
+
+              <Cards tasks={data} navigation={props.navigation} />
             </ScrollView>
           );
         }}
@@ -131,8 +115,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: 0,
-    backgroundColor: "#fff"
+    top: 0
   },
   header: {
     alignItems: "center",
@@ -148,8 +131,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c3c3c",
 
     marginHorizontal: 15,
-    marginVertical: 30,
-
+    marginTop: 120,
+    marginBottom: 30,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
