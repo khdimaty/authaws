@@ -18,6 +18,7 @@ import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Test from "./src/components/screens/test/Test";
 import Log from "./src/components/screens/test/tit";
+import Rewards from "./src/components/screens/rewards/index";
 import Profile from "./src/components/screens/profileTest/profile";
 import Mymodal from "./src/components/screens/Home/components/modal";
 //graphql client
@@ -94,6 +95,31 @@ const HomeStack = createStackNavigator(
     Main: {
       screen: HomeScreen
     },
+    Rewards: { screen: Rewards },
+    MyModal: {
+      screen: Mymodal,
+      navigationOptions: {
+        gestureResponseDistance: { vertical: 1000 } // default is 135 },
+      }
+    }
+  },
+  {
+    mode: "modal",
+    headerMode: "none",
+    transparentCard: true
+  }
+);
+const reward = createStackNavigator(
+  {
+    Main: {
+      screen: HomeScreen
+    },
+    Rewards: {
+      screen: Rewards,
+      navigationOptions: {
+        gestureResponseDistance: { vertical: 135 } // default is 135 },
+      }
+    },
     MyModal: {
       screen: Mymodal,
       navigationOptions: {
@@ -150,6 +176,7 @@ const AppNavigator = createSwitchNavigator({
   App: AppTabNavigator,
   test: Test,
   survey: SurveyScreen
+  // rewards: Rewards
 });
 const Navigator = createAppContainer(AppNavigator);
 export default function App() {

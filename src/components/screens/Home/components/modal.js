@@ -72,7 +72,13 @@ export default function Mymodal(props) {
           >
             {name}
           </Text>
-          <View style={{ flex: 0.2, marginLeft: 20 }}>
+          <View
+            style={{
+              flex: 0.2,
+              marginLeft: 30,
+              flexDirection: "column-reverse"
+            }}
+          >
             <TouchableOpacity
               onPress={() => setcolor(color == "white" ? "red" : "white")}
             >

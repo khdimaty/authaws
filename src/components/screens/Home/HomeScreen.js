@@ -20,6 +20,8 @@ import { BlurView } from "expo-blur";
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 import Constants from "expo-constants";
 import { Icon } from "react-native-elements";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 const Tasks = gql`
   {
     tasks(orderBy: createdAt_DESC) {
@@ -123,7 +125,11 @@ export default function HomeScreen(props) {
             <Icon name="tram" size={35} />
           </TouchableOpacity>
           <Text style={{ fontSize: 35 }}>Khdimaty</Text>
-          <Icon name="search" size={35} />
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Rewards")}
+          >
+            <Icon name="explore" size={35} />
+          </TouchableOpacity>
         </View>
       </BlurView>
     </View>
