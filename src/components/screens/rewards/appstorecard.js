@@ -1,29 +1,70 @@
 import React from "react";
 import styled from "styled-components";
-
+import { TouchableOpacity, Alert } from "react-native";
 const survey = require("./assets/appstore.png");
-
+import { Toast } from "native-base";
 import { Dimensions } from "react-native";
-const w = Dimensions.get("window").width;
 
-class Ascard extends React.Component {
-  render() {
-    // const { name, type } = this.props;
-    let imag = survey;
-    return (
-      <Container style={{ flex: 0.8, length: 200 }}>
-        <Cover>
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
+const w = Dimensions.get("window").width;
+const getreward = async function(id, create, data, refetch) {
+  // console.log("get");
+  await create({ variables: { rewardid: id } });
+};
+
+const createMyreward = gql`
+  mutation createMyreward($rewardid: ID!) {
+    createMyreward(
+      data: {
+        user: { connect: { username: "anasio" } }
+        reward: { connect: { id: $rewardid } }
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+export default function Ascard(props) {
+  let imag = survey;
+  //const { id} = props.rewardid;
+  const [create, { data }] = useMutation(createMyreward);
+  // console.log(data);
+  return (
+    <TouchableOpacity
+      style={{ flex: 1 }}
+      onPress={() =>
+        Alert.alert(
+          "Reward name ",
+          "Do you realy want to get this reward ?",
+          [
+            { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
+            {
+              text: "OK",
+              onPress: async () => {
+                await getreward(props.rewardid, create, props.refetch);
+
+                props.refetch();
+                //cosnole.log(props.rewardid, create);
+              }
+            }
+          ],
+          { cancelable: false }
+        )
+      }
+    >
+      <Container style={{ flex: 1, length: 200 }}>
+        <Cover style={{ flex: 0.8 }}>
           <Image source={imag} />
-          <Title>reward name</Title>
+          <Title>{props.name}</Title>
           <Author>by Khdimaty</Author>
         </Cover>
-        <Text>general description of the game</Text>
+        <Text style={{ flex: 0.2 }}>general description of the game</Text>
       </Container>
-    );
-  }
+    </TouchableOpacity>
+  );
 }
-
-export default Ascard;
 
 const Container = styled.View`
   margin: auto;

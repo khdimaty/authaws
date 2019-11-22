@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableHighlight
+} from "react-native";
 import { Icon } from "react-native-elements";
 import Ascard from "./appstorecard";
 import { useQuery } from "@apollo/react-hooks";
@@ -8,6 +14,7 @@ const getRewards = gql`
   {
     rewards {
       id
+      url
       decription
       equivalentScore
     }
@@ -16,10 +23,13 @@ const getRewards = gql`
     }
   }
 `;
+
 export default function Rewards(props) {
-  const { loading, error, data } = useQuery(getRewards);
+  const { loading, error, data, refetch } = useQuery(getRewards, {
+    fetchPolicy: "no-cache"
+  });
   if (data) {
-    console.log(data.user.score);
+    //console.log(data.user.score);
   }
   return (
     <View style={styles.container}>
@@ -76,11 +86,17 @@ export default function Rewards(props) {
         ) : (
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {data.rewards.map(reward => {
-              console.log(reward.id);
+              // console.log(reward.id);
               return (
                 <React.Fragment key={reward.id}>
                   <View style={styles.separator} />
-                  <Ascard />
+
+                  <Ascard
+                    name={reward.url}
+                    rewardid={reward.id}
+                    refetch={() => refetch()}
+                  />
+
                   <View style={styles.separator} />
                 </React.Fragment>
               );
