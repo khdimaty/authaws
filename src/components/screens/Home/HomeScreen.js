@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  Image
 } from "react-native";
 //import Amplify, { Storage } from "@aws-amplify/core";
 import { Text, Spinner } from "native-base";
@@ -19,7 +20,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { BlurView } from "expo-blur";
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 import Constants from "expo-constants";
-import { Icon } from "react-native-elements";
+import { Icon } from "native-base";
+//import { Icon } from "react-native-elements";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 const Tasks = gql`
@@ -122,13 +124,14 @@ export default function HomeScreen(props) {
           <TouchableOpacity
             onPress={() => inputRef.current.scrollTo({ animated: true }, 0)}
           >
-            <Icon name="tram" size={35} />
+            <Icon name="home" size={35} />
           </TouchableOpacity>
           <Text style={{ fontSize: 35 }}>Khdimaty</Text>
+
           <TouchableOpacity
             onPress={() => props.navigation.navigate("Rewards")}
           >
-            <Icon name="explore" size={35} />
+            <Icon name="gift" size={35} />
           </TouchableOpacity>
         </View>
       </BlurView>
@@ -160,7 +163,7 @@ const styles = StyleSheet.create({
   },
   Tabs: {
     height: 70,
-    backgroundColor: "#3c3c3c",
+    backgroundColor: "#54A37D",
 
     marginHorizontal: 15,
     marginTop: 120,
@@ -182,7 +185,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   text: {
-    alignSelf: "center"
+    alignSelf: "center",
+    color: "#000",
+    fontSize: 20
   },
   notBlurred: {
     ...StyleSheet.absoluteFill,

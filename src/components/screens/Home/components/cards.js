@@ -21,7 +21,7 @@ import {
 } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 const w = Dimensions.get("window").width;
-const survey = require("../assets/appstore.png");
+const survey = require("../assets/sur3.png");
 const other = require("../assets/test.png");
 export default class Cards extends Component {
   constructor(props) {
@@ -76,10 +76,10 @@ export default class Cards extends Component {
                                 <AntDesign
                                   name="hearto"
                                   size={22}
-                                  color="#131B61"
+                                  color="#54A37D"
                                 />
                                 <Text
-                                  style={[styles.text, { color: "#131B61" }]}
+                                  style={[styles.text, { color: "#54A37D" }]}
                                 >
                                   {" "}
                                   105.2K{" "}

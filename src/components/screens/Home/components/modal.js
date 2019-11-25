@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 const other = require("../assets/test.png");
-const survey = require("../assets/appstore.png");
+const survey = require("../assets/sur3.png");
 const w = Dimensions.get("window").width;
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Accordion, Badge, Button } from "native-base";

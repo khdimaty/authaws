@@ -19,7 +19,7 @@ import {
 } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 const w = Dimensions.get("window").width;
-const survey = require("../assets/appstore.png");
+const survey = require("../assets/sur.png");
 const other = require("../assets/test.png");
 export default class Xdcard extends Component {
   render() {
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   /******** card components **************/
   title: {
     fontSize: 22,
-    color: "#FFFFFF",
+    color: "#0000",
     marginTop: 20,
     fontWeight: "bold"
   },

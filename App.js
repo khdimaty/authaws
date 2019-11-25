@@ -29,10 +29,10 @@ const client = new ApolloClient({
   uri: prismauri
 });
 // Amplify imports and config
-import Amplify, { Storage } from "@aws-amplify/core";
-import config from "./aws-exports";
+//import Amplify, { Storage } from "@aws-amplify/core";
+//import config from "./aws-exports";
 
-Amplify.configure(config);
+//Amplify.configure(config);
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
@@ -136,7 +136,7 @@ const reward = createStackNavigator(
 const AppTabNavigator = createBottomTabNavigator(
   {
     Home: {
-      screen: HomeStack
+      screen: reward
     },
     Profile: {
       screen: Profile
@@ -166,13 +166,14 @@ const AppTabNavigator = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      inactiveTintColor: "gray"
+      inactiveTintColor: "gray",
+      activeTintColor: "#54A37D"
     }
   }
 );
 const AppNavigator = createSwitchNavigator({
-  AuthLoading: AuthLoadingScreen,
-  Auth: AuthStackNavigator,
+  // AuthLoading: AuthLoadingScreen,
+  //Auth: AuthStackNavigator,
   App: AppTabNavigator,
   test: Test,
   survey: SurveyScreen

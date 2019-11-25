@@ -1,16 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity, Alert } from "react-native";
-const survey = require("./assets/appstore.png");
-import { Toast } from "native-base";
+const survey = require("./assets/vert.jpg");
+
 import { Dimensions } from "react-native";
 
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 const w = Dimensions.get("window").width;
-const getreward = async function(id, create, data, refetch) {
+const getreward = async function(id, create, error, refetch) {
   // console.log("get");
   await create({ variables: { rewardid: id } });
+  await console.log(error);
+  refetch();
 };
 
 const createMyreward = gql`
@@ -30,7 +32,7 @@ export default function Ascard(props) {
   let imag = survey;
   //const { id} = props.rewardid;
   const [create, { data }] = useMutation(createMyreward);
-  // console.log(data);
+
   return (
     <TouchableOpacity
       style={{ flex: 1 }}
@@ -42,10 +44,9 @@ export default function Ascard(props) {
             { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
             {
               text: "OK",
-              onPress: async () => {
-                await getreward(props.rewardid, create, props.refetch);
-
-                props.refetch();
+              onPress: () => {
+                getreward(props.rewardid, create, data, props.refetch);
+                //console.log(data);
                 //cosnole.log(props.rewardid, create);
               }
             }
