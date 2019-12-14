@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   RefreshControl,
-  Image
+  Image,
+  AsyncStorage
 } from "react-native";
 //import Amplify, { Storage } from "@aws-amplify/core";
 import { Text, Spinner } from "native-base";
@@ -35,11 +36,27 @@ const Tasks = gql`
     }
   }
 `;
+
 export default function HomeScreen(props) {
   let inputRef = React.createRef();
   const [value, setvalue] = useState("Newest");
-
+  const [dis, setdis] = useState([]);
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function loaddisabled() {
+      const onlyUnique = (value, index, self) => {
+        return self.indexOf(value) === index;
+      };
+      const value = await AsyncStorage.getItem("dis");
+      let final = JSON.parse(value).filter(onlyUnique);
+      console.log(final);
+      setdis(final);
+    }
+    // Execute the created function directly
+    loaddisabled();
+  }, []);
   const [refreshing, setrefreshing] = useState(false);
+  //console.log(disabled);
   return (
     <View style={styles.container}>
       <Query query={Tasks} fetchPolicy={"cache-and-network"}>
@@ -97,7 +114,7 @@ export default function HomeScreen(props) {
                   let added =
                     value === elem
                       ? {
-                          color: "#fff"
+                          color: "#E2A829"
                         }
                       : {};
                   return (
@@ -114,7 +131,11 @@ export default function HomeScreen(props) {
                 })}
               </View>
 
-              <Cards tasks={data} navigation={props.navigation} />
+              <Cards
+                tasks={data}
+                tobedisabl={dis}
+                navigation={props.navigation}
+              />
             </ScrollView>
           );
         }}
@@ -163,7 +184,7 @@ const styles = StyleSheet.create({
   },
   Tabs: {
     height: 70,
-    backgroundColor: "#54A37D",
+    backgroundColor: "#247BA0",
 
     marginHorizontal: 15,
     marginTop: 120,
@@ -186,7 +207,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: "center",
-    color: "#000",
+    color: "#fff",
     fontSize: 20
   },
   notBlurred: {

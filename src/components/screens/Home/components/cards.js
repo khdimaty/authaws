@@ -20,9 +20,10 @@ import {
   FontAwesome
 } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
+
 const w = Dimensions.get("window").width;
-const survey = require("../assets/sur3.png");
-const other = require("../assets/test.png");
+const survey = require("../assets/surv01.jpg");
+const other = require("../assets/vs01.png");
 export default class Cards extends Component {
   constructor(props) {
     super(props);
@@ -48,8 +49,13 @@ export default class Cards extends Component {
           }}
           renderItem={post => {
             const item = post.item;
+            //item.name varification conditional return
+            const bgcol = this.props.tobedisabl.includes(item.name)
+              ? "grey"
+              : "#247BA0";
             return (
               <TouchableWithoutFeedback
+                disabled={this.props.tobedisabl.includes(item.name)}
                 onPress={() =>
                   this.props.navigation.navigate("MyModal", {
                     taskinfo: item
@@ -70,16 +76,18 @@ export default class Cards extends Component {
 
                       <View style={styles.cardFooter}>
                         <View style={styles.socialBarContainer}>
-                          <View style={styles.bar}>
+                          <View
+                            style={[styles.bar, { backgroundColor: bgcol }]}
+                          >
                             <View style={styles.icons}>
                               <View style={styles.like}>
                                 <AntDesign
                                   name="hearto"
                                   size={22}
-                                  color="#54A37D"
+                                  color="#E2A829"
                                 />
                                 <Text
-                                  style={[styles.text, { color: "#54A37D" }]}
+                                  style={[styles.text, { color: "#E2A829" }]}
                                 >
                                   {" "}
                                   105.2K{" "}
@@ -89,9 +97,9 @@ export default class Cards extends Component {
                                 <MaterialCommunityIcons
                                   name="comment-processing-outline"
                                   size={22}
-                                  color="grey"
+                                  color="#fff"
                                 />
-                                <Text style={[styles.text, { color: "gray" }]}>
+                                <Text style={[styles.text, { color: "#fff" }]}>
                                   {" "}
                                   220{" "}
                                 </Text>
@@ -100,9 +108,9 @@ export default class Cards extends Component {
                                 <MaterialCommunityIcons
                                   name="share-variant"
                                   size={22}
-                                  color="grey"
+                                  color="#fff"
                                 />
-                                <Text style={[styles.text, { color: "gray" }]}>
+                                <Text style={[styles.text, { color: "#fff" }]}>
                                   {" "}
                                   32{" "}
                                 </Text>
@@ -212,7 +220,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     height: 60,
-    backgroundColor: "#FFFFFF",
+
     borderRadius: 20,
     marginTop: 100,
     flex: 1,

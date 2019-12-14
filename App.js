@@ -17,6 +17,7 @@ import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Test from "./src/components/screens/test/Test";
+import Vs from "./src/components/screens/toti/vs";
 import Log from "./src/components/screens/test/tit";
 import Rewards from "./src/components/screens/rewards/index";
 import Profile from "./src/components/screens/profileTest/profile";
@@ -29,10 +30,10 @@ const client = new ApolloClient({
   uri: prismauri
 });
 // Amplify imports and config
-//import Amplify, { Storage } from "@aws-amplify/core";
-//import config from "./aws-exports";
+import Amplify, { Storage } from "@aws-amplify/core";
+import config from "./aws-exports";
 
-//Amplify.configure(config);
+Amplify.configure(config);
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
@@ -144,6 +145,7 @@ const AppTabNavigator = createBottomTabNavigator(
     Settings: {
       screen: SettingsScreen
     }
+    //Vs: { screen: Vs }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -167,13 +169,13 @@ const AppTabNavigator = createBottomTabNavigator(
     }),
     tabBarOptions: {
       inactiveTintColor: "gray",
-      activeTintColor: "#54A37D"
+      activeTintColor: "#E2A829"
     }
   }
 );
 const AppNavigator = createSwitchNavigator({
-  // AuthLoading: AuthLoadingScreen,
-  //Auth: AuthStackNavigator,
+  AuthLoading: AuthLoadingScreen,
+  Auth: AuthStackNavigator,
   App: AppTabNavigator,
   test: Test,
   survey: SurveyScreen

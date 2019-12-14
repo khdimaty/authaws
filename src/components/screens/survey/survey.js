@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  AsyncStorage
+} from "react-native";
 import { Button } from "native-base";
 
 import gql from "graphql-tag";
@@ -27,8 +34,10 @@ export default class Survey extends React.Component {
     press: false,
     optionText: ""
   };
+
   async click(mutation) {
     //let quest = this.state.questionNumber;
+    let name = this.props.taskname;
     await this.setState((prevState, props) => {
       return {
         metadata: {
@@ -46,8 +55,14 @@ export default class Survey extends React.Component {
           taskid: this.props.taskid
         }
       });
+      // diable task
+      let mydisstr = await AsyncStorage.getItem("dis");
+      let mydisprev = JSON.parse(mydisstr);
+      let mydis = [...mydisprev, name];
+      await AsyncStorage.setItem("dis", JSON.stringify(mydis));
+      //console.log(mydis);
       // createmy task will update if my task with userid and name exist
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("Home", { taskdis: name });
     } else {
       this.setState({
         questionNumber: this.state.questionNumber + 1,
@@ -60,7 +75,7 @@ export default class Survey extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Image source={require("./appstore.png")} style={styles.Images}></Image>
+        <Image source={require("./bg.png")} style={styles.Images}></Image>
         <View style={styles.info}>
           <Text style={styles.header}>
             Question {this.state.questionNumber + 1}/{this.props.data.length}

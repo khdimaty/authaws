@@ -4,7 +4,7 @@ import { Button, Spinner } from "native-base";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 import Survey from "./survey";
-
+import Vscode from "./vscode";
 const GetTask = gql`
   query task($name: String!) {
     task(where: { name: $name }) {
@@ -38,7 +38,7 @@ export default class Surveyscreen extends React.Component {
             return (
               <View style={styles.container}>
                 <Image
-                  source={require("./appstore.png")}
+                  source={require("./bg.png")}
                   style={styles.Images}
                 ></Image>
                 <Spinner color="white" style={{ marginTop: 100 }} />
@@ -48,12 +48,21 @@ export default class Surveyscreen extends React.Component {
 
           return (
             <>
-              <Survey
-                data={data.task.questions}
-                taskname={name}
-                taskid={data.task.id}
-                navigation={this.props.navigation}
-              />
+              {data.task.type == "survey" ? (
+                <Survey
+                  data={data.task.questions}
+                  taskname={name}
+                  taskid={data.task.id}
+                  navigation={this.props.navigation}
+                />
+              ) : (
+                <Vscode
+                  data={data.task.questions}
+                  taskname={name}
+                  taskid={data.task.id}
+                  navigation={this.props.navigation}
+                />
+              )}
             </>
           );
         }}

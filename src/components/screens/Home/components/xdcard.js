@@ -19,7 +19,7 @@ import {
 } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 const w = Dimensions.get("window").width;
-const survey = require("../assets/sur.png");
+const survey = require("../assets/surv02.jpg");
 const other = require("../assets/test.png");
 export default class Xdcard extends Component {
   render() {
