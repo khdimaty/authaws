@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
   Tabs: {
     height: 70,
-    backgroundColor: "#247BA0",
+    backgroundColor: "#1D7B9D",
 
     marginHorizontal: 15,
     marginTop: 120,

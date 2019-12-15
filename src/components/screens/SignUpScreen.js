@@ -20,10 +20,13 @@ import { Container, Item, Input, Icon } from "native-base";
 
 import gql from "graphql-tag";
 import { Mutation } from "@apollo/react-components";
-
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 const createUser = gql`
-  mutation createUser($username: String!, $email: String!) {
-    createUser(data: { username: $username, email: $email }) {
+  mutation createUser($username: String!, $email: String!, $location: String!) {
+    createUser(
+      data: { username: $username, email: $email, location: $location }
+    ) {
       id
       username
     }
@@ -45,6 +48,7 @@ export default class SignUpScreen extends React.Component {
     fadeIn: new Animated.Value(0), // Initial value for opacity: 0
     fadeOut: new Animated.Value(1), // Initial value for opacity: 1
     isHidden: false,
+    token: "",
     flag: defaultFlag,
     modalVisible: false,
     // users will receive a confirmation code
@@ -78,13 +82,13 @@ export default class SignUpScreen extends React.Component {
 
   // Confirm users and redirect them to the SignIn page
   async confirmSignUp(mutation, data) {
-    const { username, authCode, email, phoneNumber } = this.state;
+    const { username, authCode, email, phoneNumber, token } = this.state;
     await Auth.confirmSignUp(username, authCode)
       .then(() => {
-        this.props.navigation.navigate("SignIn");
-
         console.log("Confirm sign up successful");
-        mutation({ variables: { username: username, email: email } });
+        mutation({
+          variables: { username: username, email: email, location: token }
+        }).then(() => this.props.navigation.navigate("SignIn"));
       })
       .catch(err => {
         if (!err.message) {
@@ -139,8 +143,35 @@ export default class SignUpScreen extends React.Component {
       console.log(err);
     }
   }
+  registerForPushNotification = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== "granted") {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== "granted") {
+      return;
+    }
+
+    // Get the token that uniquely identifies this device
+    let token = await Notifications.getExpoPushTokenAsync();
+    this.setState({ token: token });
+  };
   componentDidMount() {
     this.fadeIn();
+    this.registerForPushNotification();
+
+    console.log(this.state.token);
   }
   fadeIn() {
     Animated.timing(this.state.fadeIn, {
@@ -165,6 +196,7 @@ export default class SignUpScreen extends React.Component {
     let { fadeOut, fadeIn, isHidden, flag } = this.state;
 
     const countryData = data;
+    console.log(this.state.token);
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />

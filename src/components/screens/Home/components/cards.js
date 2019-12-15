@@ -3,15 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Image,
-  Alert,
-  ScrollView,
   FlatList,
-  Button,
-  shadowStyle,
-  TouchableHighlight,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Share
 } from "react-native";
 import {
   Ionicons,
@@ -22,14 +17,31 @@ import {
 import { Dimensions } from "react-native";
 
 const w = Dimensions.get("window").width;
-const survey = require("../assets/surv01.jpg");
-const other = require("../assets/vs01.png");
+const survey = require("../assets/sur05.png");
+const other = require("../assets/vs03.png");
 export default class Cards extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: []
     };
+  }
+  share() {
+    //console.log("test");
+    Share.share(
+      {
+        message: "use our app balizzzzzz",
+        url:
+          "https://firebasestorage.googleapis.com/v0/b/application-upload.appspot.com/o/WhatsApp%20Image%202019-12-11%20at%2010.35.47.jpeg?alt=media&token=75b77f6a-c0e3-491e-9042-1fc9d09728f5",
+        title: "Khdimaty"
+      },
+      {
+        // Android only:
+        dialogTitle: "Share our app balizzzzzzz",
+        // iOS only:
+        excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"]
+      }
+    );
   }
   componentWillMount() {
     //console.log(this.props.tasks);
@@ -52,7 +64,13 @@ export default class Cards extends Component {
             //item.name varification conditional return
             const bgcol = this.props.tobedisabl.includes(item.name)
               ? "grey"
-              : "#247BA0";
+              : "#fff";
+            let gold = this.props.tobedisabl.includes(item.name)
+              ? "#fff"
+              : "#E2A829";
+            let blue = this.props.tobedisabl.includes(item.name)
+              ? "#fff"
+              : "#1D7B9D";
             return (
               <TouchableWithoutFeedback
                 disabled={this.props.tobedisabl.includes(item.name)}
@@ -84,11 +102,9 @@ export default class Cards extends Component {
                                 <AntDesign
                                   name="hearto"
                                   size={22}
-                                  color="#E2A829"
+                                  color={gold}
                                 />
-                                <Text
-                                  style={[styles.text, { color: "#E2A829" }]}
-                                >
+                                <Text style={[styles.text, { color: gold }]}>
                                   {" "}
                                   105.2K{" "}
                                 </Text>
@@ -97,24 +113,29 @@ export default class Cards extends Component {
                                 <MaterialCommunityIcons
                                   name="comment-processing-outline"
                                   size={22}
-                                  color="#fff"
+                                  color={blue}
                                 />
-                                <Text style={[styles.text, { color: "#fff" }]}>
+                                <Text style={[styles.text, { color: blue }]}>
                                   {" "}
                                   220{" "}
                                 </Text>
                               </View>
-                              <View style={styles.like}>
-                                <MaterialCommunityIcons
-                                  name="share-variant"
-                                  size={22}
-                                  color="#fff"
-                                />
-                                <Text style={[styles.text, { color: "#fff" }]}>
-                                  {" "}
-                                  32{" "}
-                                </Text>
-                              </View>
+
+                              <TouchableWithoutFeedback
+                                onPress={() => this.share()}
+                              >
+                                <View style={styles.like}>
+                                  <MaterialCommunityIcons
+                                    name="share-variant"
+                                    size={22}
+                                    color={blue}
+                                  />
+                                  <Text style={[styles.text, { color: blue }]}>
+                                    {" "}
+                                    32{" "}
+                                  </Text>
+                                </View>
+                              </TouchableWithoutFeedback>
                             </View>
                           </View>
                         </View>
@@ -140,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   separator: {
-    marginTop: 80
+    marginTop: 52
   },
   /******** card **************/
   card: {

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 export default class WelcomeScreen extends React.Component {
   handleRoute = async destination => {
     await this.props.navigation.navigate(destination);
