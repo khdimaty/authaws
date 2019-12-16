@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity, Alert } from "react-native";
-const survey = require("./assets/vert.jpg");
 
 import { Dimensions } from "react-native";
 
@@ -29,7 +28,11 @@ const createMyreward = gql`
 `;
 
 export default function Ascard(props) {
-  let imag = survey;
+  //let imag = survey;
+  let imag =
+    props.name == "test"
+      ? require("./assets/eminesreward.png")
+      : require("./assets/jumiareward.png");
   //const { id} = props.rewardid;
   const [create, { data }] = useMutation(createMyreward);
 

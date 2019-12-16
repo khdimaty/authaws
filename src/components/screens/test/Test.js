@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import RoundedButton from "./components//RoundedButton";
 
-const khdimatyLogo = require("./assets/tram_.png");
+const khdimatyLogo = require("./assets/kkk.png");
 const colors = {
   black: "#000000",
   lightBlack: "#484848",
@@ -32,7 +32,8 @@ const colors = {
   gray07: "#f2f2f2",
   brown01: "#ad8763",
   brown02: "#7d4918",
-  blue: "#4995cd"
+  blue: "#4278A4",
+  gold: "#E2A829"
 };
 export default class LoggedOut extends Component {
   registerForPushNotification = async () => {
@@ -67,11 +68,11 @@ export default class LoggedOut extends Component {
       <ScrollView style={styles.wrapper}>
         <View style={styles.welcomeWrapper}>
           <Image source={khdimatyLogo} style={styles.logo} />
-          <Text style={styles.welcomeText}>Welcome to Khdimaty.</Text>
+          <Text style={styles.welcomeText}>Welcome to Khdimaty !</Text>
           <RoundedButton
             text="Sign in"
-            textColor={colors.green01}
-            background={colors.white}
+            textColor={colors.white}
+            background={"rgba(224, 224, 224, 0.3)"}
             icon={
               <Icon
                 name="sign-in"
@@ -124,12 +125,13 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     marginTop: 30,
-    padding: 20
+    padding: 20,
+    alignItems: "center"
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginTop: 50,
+    width: 130,
+    height: 140,
+    //marginTop: 50,
     marginBottom: 40
   },
   welcomeText: {

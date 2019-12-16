@@ -102,11 +102,10 @@ export default class Cards extends Component {
                                 <AntDesign
                                   name="hearto"
                                   size={22}
-                                  color={gold}
+                                  color={blue}
                                 />
-                                <Text style={[styles.text, { color: gold }]}>
-                                  {" "}
-                                  105.2K{" "}
+                                <Text style={[styles.text, { color: blue }]}>
+                                  105
                                 </Text>
                               </View>
                               <View style={styles.like}>
@@ -116,8 +115,7 @@ export default class Cards extends Component {
                                   color={blue}
                                 />
                                 <Text style={[styles.text, { color: blue }]}>
-                                  {" "}
-                                  220{" "}
+                                  220
                                 </Text>
                               </View>
 
@@ -128,11 +126,10 @@ export default class Cards extends Component {
                                   <MaterialCommunityIcons
                                     name="share-variant"
                                     size={22}
-                                    color={blue}
+                                    color={gold}
                                   />
-                                  <Text style={[styles.text, { color: blue }]}>
-                                    {" "}
-                                    32{" "}
+                                  <Text style={[styles.text, { color: gold }]}>
+                                    32
                                   </Text>
                                 </View>
                               </TouchableWithoutFeedback>
@@ -211,13 +208,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     color: "#FFFFFF",
-    marginTop: 20,
+    marginTop: 15,
     fontWeight: "bold"
   },
   time: {
     fontSize: 13,
     color: "#FFFFFF",
-    marginTop: 10
+    marginTop: 5
   },
   icon: {
     width: 25,
@@ -252,7 +249,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    paddingHorizontal: 15
   },
   text: {
     fontSize: 15,
@@ -261,7 +259,7 @@ const styles = StyleSheet.create({
   like: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "space-around"
   }
 });

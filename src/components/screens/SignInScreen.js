@@ -54,9 +54,9 @@ export default class SignInScreen extends React.Component {
   render() {
     return (
       <ImageBackground
-        source={require("./assets/tramlogin.jpeg")}
+        source={require("./assets/66.jpg")}
         style={styles.container}
-        blurRadius={10}
+        blurRadius={5}
       >
         <SafeAreaView style={styles.container}>
           <StatusBar />
@@ -84,7 +84,7 @@ export default class SignInScreen extends React.Component {
                     }}
                   >
                     <Image
-                      source={require("./assets/tram_.png")}
+                      source={require("./assets/khditt.png")}
                       style={styles.images}
                       resizeMode="contain"
                     />
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
   },
 
   images: {
-    width: 120,
-    height: 120
+    width: 300,
+    height: 130
   },
   input: {
     margin: 15,
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     height: 52,
     width: "80%",
     paddingLeft: 20,
+    color: "#fff",
 
     backgroundColor: "rgba(255,255,255,0.4)",
     borderRadius: 10

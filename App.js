@@ -22,6 +22,7 @@ import Log from "./src/components/screens/test/tit";
 import Rewards from "./src/components/screens/rewards/index";
 import Profile from "./src/components/screens/profileTest/profile";
 import Mymodal from "./src/components/screens/Home/components/modal";
+
 //graphql client
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
@@ -42,7 +43,7 @@ const AuthStackNavigator = createStackNavigator({
       title: `Welcome to this App`,
       headerBackTitle: "Back",
       headerStyle: {
-        backgroundColor: "#4995cd"
+        backgroundColor: "#4278A4"
       },
       headerTintColor: "#fff",
       headerTitleStyle: {
@@ -55,7 +56,7 @@ const AuthStackNavigator = createStackNavigator({
     navigationOptions: () => ({
       title: `Create a new account`,
       headerStyle: {
-        backgroundColor: "#4995cd"
+        backgroundColor: "#4278A4"
       },
       headerTintColor: "#fff",
       headerTitleStyle: {
@@ -68,7 +69,7 @@ const AuthStackNavigator = createStackNavigator({
     navigationOptions: () => ({
       title: `Log in to your account`,
       headerStyle: {
-        backgroundColor: "#4995cd"
+        backgroundColor: "#4278A4"
       },
       headerTintColor: "#fff",
       headerTitleStyle: {
@@ -81,7 +82,7 @@ const AuthStackNavigator = createStackNavigator({
     navigationOptions: () => ({
       title: `Create a new password`,
       headerStyle: {
-        backgroundColor: "#4995cd"
+        backgroundColor: "#4278A4"
       },
       headerTintColor: "#fff",
       headerTitleStyle: {
@@ -140,7 +141,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: reward
     },
     Profile: {
-      screen: Profile
+      screen: ProfileScreen
     },
     Settings: {
       screen: SettingsScreen

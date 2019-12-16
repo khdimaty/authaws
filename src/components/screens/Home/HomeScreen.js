@@ -145,14 +145,20 @@ export default function HomeScreen(props) {
           <TouchableOpacity
             onPress={() => inputRef.current.scrollTo({ animated: true }, 0)}
           >
-            <Icon name="home" size={35} />
+            <Icon
+              name="home"
+              size={35}
+              style={{ color: "#1D7B9D", marginTop: 3 }}
+            />
           </TouchableOpacity>
-          <Text style={{ fontSize: 35 }}>Khdimaty</Text>
+          <Text style={{ fontSize: 30, fontWeight: "bold", color: "#E2A829" }}>
+            Khdimaty
+          </Text>
 
           <TouchableOpacity
             onPress={() => props.navigation.navigate("Rewards")}
           >
-            <Icon name="gift" size={35} />
+            <Icon name="gift" size={35} style={{ color: "#1D7B9D" }} />
           </TouchableOpacity>
         </View>
       </BlurView>
@@ -183,7 +189,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
   Tabs: {
-    height: 70,
+    height: 60,
     backgroundColor: "#1D7B9D",
 
     marginHorizontal: 15,
@@ -208,7 +214,8 @@ const styles = StyleSheet.create({
   text: {
     alignSelf: "center",
     color: "#fff",
-    fontSize: 20
+    fontSize: 17,
+    fontWeight: "bold"
   },
   notBlurred: {
     ...StyleSheet.absoluteFill,

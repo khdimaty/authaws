@@ -118,7 +118,7 @@ export default class Survey extends React.Component {
               {(createMytask, { data }) => (
                 <Button
                   onPress={() => this.click(createMytask)}
-                  style={{ backgroundColor: "#0033EE" }}
+                  style={{ backgroundColor: "#E2A829" }}
                 >
                   <Text
                     style={{ marginLeft: 50, marginRight: 50, color: "#fff" }}
@@ -191,14 +191,14 @@ const styles = StyleSheet.create({
   },
   lines: {
     width: 320,
-    height: 1,
-    backgroundColor: "#000",
+    height: 3,
+    backgroundColor: "#E2A829",
     marginTop: 2,
     marginLeft: 10
   },
   header: {
     fontFamily: "HelveticaNeue",
-    color: "#000",
+    color: "#fff",
     // marginTop: 90,
     fontSize: 28,
     marginLeft: 15
@@ -209,8 +209,8 @@ const styles = StyleSheet.create({
     //height: 52,
     width: "90%",
 
-    borderColor: "#000",
-    borderWidth: 1,
+    borderColor: "#E2A829",
+    borderWidth: 3,
     //justifyContent: "space-between",
     //paddingLeft: 20,
     //paddingRight: 10,

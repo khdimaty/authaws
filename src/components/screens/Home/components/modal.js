@@ -10,8 +10,8 @@ import {
   SafeAreaView
 } from "react-native";
 
-const other = require("../assets/test.png");
-const survey = require("../assets/tes.png");
+const survey = require("../assets/sur05.png");
+const other = require("../assets/vs03.png");
 const w = Dimensions.get("window").width;
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Accordion, Badge, Button } from "native-base";
@@ -67,7 +67,8 @@ export default function Mymodal(props) {
               flex: 0.8,
               color: "white",
               fontSize: 30,
-              marginLeft: 20
+              marginLeft: 20,
+              fontWeight: "bold"
             }}
           >
             {name}
@@ -99,7 +100,7 @@ export default function Mymodal(props) {
         }}
       >
         <Text style={{ fontSize: 30, margin: 20 }}>Score </Text>
-        <Badge style={{ backgroundColor: "black", margin: 28 }}>
+        <Badge style={{ backgroundColor: "#1D7B9D", margin: 28 }}>
           <Text style={{ color: "white", fontSize: 15 }}>
             {taskScore} <Text>pt</Text>
           </Text>
@@ -114,21 +115,29 @@ export default function Mymodal(props) {
       </View>
       <View style={{ alignItems: "center", margin: 20 }}>
         <Button
+          style={{ backgroundColor: "#1D7B9D" }}
           onPress={() =>
             props.navigation.navigate("survey", {
               name: name
             })
           }
-          bordered
-          dark
         >
-          <Text style={{ marginLeft: 50, marginRight: 50 }}>Start</Text>
+          <Text
+            style={{
+              marginLeft: 50,
+              marginRight: 50,
+              color: "#E2A829",
+              fontWeight: "bold"
+            }}
+          >
+            Start
+          </Text>
         </Button>
       </View>
     </View>
   );
 }
-
+//"#1D7B9D"
 const styles = StyleSheet.create({
   icon: {
     fontSize: 40

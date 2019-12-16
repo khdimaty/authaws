@@ -44,7 +44,7 @@ let Comp = props => {
             width: 0.4 * w,
             height: 0.4 * w,
             borderRadius: 20,
-            borderColor: "#fff",
+            borderColor: "#E2A829",
             borderWidth: 5
           },
           props.added
@@ -124,7 +124,7 @@ export default class Vscode extends React.Component {
             let added =
               this.state.value === id
                 ? {
-                    borderColor: "#000000"
+                    borderColor: "#fff"
                     //borderWidth: 3
                     //shadowOpacity: 1
                   }
@@ -149,7 +149,7 @@ export default class Vscode extends React.Component {
               {(createMytask, { data }) => (
                 <Button
                   onPress={() => this.click(createMytask)}
-                  style={{ backgroundColor: "#0033EE" }}
+                  style={{ backgroundColor: "#E2A829" }}
                 >
                   <Text
                     style={{ marginLeft: 50, marginRight: 50, color: "#fff" }}
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     flex: 0.5,
     //backgroundColor: "rgba(230, 230, 230,1)",
     //borderRadius: 22,
-    // borderColor: "#000000",
+    borderColor: "#000000",
     // borderWidth: 1,
     marginBottom: 10,
     //alignSelf: "center",
@@ -235,14 +235,14 @@ const styles = StyleSheet.create({
   },
   lines: {
     width: 320,
-    height: 1,
-    backgroundColor: "#000",
+    height: 3,
+    backgroundColor: "#E2A829",
     marginTop: 2,
     marginLeft: 10
   },
   header: {
     fontFamily: "HelveticaNeue",
-    color: "#000",
+    color: "#fff",
     // marginTop: 90,
     fontSize: 28,
     marginLeft: 15
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     //height: 52,
     width: "90%",
 
-    borderColor: "#000",
+    borderColor: "#E2A829",
     borderWidth: 1,
     //justifyContent: "space-between",
     //paddingLeft: 20,

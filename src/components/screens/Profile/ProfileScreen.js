@@ -36,15 +36,32 @@ export default class ProfileScreen extends React.Component {
   render() {
     // console.log(this.state.username);
     return (
-      <Container style={{ marginVertical: 15 }}>
-        <Header style={{ backgroundColor: "#fff", alignItems: "center" }}>
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Khdimaty</Text>
+      <Container style={{ marginTop: 15 }}>
+        <Header
+          style={{
+            backgroundColor: "#fff",
+            alignItems: "center",
+            height: 70
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+
+              fontWeight: "bold",
+              color: "#E2A829",
+              marginBottom: 10,
+              marginLeft: 5
+            }}
+          >
+            Khdimaty
+          </Text>
         </Header>
         <Profile
-          username={"ANASIO"}
+          username={"KHDIMATY"}
           age={20}
           sex={"Homme"}
-          statut={"Student"}
+          statut={"Students"}
           local={"Bengherir,Morocco"}
           level={4}
           score={200}

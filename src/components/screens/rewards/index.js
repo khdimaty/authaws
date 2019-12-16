@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableHighlight
 } from "react-native";
+import { LinearGradient } from "expo";
 import { Icon } from "react-native-elements";
 import Ascard from "./appstorecard";
 import { useQuery } from "@apollo/react-hooks";
@@ -48,10 +49,10 @@ export default function Rewards(props) {
             size={40}
           />
         </View>
+
         <View style={styles.info}>
           <View style={styles.statsContainer}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-              Score :{" "}
               <Text style={{ fontWeight: "bold" }}>
                 {" "}
                 {data ? data.user.score : ""}
@@ -115,12 +116,13 @@ const styles = StyleSheet.create({
 
   user: {
     flex: 0.3,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(29,123,157,1)",
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
     shadowRadius: 30,
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 10, height: 20 }
+    shadowOpacity: 0.8,
+    shadowOffset: { width: 10, height: 20 },
+    shadowColor: "#E2A829"
   },
   rewards: { flex: 0.7 },
   header: {
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
   info: { flex: 0.7 },
 
   text: {
-    color: "#52575D"
+    color: "#E2A829"
   },
   separator: {
     width: 10
