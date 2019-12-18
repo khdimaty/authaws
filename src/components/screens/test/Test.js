@@ -68,7 +68,7 @@ export default class LoggedOut extends Component {
       <ScrollView style={styles.wrapper}>
         <View style={styles.welcomeWrapper}>
           <Image source={khdimatyLogo} style={styles.logo} />
-          <Text style={styles.welcomeText}>Welcome to Khdimaty !</Text>
+          <Text style={styles.welcomeText}>Bienvenue à Khdimaty!</Text>
           <RoundedButton
             text="Sign in"
             textColor={colors.white}
@@ -94,20 +94,22 @@ export default class LoggedOut extends Component {
             style={styles.moreOptionsButton}
             onPress={() => this.props.navigation.navigate("ForgetPassword")}
           >
-            <Text style={styles.moreOptionsButtonText}>More options</Text>
+            <Text style={styles.moreOptionsButtonText}>Plus d'options</Text>
           </TouchableHighlight>
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsText}>
-              By tapping Continue, Create Account or More
+              En appuyant sur Continuer, Créer un compte ou plus
             </Text>
             <Text style={styles.termsText}>{" options,"}</Text>
             <Text style={styles.termsText}>{"I agree to Khdimaty's "}</Text>
             <TouchableHighlight style={styles.linkButton}>
-              <Text style={styles.termsText}>Terms of Service</Text>
+              <Text style={styles.termsText}>Conditions d'utilisation</Text>
             </TouchableHighlight>
-            <Text style={styles.termsText}> and</Text>
+            <Text style={styles.termsText}> et </Text>
             <TouchableHighlight style={styles.linkButton}>
-              <Text style={styles.termsText}>Privacy Policy .</Text>
+              <Text style={styles.termsText}>
+                Politique de confidentialité.
+              </Text>
             </TouchableHighlight>
           </View>
         </View>

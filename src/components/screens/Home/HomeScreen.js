@@ -65,7 +65,7 @@ export default function HomeScreen(props) {
             return (
               <View>
                 <View style={styles.Tabs}>
-                  {["Newest", "Popular", "Favorite"].map(elem => {
+                  {["Nouveau", "Populaire", "Favoris"].map(elem => {
                     let added =
                       value === elem
                         ? {
@@ -110,7 +110,7 @@ export default function HomeScreen(props) {
               }
             >
               <View style={styles.Tabs}>
-                {["Newest", "Popular", "Favorite"].map(elem => {
+                {["Nouveau", "Populaire", "Favoris"].map(elem => {
                   let added =
                     value === elem
                       ? {
@@ -169,7 +169,7 @@ export default function HomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-    // backgroundColor: "#ee1",
+    //backgroundColor: "#ee1"
 
     // marginTop: 15
   },

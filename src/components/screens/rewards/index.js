@@ -79,7 +79,7 @@ export default function Rewards(props) {
               fontWeight: "bold"
             }}
           >
-            Rewards{" "}
+            Recompenses{" "}
           </Text>
         </View>
         {loading ? (

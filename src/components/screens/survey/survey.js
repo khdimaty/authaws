@@ -8,15 +8,15 @@ import {
   AsyncStorage
 } from "react-native";
 import { Button } from "native-base";
-
+import Auth from "@aws-amplify/auth";
 import gql from "graphql-tag";
 import { Mutation } from "@apollo/react-components";
 
 const createMytask = gql`
-  mutation createMytask($taskid: ID!, $metadata: String!) {
+  mutation createMytask($username: String!, $taskid: ID!, $metadata: String!) {
     createMytask(
       data: {
-        user: { connect: { username: "anasio" } }
+        user: { connect: { username: $username } }
         task: { connect: { id: $taskid } }
         metadata: $metadata
       }
@@ -32,7 +32,21 @@ export default class Survey extends React.Component {
     value: null,
     metadata: {},
     press: false,
-    optionText: ""
+    optionText: "",
+    userName: ""
+  };
+  componentDidMount = async () => {
+    await this.loadUsername();
+  };
+  // Remember logged in users
+  loadUsername = async () => {
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.setState({
+          userName: user.signInUserSession.accessToken.payload.username
+        });
+      })
+      .catch(err => console.log(err));
   };
 
   async click(mutation) {
@@ -51,16 +65,18 @@ export default class Survey extends React.Component {
       // console.log(JSON.stringify(this.state.metadata));
       await mutation({
         variables: {
+          username: this.state.userName,
           metadata: JSON.stringify(this.state.metadata),
           taskid: this.props.taskid
         }
       });
       // diable task
       let mydisstr = await AsyncStorage.getItem("dis");
-      let mydisprev = JSON.parse(mydisstr);
+      let mydisst = mydisstr ? mydisstr : "[]";
+      let mydisprev = JSON.parse(mydisst);
       let mydis = [...mydisprev, name];
       await AsyncStorage.setItem("dis", JSON.stringify(mydis));
-      //console.log(mydis);
+      console.log(mydis);
       // createmy task will update if my task with userid and name exist
       this.props.navigation.navigate("Home", { taskdis: name });
     } else {

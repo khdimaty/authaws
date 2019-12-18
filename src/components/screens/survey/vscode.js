@@ -8,17 +8,17 @@ import {
   AsyncStorage
 } from "react-native";
 import { Button } from "native-base";
-
+import Auth from "@aws-amplify/auth";
 import gql from "graphql-tag";
 import { Mutation } from "@apollo/react-components";
 import { Dimensions } from "react-native";
 
 const w = Dimensions.get("window").width;
 const createMytask = gql`
-  mutation createMytask($taskid: ID!, $metadata: String!) {
+  mutation createMytask($username: String!, $taskid: ID!, $metadata: String!) {
     createMytask(
       data: {
-        user: { connect: { username: "anasio" } }
+        user: { connect: { username: $username } }
         task: { connect: { id: $taskid } }
         metadata: $metadata
       }
@@ -63,24 +63,38 @@ export default class Vscode extends React.Component {
     value: null,
     metadata: {},
     press: false,
-    optionText: ""
+    optionText: "",
+    userName: ""
+  };
+  componentDidMount = async () => {
+    await this.loadUsername();
+  };
+  // Remember logged in users
+  loadUsername = async () => {
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.setState({
+          userName: user.signInUserSession.accessToken.payload.username
+        });
+      })
+      .catch(err => console.log(err));
   };
   async click(mutation) {
     //let quest = this.state.questionNumber;
     let name = this.props.taskname;
-    await this.setState((prevState, props) => {
-      return {
-        metadata: {
-          ...prevState.metadata,
-          ...{ [prevState.questionNumber]: prevState.resp }
-        }
-      };
+    await mutation({
+      variables: {
+        username: this.state.userName,
+        metadata: JSON.stringify(this.state.metadata),
+        taskid: this.props.taskid
+      }
     });
 
     if (this.state.questionNumber == this.state.taskquestionCount) {
       // console.log(JSON.stringify(this.state.metadata));
       await mutation({
         variables: {
+          username: this.state.userName,
           metadata: JSON.stringify(this.state.metadata),
           taskid: this.props.taskid
         }
@@ -90,11 +104,11 @@ export default class Vscode extends React.Component {
       //const list = JSON.stringify(somearray)
 
       let mydisstr = await AsyncStorage.getItem("dis");
-      let mydisst = mydisstr ? mydisstr : [];
+      let mydisst = mydisstr ? mydisstr : "[]";
       let mydisprev = JSON.parse(mydisst);
       let mydis = [...mydisprev, name];
       await AsyncStorage.setItem("dis", JSON.stringify(mydis));
-      //console.log(mydis);
+      console.log(mydis);
       this.props.navigation.navigate("Home");
     } else {
       this.setState({

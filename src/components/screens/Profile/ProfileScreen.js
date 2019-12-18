@@ -61,7 +61,7 @@ export default class ProfileScreen extends React.Component {
           username={"KHDIMATY"}
           age={20}
           sex={"Homme"}
-          statut={"Students"}
+          statut={"Etudiants"}
           local={"Bengherir,Morocco"}
           level={4}
           score={200}

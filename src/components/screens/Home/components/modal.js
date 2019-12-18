@@ -81,7 +81,7 @@ export default function Mymodal(props) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setcolor(color == "white" ? "red" : "white")}
+              onPress={() => setcolor(color == "white" ? "#E2A829" : "white")}
             >
               <Icon
                 style={[styles.icon, { color: color }]}
@@ -130,7 +130,7 @@ export default function Mymodal(props) {
               fontWeight: "bold"
             }}
           >
-            Start
+            GO
           </Text>
         </Button>
       </View>

@@ -64,7 +64,7 @@ export default function Ascard(props) {
           <Title>{props.name}</Title>
           <Author>by Khdimaty</Author>
         </Cover>
-        <Text style={{ flex: 0.2 }}>general description of the game</Text>
+        <Text style={{ flex: 0.2 }}>general description of the reward</Text>
       </Container>
     </TouchableOpacity>
   );
