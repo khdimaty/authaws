@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,26 +7,39 @@ import {
   TouchableHighlight
 } from "react-native";
 import { LinearGradient } from "expo";
+import Auth from "@aws-amplify/auth";
 import { Icon } from "react-native-elements";
 import Ascard from "./appstorecard";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 const getRewards = gql`
-  {
+  query rewards($username: String!) {
     rewards {
       id
       url
       decription
       equivalentScore
     }
-    user(where: { username: "anasio" }) {
+    user(where: { username: $username }) {
       score
     }
   }
 `;
 
 export default function Rewards(props) {
+  const [username, setusername] = useState("");
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function loadUsername() {
+      await Auth.currentAuthenticatedUser().then(user => {
+        setusername(user.signInUserSession.accessToken.payload.username);
+      });
+    }
+    // Execute the created function directly
+    loadUsername();
+  }, []);
   const { loading, error, data, refetch } = useQuery(getRewards, {
+    variables: { username: username },
     fetchPolicy: "no-cache"
   });
   if (data) {

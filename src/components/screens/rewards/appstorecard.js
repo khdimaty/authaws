@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TouchableOpacity, Alert } from "react-native";
 
@@ -6,19 +6,20 @@ import { Dimensions } from "react-native";
 
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
+import Auth from "@aws-amplify/auth";
 const w = Dimensions.get("window").width;
-const getreward = async function(id, create, error, refetch) {
+const getreward = async function(id, username, create, error, refetch) {
   // console.log("get");
-  await create({ variables: { rewardid: id } });
+  await create({ variables: { rewardid: id, username: username } });
   await console.log(error);
   refetch();
 };
 
 const createMyreward = gql`
-  mutation createMyreward($rewardid: ID!) {
+  mutation createMyreward($rewardid: ID!, $username: String!) {
     createMyreward(
       data: {
-        user: { connect: { username: "anasio" } }
+        user: { connect: { username: $username } }
         reward: { connect: { id: $rewardid } }
       }
     ) {
@@ -29,6 +30,17 @@ const createMyreward = gql`
 
 export default function Ascard(props) {
   //let imag = survey;
+  const [username, setusername] = useState("");
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function loadUsername() {
+      await Auth.currentAuthenticatedUser().then(user => {
+        setusername(user.signInUserSession.accessToken.payload.username);
+      });
+    }
+    // Execute the created function directly
+    loadUsername();
+  }, []);
   let imag =
     props.name == "test"
       ? require("./assets/eminesreward.png")
@@ -48,7 +60,13 @@ export default function Ascard(props) {
             {
               text: "OK",
               onPress: () => {
-                getreward(props.rewardid, create, data, props.refetch);
+                getreward(
+                  props.rewardid,
+                  username,
+                  create,
+                  data,
+                  props.refetch
+                );
                 //console.log(data);
                 //cosnole.log(props.rewardid, create);
               }
