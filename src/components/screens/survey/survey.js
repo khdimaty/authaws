@@ -71,11 +71,16 @@ export default class Survey extends React.Component {
         }
       });
       // diable task
-      let mydisstr = await AsyncStorage.getItem("dis");
+      let mydisstr = await AsyncStorage.getItem(
+        "dis".concat(this.state.userName)
+      );
       let mydisst = mydisstr ? mydisstr : "[]";
       let mydisprev = JSON.parse(mydisst);
       let mydis = [...mydisprev, name];
-      await AsyncStorage.setItem("dis", JSON.stringify(mydis));
+      await AsyncStorage.setItem(
+        "dis".concat(this.state.userName),
+        JSON.stringify(mydis)
+      );
       console.log(mydis);
       // createmy task will update if my task with userid and name exist
       this.props.navigation.navigate("Home", { taskdis: name });

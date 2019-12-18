@@ -9,7 +9,7 @@ import {
 } from "react-native";
 //import Amplify, { Storage } from "@aws-amplify/core";
 import { Text, Spinner } from "native-base";
-
+import Auth from "@aws-amplify/auth";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 
@@ -47,7 +47,13 @@ export default function HomeScreen(props) {
       const onlyUnique = (value, index, self) => {
         return self.indexOf(value) === index;
       };
-      const value = await AsyncStorage.getItem("dis");
+      let token = "";
+      await Auth.currentAuthenticatedUser().then(user => {
+        token = "dis".concat(
+          user.signInUserSession.accessToken.payload.username
+        );
+      });
+      const value = await AsyncStorage.getItem(token);
       let final = JSON.parse(value).filter(onlyUnique);
       console.log(final);
       setdis(final);

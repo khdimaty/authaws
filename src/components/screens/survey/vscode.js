@@ -103,11 +103,16 @@ export default class Vscode extends React.Component {
       //await AsyncStorage.setItem("dis", name);
       //const list = JSON.stringify(somearray)
 
-      let mydisstr = await AsyncStorage.getItem("dis");
+      let mydisstr = await AsyncStorage.getItem(
+        "dis".concat(this.state.userName)
+      );
       let mydisst = mydisstr ? mydisstr : "[]";
       let mydisprev = JSON.parse(mydisst);
       let mydis = [...mydisprev, name];
-      await AsyncStorage.setItem("dis", JSON.stringify(mydis));
+      await AsyncStorage.setItem(
+        "dis".concat(this.state.userName),
+        JSON.stringify(mydis)
+      );
       console.log(mydis);
       this.props.navigation.navigate("Home");
     } else {
