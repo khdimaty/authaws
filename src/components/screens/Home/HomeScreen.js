@@ -26,8 +26,8 @@ import { Icon } from "native-base";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 const Tasks = gql`
-  {
-    tasks(orderBy: createdAt_DESC) {
+  query tasks($filter: TaskOrderByInput) {
+    tasks(orderBy: $filter) {
       id
       name
       taskScore
@@ -38,8 +38,9 @@ const Tasks = gql`
 `;
 
 export default function HomeScreen(props) {
+  const maper = { Nouveau: "createdAt_DESC", Populaire: "taskScore_DESC" };
   let inputRef = React.createRef();
-  const [value, setvalue] = useState("Newest");
+  const [value, setvalue] = useState("Nouveau");
   const [dis, setdis] = useState([]);
   useEffect(() => {
     // Create an scoped async function in the hook
@@ -65,7 +66,11 @@ export default function HomeScreen(props) {
   //console.log(disabled);
   return (
     <View style={styles.container}>
-      <Query query={Tasks} fetchPolicy={"cache-and-network"}>
+      <Query
+        query={Tasks}
+        fetchPolicy={"cache-and-network"}
+        variables={{ filter: maper[value] }}
+      >
         {({ loading, error, data, refetch, networkStatus }) => {
           if (loading)
             return (
