@@ -68,9 +68,9 @@ export default class LoggedOut extends Component {
       <ScrollView style={styles.wrapper}>
         <View style={styles.welcomeWrapper}>
           <Image source={khdimatyLogo} style={styles.logo} />
-          <Text style={styles.welcomeText}>Bienvenue à Khdimaty!</Text>
+          <Text style={styles.welcomeText}>Bienvenue à Khdimaty !</Text>
           <RoundedButton
-            text="Sign in"
+            text="Se connecter"
             textColor={colors.white}
             background={"rgba(224, 224, 224, 0.3)"}
             icon={
@@ -85,7 +85,7 @@ export default class LoggedOut extends Component {
             }}
           />
           <RoundedButton
-            text="Create Account"
+            text="Créer un compte"
             textColor={colors.white}
             handleOnPress={() => this.props.navigation.navigate("SignUp")}
           />
@@ -94,21 +94,22 @@ export default class LoggedOut extends Component {
             style={styles.moreOptionsButton}
             onPress={() => this.props.navigation.navigate("ForgetPassword")}
           >
-            <Text style={styles.moreOptionsButtonText}>Plus d'options</Text>
+            <Text style={styles.moreOptionsButtonText}>
+              Mot de passe oublié ?
+            </Text>
           </TouchableHighlight>
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsText}>
-              En appuyant sur Continuer, Créer un compte ou plus
+              En continuant, vous acceptez les
             </Text>
-            <Text style={styles.termsText}>{" options,"}</Text>
-            <Text style={styles.termsText}>{"I agree to Khdimaty's "}</Text>
+
             <TouchableHighlight style={styles.linkButton}>
-              <Text style={styles.termsText}>Conditions d'utilisation</Text>
+              <Text style={styles.termsText}> conditions d'utilisation </Text>
             </TouchableHighlight>
-            <Text style={styles.termsText}> et </Text>
+            <Text style={styles.termsText}> et la </Text>
             <TouchableHighlight style={styles.linkButton}>
               <Text style={styles.termsText}>
-                Politique de confidentialité.
+                Politique de confidentialité de Khdimaty.
               </Text>
             </TouchableHighlight>
           </View>

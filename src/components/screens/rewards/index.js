@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  TouchableHighlight
-} from "react-native";
-import { LinearGradient } from "expo";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import Auth from "@aws-amplify/auth";
 import { Icon } from "react-native-elements";
 import Ascard from "./appstorecard";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import { Platform } from "react-native";
+import { StatusBar } from "react-native";
 const getRewards = gql`
   query rewards($username: String!) {
     rewards {
@@ -92,7 +87,7 @@ export default function Rewards(props) {
               fontWeight: "bold"
             }}
           >
-            Recompenses{" "}
+            Récompenses{" "}
           </Text>
         </View>
         {loading ? (
@@ -108,6 +103,7 @@ export default function Rewards(props) {
                   <Ascard
                     name={reward.url}
                     rewardid={reward.id}
+                    scr={reward.equivalentScore}
                     refetch={() => refetch()}
                   />
 
@@ -124,7 +120,8 @@ export default function Rewards(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
   },
 
   user: {

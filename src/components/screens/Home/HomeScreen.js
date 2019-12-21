@@ -38,9 +38,9 @@ const Tasks = gql`
 `;
 
 export default function HomeScreen(props) {
-  const maper = { Nouveau: "createdAt_DESC", Populaire: "taskScore_DESC" };
+  const maper = { Nouveaux: "createdAt_DESC", Populaires: "taskScore_DESC" };
   let inputRef = React.createRef();
-  const [value, setvalue] = useState("Nouveau");
+  const [value, setvalue] = useState("Nouveaux");
   const [dis, setdis] = useState([]);
   useEffect(() => {
     // Create an scoped async function in the hook
@@ -76,7 +76,7 @@ export default function HomeScreen(props) {
             return (
               <View>
                 <View style={styles.Tabs}>
-                  {["Nouveau", "Populaire", "Favoris"].map(elem => {
+                  {["Nouveaux", "Populaires", "Favoris"].map(elem => {
                     let added =
                       value === elem
                         ? {
@@ -121,7 +121,7 @@ export default function HomeScreen(props) {
               }
             >
               <View style={styles.Tabs}>
-                {["Nouveau", "Populaire", "Favoris"].map(elem => {
+                {["Nouveaux", "Populaires", "Favoris"].map(elem => {
                   let added =
                     value === elem
                       ? {

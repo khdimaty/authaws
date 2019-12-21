@@ -9,6 +9,8 @@ import {
   StyleSheet,
   SafeAreaView
 } from "react-native";
+import { StatusBar } from "react-native";
+import { Platform } from "react-native";
 
 const survey = require("../assets/sur05.png");
 const other = require("../assets/vs03.png");
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     backgroundColor: "transparent",
-    marginTop: 90,
+    marginTop: Platform.OS === "ios" ? 90 : StatusBar.currentHeight,
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

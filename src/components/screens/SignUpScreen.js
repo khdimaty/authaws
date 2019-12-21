@@ -12,7 +12,8 @@ import {
   Alert,
   Modal,
   FlatList,
-  Animated
+  Animated,
+  ScrollView
 } from "react-native";
 import Auth from "@aws-amplify/auth";
 import data from "../countrydata/countryCode";
@@ -56,13 +57,13 @@ export default class SignUpScreen extends React.Component {
   };
   // Sign up user with AWS Amplify Auth
   async signUp() {
-    const { username, password, email, phoneNumber } = this.state;
+    const { username, password, email } = this.state;
     // rename variable to conform with Amplify Auth field phone attribute
-    const phone_number = phoneNumber;
+
     await Auth.signUp({
       username,
       password,
-      attributes: { email, phone_number }
+      attributes: { email }
     })
       .then(() => {
         console.log("sign up successful!");
@@ -193,242 +194,143 @@ export default class SignUpScreen extends React.Component {
     this.setState({ [key]: value });
   }
   render() {
-    let { fadeOut, fadeIn, isHidden, flag } = this.state;
-
     const countryData = data;
     console.log(this.state.token);
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar />
-        <KeyboardAvoidingView
+      <View style={{ backgroundColor: "#4278A4", paddingTop: 30 }}>
+        <TouchableWithoutFeedback
           style={styles.container}
-          behavior="padding"
-          enabled
+          onPress={Keyboard.dismiss}
         >
-          <TouchableWithoutFeedback
-            style={styles.container}
-            onPress={Keyboard.dismiss}
-          >
+          <ScrollView>
             <View style={styles.container}>
-              <Container style={styles.infoContainer}>
-                <View style={styles.container}>
-                  {/* username section  */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="person" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Username"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"email-address"}
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      onSubmitEditing={event => {
-                        this.refs.SecondInput._root.focus();
-                      }}
-                      onChangeText={value =>
-                        this.onChangeText("username", value)
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/*  password section  */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="lock" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Password"
-                      placeholderTextColor="#adb4bc"
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      // ref={c => this.SecondInput = c}
-                      ref="SecondInput"
-                      onSubmitEditing={event => {
-                        this.refs.ThirdInput._root.focus();
-                      }}
-                      onChangeText={value =>
-                        this.onChangeText("password", value)
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/* email section */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="mail" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Email"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"email-address"}
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref="ThirdInput"
-                      onSubmitEditing={event => {
-                        this.refs.FourthInput._root.focus();
-                      }}
-                      onChangeText={value => this.onChangeText("email", value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/* phone section  */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="call" style={styles.iconStyle} />
-                    {/* country flag */}
-                    <View>
-                      <Text>{flag}</Text>
-                    </View>
-                    {/* open modal */}
-                    <Icon
-                      active
-                      name="md-arrow-dropdown"
-                      style={[styles.iconStyle, { marginLeft: 0 }]}
-                      onPress={() => this.showModal()}
-                    />
-                    <Input
-                      style={styles.input}
-                      placeholder="+44766554433"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"phone-pad"}
-                      returnKeyType="done"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref="FourthInput"
-                      value={this.state.phoneNumber}
-                      onChangeText={val => {
-                        if (this.state.phoneNumber === "") {
-                          // render UK phone code by default when Modal is not open
-                          this.onChangeText("phoneNumber", defaultCode + val);
-                        } else {
-                          // render country code based on users choice with Modal
-                          this.onChangeText("phoneNumber", val);
-                        }
-                      }}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                    {/* Modal for country code and flag */}
-                    <Modal
-                      animationType="slide" // fade
-                      transparent={false}
-                      visible={this.state.modalVisible}
-                    >
-                      <View style={{ flex: 1 }}>
-                        <View
-                          style={{
-                            flex: 10,
-                            paddingTop: 80,
-                            backgroundColor: "#5059ae"
-                          }}
-                        >
-                          <FlatList
-                            data={countryData}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item }) => (
-                              <TouchableWithoutFeedback
-                                onPress={() => this.getCountry(item.name)}
-                              >
-                                <View
-                                  style={[
-                                    styles.countryStyle,
-                                    {
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                      justifyContent: "space-between"
-                                    }
-                                  ]}
-                                >
-                                  <Text style={{ fontSize: 45 }}>
-                                    {item.flag}
-                                  </Text>
-                                  <Text style={{ fontSize: 20, color: "#fff" }}>
-                                    {item.name} ({item.dial_code})
-                                  </Text>
-                                </View>
-                              </TouchableWithoutFeedback>
-                            )}
-                          />
-                        </View>
-                        <TouchableOpacity
-                          onPress={() => this.hideModal()}
-                          style={styles.closeButtonStyle}
-                        >
-                          <Text style={styles.textStyle}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </Modal>
-                  </Item>
-                  {/* End of phone input */}
-                  <TouchableOpacity
-                    onPress={() => this.signUp()}
-                    style={styles.buttonStyle}
-                  >
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                  </TouchableOpacity>
-                  {/* code confirmation section  */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="md-apps" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Confirmation code"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"numeric"}
-                      returnKeyType="done"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      onChangeText={value =>
-                        this.onChangeText("authCode", value)
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  <Mutation mutation={createUser}>
-                    {(createuser, { data }) => (
-                      <TouchableOpacity
-                        onPress={() => this.confirmSignUp(createuser)}
-                        style={styles.buttonStyle}
-                      >
-                        <Text style={styles.buttonText}>Confirm Sign Up</Text>
-                      </TouchableOpacity>
-                    )}
-                  </Mutation>
+              {/* username section  */}
+              <Item rounded style={styles.itemStyle}>
+                <Icon active name="person" style={styles.iconStyle} />
+                <Input
+                  style={styles.input}
+                  placeholder="Nom d'utilisateur"
+                  placeholderTextColor="#adb4bc"
+                  keyboardType={"email-address"}
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onSubmitEditing={event => {
+                    this.refs.SecondInput._root.focus();
+                  }}
+                  onChangeText={value => this.onChangeText("username", value)}
+                  onFocus={() => this.fadeOut()}
+                  onEndEditing={() => this.fadeIn()}
+                />
+              </Item>
+              {/*  password section  */}
+              <Item rounded style={styles.itemStyle}>
+                <Icon active name="lock" style={styles.iconStyle} />
+                <Input
+                  style={styles.input}
+                  placeholder="Mot de passe"
+                  placeholderTextColor="#adb4bc"
+                  returnKeyType="Suivant"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry={true}
+                  // ref={c => this.SecondInput = c}
+                  ref="SecondInput"
+                  onSubmitEditing={event => {
+                    this.refs.ThirdInput._root.focus();
+                  }}
+                  onChangeText={value => this.onChangeText("password", value)}
+                  onFocus={() => this.fadeOut()}
+                  onEndEditing={() => this.fadeIn()}
+                />
+              </Item>
+              {/* email section */}
+              <Item rounded style={styles.itemStyle}>
+                <Icon active name="mail" style={styles.iconStyle} />
+                <Input
+                  style={styles.input}
+                  placeholder="Adresse Email"
+                  placeholderTextColor="#adb4bc"
+                  keyboardType={"email-address"}
+                  returnKeyType="suivant"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry={false}
+                  ref="ThirdInput"
+                  onSubmitEditing={event => {
+                    this.refs.FourthInput._root.focus();
+                  }}
+                  onChangeText={value => this.onChangeText("email", value)}
+                  onFocus={() => this.fadeOut()}
+                  onEndEditing={() => this.fadeIn()}
+                />
+              </Item>
+              {/* phone section  */}
 
+              {/* End of phone input */}
+              <TouchableOpacity
+                onPress={() => this.signUp()}
+                style={styles.submitButton}
+              >
+                <Text style={styles.submitButtonText}>S'inscrire</Text>
+              </TouchableOpacity>
+              {/* code confirmation section  */}
+              <Item rounded style={styles.itemStyle}>
+                <Icon active name="md-apps" style={styles.iconStyle} />
+                <Input
+                  style={styles.input}
+                  placeholder="Code de confirmation"
+                  placeholderTextColor="#adb4bc"
+                  keyboardType={"numeric"}
+                  returnKeyType="done"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry={false}
+                  onChangeText={value => this.onChangeText("authCode", value)}
+                  onFocus={() => this.fadeOut()}
+                  onEndEditing={() => this.fadeIn()}
+                />
+              </Item>
+              <Mutation mutation={createUser}>
+                {(createuser, { data }) => (
                   <TouchableOpacity
-                    onPress={() => this.resendSignUp()}
-                    style={styles.buttonStyle}
+                    onPress={() => this.confirmSignUp(createuser)}
+                    style={styles.submitButton}
                   >
-                    <Text style={styles.buttonText}>Resend code</Text>
+                    <Text style={styles.submitButtonText}>
+                      Confirmer l'inscription
+                    </Text>
                   </TouchableOpacity>
-                </View>
-              </Container>
+                )}
+              </Mutation>
+
+              <TouchableOpacity
+                onPress={() => this.resendSignUp()}
+                style={styles.submitButton}
+              >
+                <Text style={styles.submitButtonText}>Renvoyer le code</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     flex: 1,
-    backgroundColor: "#4995cd",
+    backgroundColor: "#4278A4",
     justifyContent: "center",
+    alignItems: "center",
     flexDirection: "column"
   },
   input: {
     flex: 1,
     fontSize: 17,
     fontWeight: "bold",
-    color: "#5a52a5"
+    color: "#fff"
   },
   infoContainer: {
     position: "absolute",
@@ -440,13 +342,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
-    backgroundColor: "#4995cd"
+    backgroundColor: "#4278A4"
   },
   itemStyle: {
-    marginBottom: 20
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    alignSelf: "center"
   },
   iconStyle: {
-    color: "#5a52a5",
+    color: "#E2A829",
     fontSize: 28,
     marginLeft: 15
   },
@@ -460,6 +365,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
+    backgroundColor: "transparent",
     color: "#fff"
   },
   logoContainer: {
@@ -490,5 +396,25 @@ const styles = StyleSheet.create({
     padding: 12,
     alignItems: "center",
     backgroundColor: "#b44666"
+  },
+  submitButton: {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 10,
+    alignContent: "center",
+    alignItems: "center",
+    margin: 30,
+
+    height: 52,
+    width: "80%",
+    borderColor: "white"
+  },
+  submitButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "white",
+
+    paddingTop: 5
   }
 });

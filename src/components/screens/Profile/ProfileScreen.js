@@ -15,7 +15,23 @@ import {
 } from "react-native";
 import Auth from "@aws-amplify/auth";
 import Profile from "./profile";
+import { gql } from "apollo-boost";
 import { Container, Header, Body, Title } from "native-base";
+import { Query } from "@apollo/react-components";
+const GetUser = gql`
+  query userinfo($username: String!) {
+    user(where: { username: $username }) {
+      score
+      mytasks {
+        id
+      }
+
+      myrewards {
+        id
+      }
+    }
+  }
+`;
 export default class ProfileScreen extends React.Component {
   state = { username: "" };
   componentDidMount = async () => {
@@ -57,17 +73,48 @@ export default class ProfileScreen extends React.Component {
             Khdimaty
           </Text>
         </Header>
-        <Profile
-          username={"KHDIMATY"}
-          age={20}
-          sex={"Homme"}
-          statut={"Etudiants"}
-          local={"Bengherir,Morocco"}
-          level={4}
-          score={200}
-          mytaskCount={23}
-          interests={[]}
-        />
+        <Query
+          query={GetUser}
+          variables={{
+            username: this.state.username
+          }}
+        >
+          {({ loading, error, data }) => {
+            if (loading)
+              return (
+                <Profile
+                  username={this.state.username}
+                  age={""}
+                  sex={""}
+                  statut={""}
+                  local={""}
+                  level={""}
+                  score={""}
+                  mytaskCount={""}
+                  interests={[]}
+                />
+              );
+            if (error) return <Text>{error}</Text>;
+
+            return (
+              <>
+                <Profile
+                  username={this.state.username}
+                  age={this.state.username == "khdimaty" ? 20 : ""}
+                  sex={"coders xd"}
+                  statut={
+                    this.state.username == "khdimaty" ? "Dreamers" : "Testeur"
+                  }
+                  local={"Bengherir,Maroc"}
+                  level={parseInt(data.user.mytasks.length / 10)}
+                  score={data.user.score}
+                  mytaskCount={data.user.mytasks.length}
+                  interests={[]}
+                />
+              </>
+            );
+          }}
+        </Query>
       </Container>
     );
   }

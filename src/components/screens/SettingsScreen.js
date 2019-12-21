@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     fontWeight: "bold",
-    color: "#5a52a5"
+    color: "#1D7B9D"
   },
   infoContainer: {
     position: "absolute",
@@ -199,20 +199,20 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   iconStyle: {
-    color: "#5a52a5",
+    color: "#1D7B9D",
     fontSize: 28,
     marginLeft: 15
   },
   buttonStyle: {
     alignItems: "center",
-    backgroundColor: "#667292",
+    backgroundColor: "#1D7B9D",
     padding: 14,
     marginBottom: 20,
     borderRadius: 24
   },
   buttonOutStyle: {
     alignItems: "center",
-    backgroundColor: "#667292",
+    backgroundColor: "#1D7B9D",
     padding: 14,
     marginBottom: 100,
     borderRadius: 24

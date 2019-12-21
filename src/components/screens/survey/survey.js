@@ -95,8 +95,7 @@ export default class Survey extends React.Component {
     let { questionText, options } = this.props.data[this.state.questionNumber];
 
     return (
-      <View style={styles.container}>
-        <Image source={require("./bg.png")} style={styles.Images}></Image>
+      <>
         <View style={styles.info}>
           <Text style={styles.header}>
             Question {this.state.questionNumber + 1}/{this.props.data.length}
@@ -153,15 +152,15 @@ export default class Survey extends React.Component {
             </Mutation>
           )}
         </View>
-      </View>
+      </>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
     //marginBottom: 10,
-    backgroundColor: "#FFF"
+    // backgroundColor: "#FFF"
 
     // alignItems: "center"
   },
@@ -196,6 +195,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   text: {
+    marginRight: 5,
     color: "#fff",
     fontSize: 20,
     flex: 1,
@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
     margin: 10
   },
   buttons: {
+    marginTop: 10,
     flex: 0.1,
     alignItems: "center",
     alignSelf: "center",

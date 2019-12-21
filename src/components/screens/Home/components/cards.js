@@ -14,17 +14,36 @@ import {
   MaterialCommunityIcons,
   FontAwesome
 } from "@expo/vector-icons";
-import { Dimensions } from "react-native";
 
+import { Dimensions } from "react-native";
+import { Asset } from "expo-asset";
+import { AppLoading } from "expo";
+function cacheImages(images) {
+  return images.map(image => {
+    if (typeof image === "string") {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
 const w = Dimensions.get("window").width;
-const survey = require("../assets/sur05.png");
-const other = require("../assets/vs03.png");
+
 export default class Cards extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      isReady: false
     };
+  }
+  async _loadAssetsAsync() {
+    const imageAssets = cacheImages([
+      require("../assets/sur05.png"),
+      require("../assets/vs03.png")
+    ]);
+
+    await Promise.all([...imageAssets]);
   }
   share() {
     //console.log("test");
@@ -48,6 +67,15 @@ export default class Cards extends Component {
     this.setState({ data: this.props.tasks.tasks });
   }
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this._loadAssetsAsync}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
     return (
       <View style={styles.container}>
         <FlatList
@@ -84,12 +112,16 @@ export default class Cards extends Component {
                   <View style={styles.shadowStyle}>
                     <Image
                       style={styles.cardImage}
-                      source={item.type === "survey" ? survey : other}
+                      source={
+                        item.type === "survey"
+                          ? require("../assets/sur05.png")
+                          : require("../assets/vs03.png")
+                      }
                     />
                     <View style={styles.cardContent}>
                       <View>
                         <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.time}>By khdimaty</Text>
+                        <Text style={styles.time}>Par khdimaty</Text>
                       </View>
 
                       <View style={styles.cardFooter}>

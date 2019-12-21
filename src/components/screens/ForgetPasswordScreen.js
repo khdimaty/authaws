@@ -104,7 +104,7 @@ export default class ForgetPasswordScreen extends React.Component {
                     <Icon active name="person" style={styles.iconStyle} />
                     <Input
                       style={styles.input}
-                      placeholder="Username"
+                      placeholder="Nom d'utilisateur"
                       placeholderTextColor="#adb4bc"
                       keyboardType={"email-address"}
                       returnKeyType="go"
@@ -119,16 +119,16 @@ export default class ForgetPasswordScreen extends React.Component {
                   </Item>
                   <TouchableOpacity
                     onPress={() => this.forgotPassword()}
-                    style={styles.buttonStyle}
+                    style={styles.submitButton}
                   >
-                    <Text style={styles.buttonText}>Send Code</Text>
+                    <Text style={styles.submitButtonText}>Envoyer le code</Text>
                   </TouchableOpacity>
                   {/* the New password section  */}
                   <Item rounded style={styles.itemStyle}>
                     <Icon active name="lock" style={styles.iconStyle} />
                     <Input
                       style={styles.input}
-                      placeholder="New password"
+                      placeholder="Nouveau mot de passe"
                       placeholderTextColor="#adb4bc"
                       returnKeyType="next"
                       autoCapitalize="none"
@@ -149,7 +149,7 @@ export default class ForgetPasswordScreen extends React.Component {
                     <Icon active name="md-apps" style={styles.iconStyle} />
                     <Input
                       style={styles.input}
-                      placeholder="Confirmation code"
+                      placeholder="Code de confirmation"
                       placeholderTextColor="#adb4bc"
                       keyboardType={"numeric"}
                       returnKeyType="done"
@@ -166,11 +166,9 @@ export default class ForgetPasswordScreen extends React.Component {
                   </Item>
                   <TouchableOpacity
                     onPress={() => this.forgotPasswordSubmit()}
-                    style={styles.buttonStyle}
+                    style={styles.submitButton}
                   >
-                    <Text style={styles.buttonText}>
-                      Confirm the new password
-                    </Text>
+                    <Text style={styles.submitButtonText}>Confirmer</Text>
                   </TouchableOpacity>
                 </View>
               </Container>
@@ -184,15 +182,17 @@ export default class ForgetPasswordScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    paddingTop: 0,
+    backgroundColor: "#4278A4",
     justifyContent: "center",
-    flexDirection: "column"
+
+    paddingBottom: 20
   },
   input: {
     flex: 1,
     fontSize: 17,
     fontWeight: "bold",
-    color: "#5a52a5"
+    color: "#4278A4"
   },
   infoContainer: {
     position: "absolute",
@@ -204,13 +204,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
-    backgroundColor: "#fff"
+    backgroundColor: "#4278A4"
   },
   itemStyle: {
     marginBottom: 20
   },
   iconStyle: {
-    color: "#5a52a5",
+    color: "#E2A829",
     fontSize: 28,
     marginLeft: 15
   },
@@ -235,5 +235,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1
+  },
+  submitButton: {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 10,
+    alignContent: "center",
+    alignItems: "center",
+    margin: 30,
+
+    height: 52,
+    width: "80%",
+    borderColor: "white"
+  },
+  submitButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "white",
+
+    paddingTop: 5
   }
 });

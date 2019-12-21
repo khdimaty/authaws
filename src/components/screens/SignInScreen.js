@@ -33,7 +33,7 @@ export default class SignInScreen extends React.Component {
     await Auth.signIn(username, password)
       .then(user => {
         // this.setState({ user });
-
+        console.log("done");
         this.props.navigation.navigate("AuthLoading");
       })
       .catch(err => {
@@ -102,7 +102,7 @@ export default class SignInScreen extends React.Component {
                   <TextInput
                     style={styles.input}
                     underlineColorAndroid="transparent"
-                    placeholder="Username"
+                    placeholder="Nom d'utilisateur"
                     placeholderTextColor="#ffff"
                     autoCapitalize="none"
                     returnKeyType="next"
@@ -114,7 +114,7 @@ export default class SignInScreen extends React.Component {
                   <TextInput
                     style={styles.input}
                     underlineColorAndroid="transparent"
-                    placeholder="Password"
+                    placeholder="Mot de passe"
                     placeholderTextColor="#ffff"
                     autoCapitalize="none"
                     returnKeyType="go"
@@ -128,7 +128,7 @@ export default class SignInScreen extends React.Component {
                     style={styles.submitButton}
                     onPress={() => this.signIn()}
                   >
-                    <Text style={styles.submitButtonText}> LOGIN </Text>
+                    <Text style={styles.submitButtonText}> Se connecter </Text>
                   </TouchableOpacity>
                 </View>
               </View>

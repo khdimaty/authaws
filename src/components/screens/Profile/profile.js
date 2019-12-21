@@ -13,44 +13,78 @@ import { Container, Header, Content, Icon, Picker, Form } from "native-base";
 const Havatar = require("./assets/khdimprof.png");
 const Favatar = require("./assets/Favatar.png");
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-
+import * as ImagePicker from "expo-image-picker";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
 export default class Profile extends React.Component {
   constructor() {
     super();
     this.state = {
-      selected: "key0"
+      selected: "key0",
+      image: null
     };
   }
   onValueChange(value) {
     console.log("walo");
   }
+  componentDidMount() {
+    this.getPermissionAsync();
+    console.log("hi");
+  }
+  getPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+    }
+  };
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
+
   render() {
     let {
       score,
-
+      local,
       mytaskCount,
       username,
       statut,
       sex,
       level
     } = this.props;
+    console.log(this.state.image);
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ alignSelf: "center", alignItems: "center" }}>
             <View style={styles.profileImage}>
               <Image
-                source={sex == "Homme" ? Havatar : Favatar}
+                source={this.state.image ? { uri: this.state.image } : Havatar}
                 style={styles.Image}
                 resizeMode="center"
               ></Image>
-              <View style={styles.edit}>
-                <Ionicons
-                  name="ios-camera"
-                  size={30}
-                  color="#DFD8C8"
-                ></Ionicons>
-              </View>
+              <TouchableOpacity onPress={this._pickImage}>
+                <View style={styles.edit}>
+                  <Ionicons
+                    name="ios-camera"
+                    size={30}
+                    color="#DFD8C8"
+                  ></Ionicons>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -131,10 +165,10 @@ export default class Profile extends React.Component {
               <View style={styles.infospers}>
                 <Text style={[styles.text, { fontSize: 18 }]}>{sex} </Text>
                 <Text style={[styles.text, { fontSize: 18, marginTop: 10 }]}>
-                  20ans
+                  {20}
                 </Text>
                 <Text style={[styles.text, { fontSize: 18, marginTop: 10 }]}>
-                  Casablanca
+                  {local}
                 </Text>
               </View>
             </View>

@@ -53,12 +53,12 @@ export default function Ascard(props) {
       style={{ flex: 1 }}
       onPress={() =>
         Alert.alert(
-          "Reward name ",
-          "Do you realy want to get this reward ?",
+          props.name,
+          "Étes-vous sûr ?",
           [
-            { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
+            { text: "Non", onPress: () => console.log("Cancel Pressed!") },
             {
-              text: "OK",
+              text: "Oui",
               onPress: () => {
                 getreward(
                   props.rewardid,
@@ -80,9 +80,12 @@ export default function Ascard(props) {
         <Cover style={{ flex: 0.8 }}>
           <Image source={imag} />
           <Title>{props.name}</Title>
-          <Author>by Khdimaty</Author>
+          <Author>Par Khdimaty</Author>
         </Cover>
-        <Text style={{ flex: 0.2 }}>general description of the reward</Text>
+        <Text style={{ flex: 0.2, paddingRight: 45, fontSize: 20 }}>
+          Score équivalent :{" "}
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>{props.scr}</Text>{" "}
+        </Text>
       </Container>
     </TouchableOpacity>
   );

@@ -40,8 +40,7 @@ const AuthStackNavigator = createStackNavigator({
   Welcome: {
     screen: Test,
     navigationOptions: () => ({
-      title: `Welcome to this App`,
-      headerBackTitle: "Back",
+      headerBackTitle: "Retour",
       headerStyle: {
         backgroundColor: "#4278A4"
       },
@@ -54,7 +53,7 @@ const AuthStackNavigator = createStackNavigator({
   SignUp: {
     screen: SignUpScreen,
     navigationOptions: () => ({
-      title: `Create a new account`,
+      title: `Créer un compte`,
       headerStyle: {
         backgroundColor: "#4278A4"
       },
@@ -67,7 +66,7 @@ const AuthStackNavigator = createStackNavigator({
   SignIn: {
     screen: SignInScreen,
     navigationOptions: () => ({
-      title: `Log in to your account`,
+      title: `Se connecter `,
       headerStyle: {
         backgroundColor: "#4278A4"
       },
@@ -80,7 +79,7 @@ const AuthStackNavigator = createStackNavigator({
   ForgetPassword: {
     screen: ForgetPasswordScreen,
     navigationOptions: () => ({
-      title: `Create a new password`,
+      title: `Changer le mot de passe`,
       headerStyle: {
         backgroundColor: "#4278A4"
       },
