@@ -8,7 +8,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { fromLeft } from "react-navigation-transitions";
 //import Screens
 import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
-import WelcomeScreen from "./src/components/screens/WelcomeScreen";
+//import WelcomeScreen from "./src/components/screens/WelcomeScreen";
 import SignUpScreen from "./src/components/screens/SignUpScreen";
 import SignInScreen from "./src/components/screens/SignInScreen";
 import ForgetPasswordScreen from "./src/components/screens/ForgetPasswordScreen";
@@ -16,11 +16,10 @@ import HomeScreen from "./src/components/screens/Home/HomeScreen";
 import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
-import Test from "./src/components/screens/test/Test";
-import Vs from "./src/components/screens/toti/vs";
-import Log from "./src/components/screens/test/tit";
+import Welc from "./src/components/screens/welcome/WelcomeS";
+
 import Rewards from "./src/components/screens/rewards/index";
-import Profile from "./src/components/screens/profileTest/profile";
+
 import Mymodal from "./src/components/screens/Home/components/modal";
 
 //graphql client
@@ -31,14 +30,14 @@ const client = new ApolloClient({
   uri: prismauri
 });
 // Amplify imports and config
-import Amplify, { Storage } from "@aws-amplify/core";
+import Amplify from "@aws-amplify/core";
 import config from "./aws-exports";
 
 Amplify.configure(config);
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: {
-    screen: Test,
+    screen: Welc,
     navigationOptions: () => ({
       headerBackTitle: "Retour",
       headerStyle: {
@@ -177,7 +176,7 @@ const AppNavigator = createSwitchNavigator({
   AuthLoading: AuthLoadingScreen,
   Auth: AuthStackNavigator,
   App: AppTabNavigator,
-  test: Test,
+  //test: Test,
   survey: SurveyScreen
   // rewards: Rewards
 });

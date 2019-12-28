@@ -4,20 +4,15 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Text,
-  SafeAreaView,
-  StatusBar,
-  KeyboardAvoidingView,
   Keyboard,
   View,
   Alert,
-  Modal,
-  FlatList,
   Animated,
   ScrollView
 } from "react-native";
 import Auth from "@aws-amplify/auth";
-import data from "../countrydata/countryCode";
-import { Container, Item, Input, Icon } from "native-base";
+
+import { Item, Input, Icon } from "native-base";
 
 import gql from "graphql-tag";
 import { Mutation } from "@apollo/react-components";
@@ -34,11 +29,7 @@ const createUser = gql`
   }
 `;
 // Default render of country flag
-const defaultFlag = data.filter(obj => obj.name === "United Kingdom")[0].flag;
 
-// Default render of country code
-const defaultCode = data.filter(obj => obj.name === "United Kingdom")[0]
-  .dial_code;
 export default class SignUpScreen extends React.Component {
   state = {
     username: "",
@@ -50,7 +41,7 @@ export default class SignUpScreen extends React.Component {
     fadeOut: new Animated.Value(1), // Initial value for opacity: 1
     isHidden: false,
     token: "",
-    flag: defaultFlag,
+
     modalVisible: false,
     // users will receive a confirmation code
     authCode: ""
@@ -116,34 +107,8 @@ export default class SignUpScreen extends React.Component {
           Alert.alert("Error requesting new confirmation code: ", err.message);
         }
       });
-  } // Functions for Phone Input
-  showModal() {
-    this.setState({ modalVisible: true });
-    console.log("Shown");
   }
-  hideModal() {
-    this.setState({ modalVisible: false });
-    // Refocus on phone Input after modal is closed
-    this.refs.FourthInput._root.focus();
-    console.log("Hidden");
-  }
-  async getCountry(country) {
-    // Get the country flag and phone code from users selection
-    const countryData = await data;
-    try {
-      const countryCode = await countryData.filter(
-        obj => obj.name === country
-      )[0].dial_code;
-      const countryFlag = await countryData.filter(
-        obj => obj.name === country
-      )[0].flag;
-      // Set data from user choice of country
-      this.setState({ phoneNumber: countryCode, flag: countryFlag });
-      await this.hideModal();
-    } catch (err) {
-      console.log(err);
-    }
-  }
+
   registerForPushNotification = async () => {
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
@@ -194,7 +159,6 @@ export default class SignUpScreen extends React.Component {
     this.setState({ [key]: value });
   }
   render() {
-    const countryData = data;
     console.log(this.state.token);
     return (
       <View style={{ backgroundColor: "#4278A4", paddingTop: 30 }}>
@@ -230,7 +194,7 @@ export default class SignUpScreen extends React.Component {
                   style={styles.input}
                   placeholder="Mot de passe"
                   placeholderTextColor="#adb4bc"
-                  returnKeyType="Suivant"
+                  returnKeyType="next"
                   autoCapitalize="none"
                   autoCorrect={false}
                   secureTextEntry={true}
@@ -252,7 +216,7 @@ export default class SignUpScreen extends React.Component {
                   placeholder="Adresse Email"
                   placeholderTextColor="#adb4bc"
                   keyboardType={"email-address"}
-                  returnKeyType="suivant"
+                  returnKeyType="next"
                   autoCapitalize="none"
                   autoCorrect={false}
                   secureTextEntry={false}

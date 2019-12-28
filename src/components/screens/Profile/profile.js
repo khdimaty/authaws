@@ -10,10 +10,10 @@ import {
   Modal
 } from "react-native";
 import { Container, Header, Content, Icon, Picker, Form } from "native-base";
-const Havatar = require("./assets/khdimprof.png");
+const Havatar = require("./assets/Havatar.png");
 const Favatar = require("./assets/Favatar.png");
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-//import * as ImagePicker from "expo-image-picker";
+
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 export default class Profile extends React.Component {
@@ -46,7 +46,7 @@ export default class Profile extends React.Component {
           <View style={{ alignSelf: "center", alignItems: "center" }}>
             <View style={styles.profileImage}>
               <Image
-                source={Havatar}
+                source={sex === "Femme" ? Favatar : Havatar}
                 style={styles.Image}
                 resizeMode="center"
               ></Image>

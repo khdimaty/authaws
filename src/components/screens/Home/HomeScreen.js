@@ -13,10 +13,8 @@ import Auth from "@aws-amplify/auth";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 
-import Ascard from "./components/appstorecard";
-import Xdcard from "./components/xdcard";
 import Cards from "./components/cards";
-import loading from "./components/loading";
+
 import { ScrollView } from "react-native-gesture-handler";
 import { BlurView } from "expo-blur";
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";

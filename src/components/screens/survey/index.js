@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { Button, Spinner } from "native-base";
+import { Spinner } from "native-base";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
 import Survey from "./survey";

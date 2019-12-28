@@ -11,7 +11,7 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import RoundedButton from "./components//RoundedButton";
+import RoundedButton from "./components/RoundedButton";
 
 const khdimatyLogo = require("./assets/kkk.png");
 const colors = {
