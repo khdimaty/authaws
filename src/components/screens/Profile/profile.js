@@ -13,7 +13,7 @@ import { Container, Header, Content, Icon, Picker, Form } from "native-base";
 const Havatar = require("./assets/khdimprof.png");
 const Favatar = require("./assets/Favatar.png");
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+//import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 export default class Profile extends React.Component {
@@ -27,33 +27,6 @@ export default class Profile extends React.Component {
   onValueChange(value) {
     console.log("walo");
   }
-  componentDidMount() {
-    this.getPermissionAsync();
-    console.log("hi");
-  }
-  getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
-      }
-    }
-  };
-
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-  };
 
   render() {
     let {
@@ -63,20 +36,21 @@ export default class Profile extends React.Component {
       username,
       statut,
       sex,
-      level
+      level,
+      myrewards
     } = this.props;
-    console.log(this.state.image);
+    console.log(myrewards);
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ alignSelf: "center", alignItems: "center" }}>
             <View style={styles.profileImage}>
               <Image
-                source={this.state.image ? { uri: this.state.image } : Havatar}
+                source={Havatar}
                 style={styles.Image}
                 resizeMode="center"
               ></Image>
-              <TouchableOpacity onPress={this._pickImage}>
+              <TouchableOpacity>
                 <View style={styles.edit}>
                   <Ionicons
                     name="ios-camera"
@@ -231,11 +205,9 @@ export default class Profile extends React.Component {
                   selectedValue={this.state.selected}
                   onValueChange={this.onValueChange.bind(this)}
                 >
-                  <Picker.Item label="Jumia           98373837" value="key7" />
-                  <Picker.Item label="Jumia           98373837" value="key1" />
-                  <Picker.Item label="Jumia           98373837" value="key2" />
-                  <Picker.Item label="Jumia           98373837" value="key3" />
-                  <Picker.Item label="Jumia           98373837" value="key4" />
+                  {this.props.myrewards.map(url => (
+                    <Picker.Item key={url} label={url} value={url} />
+                  ))}
                 </Picker>
               </View>
             </Form>

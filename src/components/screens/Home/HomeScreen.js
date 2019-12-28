@@ -16,15 +16,14 @@ import { gql } from "apollo-boost";
 import Ascard from "./components/appstorecard";
 import Xdcard from "./components/xdcard";
 import Cards from "./components/cards";
-
+import loading from "./components/loading";
 import { ScrollView } from "react-native-gesture-handler";
 import { BlurView } from "expo-blur";
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 import Constants from "expo-constants";
 import { Icon } from "native-base";
-//import { Icon } from "react-native-elements";
-import { Notifications } from "expo";
-import * as Permissions from "expo-permissions";
+import Loading from "./components/loading";
+
 const Tasks = gql`
   query tasks($filter: TaskOrderByInput) {
     tasks(orderBy: $filter) {
@@ -74,13 +73,17 @@ export default function HomeScreen(props) {
         {({ loading, error, data, refetch, networkStatus }) => {
           if (loading)
             return (
-              <View>
+              <ScrollView
+                style={{ backgroundColor: "#fff" }}
+                scrollsToTop={true}
+                ref={inputRef}
+              >
                 <View style={styles.Tabs}>
                   {["Nouveaux", "Populaires", "Favoris"].map(elem => {
                     let added =
                       value === elem
                         ? {
-                            color: "#fff"
+                            color: "#E2A829"
                           }
                         : {};
                     return (
@@ -96,8 +99,9 @@ export default function HomeScreen(props) {
                     );
                   })}
                 </View>
-                <Spinner style={{ marginTop: 300 }} color="blue" />
-              </View>
+
+                <Loading />
+              </ScrollView>
             );
           if (error) return <Text>`Error! ${error.message}`</Text>;
 

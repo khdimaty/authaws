@@ -27,7 +27,9 @@ const GetUser = gql`
       }
 
       myrewards {
-        id
+        reward {
+          url
+        }
       }
     }
   }
@@ -50,7 +52,7 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    // console.log(this.state.username);
+    console.log(this.state.username);
     return (
       <Container style={{ marginTop: 15 }}>
         <Header
@@ -74,6 +76,7 @@ export default class ProfileScreen extends React.Component {
           </Text>
         </Header>
         <Query
+          fetchPolicy={"cache-and-network"}
           query={GetUser}
           variables={{
             username: this.state.username
@@ -92,6 +95,7 @@ export default class ProfileScreen extends React.Component {
                   score={""}
                   mytaskCount={""}
                   interests={[]}
+                  myrewards={[]}
                 />
               );
             if (error) return <Text>{error}</Text>;
@@ -110,6 +114,9 @@ export default class ProfileScreen extends React.Component {
                   score={data.user.score}
                   mytaskCount={data.user.mytasks.length}
                   interests={[]}
+                  myrewards={data.user.myrewards.map(
+                    reward => reward.reward.url
+                  )}
                 />
               </>
             );
