@@ -1,6 +1,6 @@
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Button, Platform, Image, View, Text } from "react-native";
+
 //navigation imports
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
@@ -17,7 +17,7 @@ import SettingsScreen from "./src/components/screens/SettingsScreen";
 import ProfileScreen from "./src/components/screens/Profile/ProfileScreen";
 import SurveyScreen from "./src/components/screens/survey/index";
 import Welc from "./src/components/screens/welcome/WelcomeS";
-
+import InfoPerso from "./src/components/screens/SelfInfo";
 import Rewards from "./src/components/screens/rewards/index";
 
 import Mymodal from "./src/components/screens/Home/components/modal";
@@ -87,28 +87,21 @@ const AuthStackNavigator = createStackNavigator({
         fontWeight: "bold"
       }
     })
+  },
+  InfoPerso: {
+    screen: InfoPerso,
+    navigationOptions: () => ({
+      headerStyle: {
+        backgroundColor: "#4278A4"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
   }
 });
 
-const HomeStack = createStackNavigator(
-  {
-    Main: {
-      screen: HomeScreen
-    },
-    Rewards: { screen: Rewards },
-    MyModal: {
-      screen: Mymodal,
-      navigationOptions: {
-        gestureResponseDistance: { vertical: 1000 } // default is 135 },
-      }
-    }
-  },
-  {
-    mode: "modal",
-    headerMode: "none",
-    transparentCard: true
-  }
-);
 const reward = createStackNavigator(
   {
     Main: {
