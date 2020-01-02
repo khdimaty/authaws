@@ -22,7 +22,7 @@ import { StatusBar } from "react-native";
 
 const getRewards = gql`
   query rewards($username: String!) {
-    rewards {
+    rewards(where: { published: true }) {
       id
       url
       decription

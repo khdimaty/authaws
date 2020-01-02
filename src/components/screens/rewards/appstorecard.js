@@ -45,7 +45,7 @@ export default function Ascard(props) {
     loadUsername();
   }, []);
   let imag =
-    props.Owner == "jumia"
+    props.name == "jumia"
       ? require("./assets/jumiareward.png")
       : require("./assets/eminesreward.png");
   //const { id} = props.rewardid;

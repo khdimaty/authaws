@@ -30,6 +30,7 @@ const Tasks = gql`
       taskScore
       type
       description
+      Owner
     }
   }
 `;

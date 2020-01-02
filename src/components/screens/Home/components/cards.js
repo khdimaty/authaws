@@ -49,14 +49,14 @@ export default class Cards extends Component {
     //console.log("test");
     Share.share(
       {
-        message: "use our app balizzzzzz",
+        message: "use our app ",
         url:
-          "https://firebasestorage.googleapis.com/v0/b/application-upload.appspot.com/o/WhatsApp%20Image%202019-12-11%20at%2010.35.47.jpeg?alt=media&token=75b77f6a-c0e3-491e-9042-1fc9d09728f5",
+          "https://play.google.com/store/apps/details?id=com.khdimatyApp.khdimatyApp",
         title: "Khdimaty"
       },
       {
         // Android only:
-        dialogTitle: "Share our app balizzzzzzz",
+        dialogTitle: "Share our app ",
         // iOS only:
         excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"]
       }
@@ -121,7 +121,7 @@ export default class Cards extends Component {
                     <View style={styles.cardContent}>
                       <View>
                         <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.time}>Par khdimaty</Text>
+                        <Text style={styles.time}>Par {item.Owner}</Text>
                       </View>
 
                       <View style={styles.cardFooter}>
