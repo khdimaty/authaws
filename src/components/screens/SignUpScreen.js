@@ -319,10 +319,14 @@ const styles = StyleSheet.create({
     padding: 10,
     alignContent: "center",
     alignItems: "center",
-    margin: 30,
+    //margin: 30,
     height: 52,
     width: "80%",
-    borderColor: "white"
+    borderColor: "white",
+    marginBottom: 30,
+    marginLeft: 20,
+    marginRight: 20,
+    alignSelf: "center"
   },
   submitButtonText: {
     fontWeight: "bold",

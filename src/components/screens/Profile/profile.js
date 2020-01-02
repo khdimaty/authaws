@@ -7,8 +7,9 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Modal
+  Alert
 } from "react-native";
+import Auth from "@aws-amplify/auth";
 import { Container, Header, Content, Icon, Picker, Form } from "native-base";
 const Havatar = require("./assets/Havatar.png");
 const Favatar = require("./assets/Favatar.png");
@@ -27,6 +28,32 @@ export default class Profile extends React.Component {
   onValueChange(value) {
     console.log("walo");
   }
+  // Sign out from the app
+  signOutAlert = async () => {
+    await Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out from the app?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Canceled"),
+          style: "cancel"
+        },
+        // Calling signOut
+        { text: "OK", onPress: () => this.signOut() }
+      ],
+      { cancelable: false }
+    );
+  };
+  // Confirm sign out
+  signOut = async () => {
+    await Auth.signOut()
+      .then(() => {
+        console.log("Sign out complete");
+        this.props.navigation.navigate("AuthLoading");
+      })
+      .catch(err => console.log("Error while signing out!", err));
+  };
 
   render() {
     let {
@@ -37,9 +64,10 @@ export default class Profile extends React.Component {
       statut,
       sex,
       level,
-      myrewards
+      myrewards,
+      age
     } = this.props;
-    console.log(myrewards);
+    console.log(this.props.navigation);
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -126,91 +154,34 @@ export default class Profile extends React.Component {
                 >
                   Localisation
                 </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    { fontSize: 18, marginTop: 10, fontWeight: "bold" }
-                  ]}
-                >
-                  Mes Intérêts
-                </Text>
               </View>
 
               <View style={styles.infospers}>
                 <Text style={[styles.text, { fontSize: 18 }]}>{sex} </Text>
                 <Text style={[styles.text, { fontSize: 18, marginTop: 10 }]}>
-                  {20}
+                  {age}
                 </Text>
                 <Text style={[styles.text, { fontSize: 18, marginTop: 10 }]}>
-                  {local}
+                  {local.toUpperCase()}
                 </Text>
               </View>
             </View>
-
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
+            <TouchableOpacity
+              style={[
+                styles.buttonOutStyle,
+                {
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }
+              ]}
+              onPress={this.signOutAlert}
             >
-              <View style={styles.interets}>
-                <Image
-                  source={require("./assets/sport2.png")}
-                  style={styles.Image}
-                  resizeMode="cover"
-                ></Image>
-              </View>
-              <View style={styles.interets}>
-                <Image
-                  source={require("./assets/shopping3.png")}
-                  style={styles.Image}
-                  resizeMode="cover"
-                ></Image>
-              </View>
-              <View style={styles.interets}>
-                <Image
-                  source={require("./assets/voyage2.png")}
-                  style={styles.Image}
-                  resizeMode="cover"
-                ></Image>
-              </View>
-              <View style={styles.interets}>
-                <Image
-                  source={require("./assets/lecture2.png")}
-                  style={styles.Image}
-                  resizeMode="cover"
-                ></Image>
-              </View>
-            </ScrollView>
-          </View>
-          <View>
-            <Form>
-              <View style={{ flexDirection: "row" }}>
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      fontSize: 18,
-                      marginTop: 15,
-                      marginLeft: 40,
-                      fontWeight: "bold"
-                    }
-                  ]}
-                >
-                  Mes recompenses
-                </Text>
-                <Picker
-                  mode="dropdown"
-                  // iosHeader="My rewads"
-                  iosIcon={<Icon name="arrow-down" />}
-                  style={{ width: undefined }}
-                  selectedValue={this.state.selected}
-                  onValueChange={this.onValueChange.bind(this)}
-                >
-                  {this.props.myrewards.map(url => (
-                    <Picker.Item key={url} label={url} value={url} />
-                  ))}
-                </Picker>
-              </View>
-            </Form>
+              <Icon
+                name="md-power"
+                style={{ color: "#000", paddingRight: 10 }}
+              />
+              <Text style={styles.buttonText}>Sign out</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -354,5 +325,21 @@ const styles = StyleSheet.create({
     paddingLeft: 50,
     borderRadius: 10,
     paddingRight: 40
+  },
+  buttonOutStyle: {
+    marginTop: 40,
+    alignItems: "center",
+    backgroundColor: "#DFD8C8",
+    padding: 14,
+    marginBottom: 100,
+    borderRadius: 24,
+    borderColor: "#000",
+    width: "60%",
+    alignSelf: "center"
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000"
   }
 });

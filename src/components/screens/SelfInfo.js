@@ -152,7 +152,7 @@ export default class PersoInfo extends React.Component {
                     ref="SecondInput"
                     onChangeText={value => this.onChangeText("password", value)}
                   />
-                  <View style={[styles.input, { paddingTop: "5%" }]}>
+                  <View style={[styles.input]}>
                     <RNPickerSelect
                       placeholder={{ label: "Sexe" }}
                       underlineColorAndroid="transparent"

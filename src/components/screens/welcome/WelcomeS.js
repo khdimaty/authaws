@@ -5,12 +5,13 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Linking
 } from "react-native";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import { WebView } from "react-native-webview";
 import RoundedButton from "./components/RoundedButton";
 
 const khdimatyLogo = require("./assets/kkk.png");
@@ -90,24 +91,30 @@ export default class LoggedOut extends Component {
             handleOnPress={() => this.props.navigation.navigate("SignUp")}
           />
 
-          <TouchableHighlight
-            style={styles.moreOptionsButton}
-            onPress={() => this.props.navigation.navigate("ForgetPassword")}
-          >
-            <Text style={styles.moreOptionsButtonText}>
-              Mot de passe oublié ?
-            </Text>
-          </TouchableHighlight>
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsText}>
               En continuant, vous acceptez les
             </Text>
 
-            <TouchableHighlight style={styles.linkButton}>
+            <TouchableHighlight
+              style={styles.linkButton}
+              onPress={() => {
+                Linking.openURL(
+                  "https://drive.google.com/file/d/1x218LBK9p9H5BNlpjgkXCyocPRK2DRry/view?usp=sharing"
+                );
+              }}
+            >
               <Text style={styles.termsText}> conditions d'utilisation </Text>
             </TouchableHighlight>
             <Text style={styles.termsText}> et la </Text>
-            <TouchableHighlight style={styles.linkButton}>
+            <TouchableHighlight
+              style={styles.linkButton}
+              onPress={() => {
+                Linking.openURL(
+                  "https://drive.google.com/file/d/1x218LBK9p9H5BNlpjgkXCyocPRK2DRry/view?usp=sharing"
+                );
+              }}
+            >
               <Text style={styles.termsText}>
                 Politique de confidentialité de Khdimaty.
               </Text>

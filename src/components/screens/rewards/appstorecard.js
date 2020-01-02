@@ -10,17 +10,20 @@ import Auth from "@aws-amplify/auth";
 const w = Dimensions.get("window").width;
 const getreward = async function(id, username, create, error, refetch) {
   // console.log("get");
-  await create({ variables: { rewardid: id, username: username } });
-  await console.log(error);
+  await create({ variables: { rewardid: id, username: username, taken: id } })
+    .then(data => console.log(data))
+    .catch(e => Alert.alert("Erreur", "cette récompense est déjà pris ! "));
+  //await console.log(error);
   refetch();
 };
 
 const createMyreward = gql`
-  mutation createMyreward($rewardid: ID!, $username: String!) {
+  mutation createMyreward($rewardid: ID!, $username: String!, $taken: String) {
     createMyreward(
       data: {
         user: { connect: { username: $username } }
         reward: { connect: { id: $rewardid } }
+        taken: $taken
       }
     ) {
       id
@@ -42,9 +45,9 @@ export default function Ascard(props) {
     loadUsername();
   }, []);
   let imag =
-    props.name == "test"
-      ? require("./assets/eminesreward.png")
-      : require("./assets/jumiareward.png");
+    props.Owner == "jumia"
+      ? require("./assets/jumiareward.png")
+      : require("./assets/eminesreward.png");
   //const { id} = props.rewardid;
   const [create, { data }] = useMutation(createMyreward);
 

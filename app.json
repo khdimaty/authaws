@@ -4,6 +4,13 @@
     "slug": "khdimatyv2",
     "privacy": "public",
     "sdkVersion": "35.0.0",
+    "ios": {
+      "bundleIdentifier": "com.khdimaty.khdimatyApp",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.khdimatyApp.khdimatyApp"
+    },
     "platforms": [
       "ios",
       "android",
@@ -11,11 +18,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/khicon.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/launch3.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#487EA9"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,9 +30,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
+  
     "description": "\n"
   }
 }

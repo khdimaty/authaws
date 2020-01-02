@@ -25,6 +25,9 @@ const GetUser = gql`
       mytasks {
         id
       }
+      age
+      location
+      sex
 
       myrewards {
         reward {
@@ -96,6 +99,7 @@ export default class ProfileScreen extends React.Component {
                   mytaskCount={""}
                   interests={[]}
                   myrewards={[]}
+                  navigation={this.props.navigation}
                 />
               );
             if (error) return <Text>{error}</Text>;
@@ -104,12 +108,10 @@ export default class ProfileScreen extends React.Component {
               <>
                 <Profile
                   username={this.state.username}
-                  age={this.state.username == "khdimaty" ? 20 : ""}
-                  sex={"coders xd"}
-                  statut={
-                    this.state.username == "khdimaty" ? "Dreamers" : "Testeur"
-                  }
-                  local={"Bengherir,Maroc"}
+                  age={data.user.age ? data.user.age : ""}
+                  sex={data.user.sex ? data.user.sex : ""}
+                  statut={"Utilisateur"}
+                  local={data.user.location ? data.user.location : "Maroc"}
                   level={parseInt(data.user.mytasks.length / 10)}
                   score={data.user.score}
                   mytaskCount={data.user.mytasks.length}
@@ -117,6 +119,7 @@ export default class ProfileScreen extends React.Component {
                   myrewards={data.user.myrewards.map(
                     reward => reward.reward.url
                   )}
+                  navigation={this.props.navigation}
                 />
               </>
             );

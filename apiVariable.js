@@ -1,4 +1,3 @@
-const prismauri =
-  "https://yehojaihri.execute-api.eu-west-3.amazonaws.com/staging/";
+const prismauri = "https://backtest.anasaitaomar1999.now.sh";
 
 export default prismauri;

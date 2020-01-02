@@ -24,7 +24,7 @@ import Loading from "./components/loading";
 
 const Tasks = gql`
   query tasks($filter: TaskOrderByInput) {
-    tasks(orderBy: $filter) {
+    tasks(orderBy: $filter, where: { published: true }) {
       id
       name
       taskScore

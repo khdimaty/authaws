@@ -82,12 +82,13 @@ export default class Vscode extends React.Component {
   async click(mutation) {
     //let quest = this.state.questionNumber;
     let name = this.props.taskname;
-    await mutation({
-      variables: {
-        username: this.state.userName,
-        metadata: JSON.stringify(this.state.metadata),
-        taskid: this.props.taskid
-      }
+    await this.setState((prevState, props) => {
+      return {
+        metadata: {
+          ...prevState.metadata,
+          ...{ [prevState.questionNumber]: prevState.resp }
+        }
+      };
     });
 
     if (this.state.questionNumber == this.state.taskquestionCount) {

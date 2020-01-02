@@ -19,7 +19,7 @@ import SurveyScreen from "./src/components/screens/survey/index";
 import Welc from "./src/components/screens/welcome/WelcomeS";
 import InfoPerso from "./src/components/screens/SelfInfo";
 import Rewards from "./src/components/screens/rewards/index";
-
+import Myrewards from "./src/components/screens/myreward";
 import Mymodal from "./src/components/screens/Home/components/modal";
 
 //graphql client
@@ -99,6 +99,18 @@ const AuthStackNavigator = createStackNavigator({
         fontWeight: "bold"
       }
     })
+  },
+  Myrewards: {
+    screen: Myrewards,
+    navigationOptions: () => ({
+      headerStyle: {
+        backgroundColor: "#4278A4"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
   }
 });
 
@@ -133,10 +145,8 @@ const AppTabNavigator = createBottomTabNavigator(
     },
     Profile: {
       screen: ProfileScreen
-    },
-    Settings: {
-      screen: SettingsScreen
     }
+
     //Vs: { screen: Vs }
   },
   {

@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  Clipboard,
+  Alert
+} from "react-native";
+
+import Modal from "react-native-modal";
+const w = Dimensions.get("window").width;
 import Auth from "@aws-amplify/auth";
 import { Icon } from "react-native-elements";
 import Ascard from "./appstorecard";
@@ -7,6 +19,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { Platform } from "react-native";
 import { StatusBar } from "react-native";
+
 const getRewards = gql`
   query rewards($username: String!) {
     rewards {
@@ -14,15 +27,27 @@ const getRewards = gql`
       url
       decription
       equivalentScore
+      Owner
     }
     user(where: { username: $username }) {
       score
+      myrewards {
+        reward {
+          url
+        }
+      }
     }
   }
 `;
 
 export default function Rewards(props) {
   const [username, setusername] = useState("");
+  const [vis, setvis] = useState(false);
+
+  const copy = url => {
+    Clipboard.setString(url);
+    Alert.alert("Copié", "Votre code est copié dans la presse papier !");
+  };
   useEffect(() => {
     // Create an scoped async function in the hook
     async function loadUsername() {
@@ -38,24 +63,29 @@ export default function Rewards(props) {
     fetchPolicy: "no-cache"
   });
   if (data) {
-    //console.log(data.user.score);
   }
+  //console.log(w);
   return (
     <View style={styles.container}>
       <View style={styles.user}>
         <View
           style={{
-            margin: 20,
+            flexDirection: "row",
+            flex: 0.3,
 
-            flexDirection: "row"
+            paddingTop: 25
           }}
         >
-          <Icon
-            style={{ flex: 0.2 }}
-            name="close"
-            onPress={() => props.navigation.goBack()}
-            size={40}
-          />
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Icon name="close" size={40} style={{ marginLeft: 10 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.submitButton]}
+            onPress={() => setvis(true)}
+          >
+            <Text style={styles.submitButtonText}> Mes Recompenses</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.info}>
@@ -101,7 +131,7 @@ export default function Rewards(props) {
                   <View style={styles.separator} />
 
                   <Ascard
-                    name={reward.url}
+                    name={reward.Owner}
                     rewardid={reward.id}
                     scr={reward.equivalentScore}
                     refetch={() => refetch()}
@@ -114,6 +144,43 @@ export default function Rewards(props) {
           </ScrollView>
         )}
       </View>
+      {data ? (
+        <Modal isVisible={vis}>
+          <View
+            style={{
+              backgroundColor: "#fff",
+              alignContent: "center",
+              alignItems: "center"
+            }}
+          >
+            {data.user.myrewards.map(reward => {
+              // console.log(reward);
+              return (
+                <View key={reward.reward.url}>
+                  <TouchableOpacity onPress={() => copy(reward.reward.url)}>
+                    <Text style={{ margin: 10 }}>{reward.reward.url}</Text>
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      height: 10,
+                      backgroundColor: "black",
+                      width: "100%"
+                    }}
+                  />
+                </View>
+              );
+            })}
+            <TouchableOpacity
+              style={[styles.submit]}
+              onPress={() => setvis(false)}
+            >
+              <Text style={styles.submitText}> Fermer</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      ) : (
+        <></>
+      )}
     </View>
   );
 }
@@ -126,6 +193,7 @@ const styles = StyleSheet.create({
 
   user: {
     flex: 0.3,
+    // elevation: 7,
     backgroundColor: "rgba(29,123,157,1)",
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
@@ -197,5 +265,53 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingHorizontal: 5,
     fontFamily: "bold"
+  },
+  submitButton: {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 10,
+    alignContent: "center",
+    alignItems: "center",
+    //  margin: 30,
+    height: 40,
+    //width: "80%",
+    borderColor: "white",
+    marginLeft: w > 330 ? 150 : 120,
+    marginRight: 40
+  },
+  submit: {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 10,
+    alignContent: "center",
+    alignItems: "center",
+    margin: 20,
+    height: 40,
+    width: "50%",
+    borderColor: "#000"
+  },
+  submitButtonText: {
+    fontWeight: "bold",
+    fontSize: 15,
+    color: "white"
+  },
+  submitText: {
+    fontWeight: "bold",
+    fontSize: 15,
+    color: "black"
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0
   }
 });
