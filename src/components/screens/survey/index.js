@@ -21,6 +21,7 @@ const GetTask = gql`
     task(where: { name: $name }) {
       id
       questions {
+        isMultiple
         questionText
         options {
           id

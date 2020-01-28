@@ -137,18 +137,13 @@ export default class Cards extends Component {
                                   color={blue}
                                 />
                                 <Text style={[styles.text, { color: blue }]}>
-                                  105
+                                  {item.votes.length}
                                 </Text>
                               </View>
                               <View style={styles.like}>
-                                <MaterialCommunityIcons
-                                  name="comment-processing-outline"
-                                  size={22}
-                                  color={blue}
-                                />
-                                <Text style={[styles.text, { color: blue }]}>
-                                  220
-                                </Text>
+                                <Text
+                                  style={[styles.text, { color: blue }]}
+                                ></Text>
                               </View>
 
                               <TouchableWithoutFeedback

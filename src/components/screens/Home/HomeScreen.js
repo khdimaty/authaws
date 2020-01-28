@@ -8,7 +8,7 @@ import {
   AsyncStorage
 } from "react-native";
 //import Amplify, { Storage } from "@aws-amplify/core";
-import { Text, Spinner } from "native-base";
+import { Text } from "native-base";
 import Auth from "@aws-amplify/auth";
 import { Query } from "@apollo/react-components";
 import { gql } from "apollo-boost";
@@ -17,7 +17,7 @@ import Cards from "./components/cards";
 
 import { ScrollView } from "react-native-gesture-handler";
 import { BlurView } from "expo-blur";
-import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
 import Constants from "expo-constants";
 import { Icon } from "native-base";
 import Loading from "./components/loading";
@@ -31,6 +31,12 @@ const Tasks = gql`
       type
       description
       Owner
+      votes {
+        id
+        user {
+          username
+        }
+      }
     }
   }
 `;
@@ -62,6 +68,7 @@ export default function HomeScreen(props) {
   }, []);
   const [refreshing, setrefreshing] = useState(false);
   //console.log(disabled);
+
   return (
     <View style={styles.container}>
       <Query
@@ -69,7 +76,7 @@ export default function HomeScreen(props) {
         fetchPolicy={"cache-and-network"}
         variables={{ filter: maper[value] }}
       >
-        {({ loading, error, data, refetch, networkStatus }) => {
+        {({ loading, error, data, refetch }) => {
           if (loading)
             return (
               <ScrollView
@@ -103,7 +110,7 @@ export default function HomeScreen(props) {
               </ScrollView>
             );
           if (error) return <Text>`Error! ${error.message}`</Text>;
-
+          // console.log(data.votes);
           return (
             <ScrollView
               style={{ backgroundColor: "#fff" }}

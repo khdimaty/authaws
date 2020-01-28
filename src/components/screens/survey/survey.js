@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  ScrollView
 } from "react-native";
 import { Button } from "native-base";
 import Auth from "@aws-amplify/auth";
@@ -30,6 +31,9 @@ export default class Survey extends React.Component {
     questionNumber: 0,
     taskquestionCount: this.props.data.length - 1,
     value: null,
+    valueList: [],
+    resp: "",
+    resplist: [],
     metadata: {},
     press: false,
     optionText: "",
@@ -49,14 +53,19 @@ export default class Survey extends React.Component {
       .catch(err => console.log(err));
   };
 
-  async click(mutation) {
+  async click(mutation, isMultiple) {
     //let quest = this.state.questionNumber;
     let name = this.props.taskname;
+
     await this.setState((prevState, props) => {
       return {
         metadata: {
           ...prevState.metadata,
-          ...{ [prevState.questionNumber]: prevState.resp }
+          ...{
+            [prevState.questionNumber]: isMultiple
+              ? prevState.resplist
+              : prevState.resp
+          }
         }
       };
     });
@@ -92,8 +101,10 @@ export default class Survey extends React.Component {
     }
   }
   render() {
-    let { questionText, options } = this.props.data[this.state.questionNumber];
-
+    let { questionText, options, isMultiple } = this.props.data[
+      this.state.questionNumber
+    ];
+    console.log(isMultiple);
     return (
       <>
         <View style={styles.info}>
@@ -106,30 +117,80 @@ export default class Survey extends React.Component {
         <View style={styles.question}>
           <Text style={styles.text}>{questionText}</Text>
         </View>
+
         <View style={styles.options}>
-          {options.map(({ id, optionText }) => {
-            let added =
-              this.state.value === id
-                ? {
-                    borderColor: "#fff"
-                    //borderWidth: 3
-                    //shadowOpacity: 1
-                  }
-                : {};
-            return (
-              <TouchableOpacity
-                key={id}
-                onPress={() => {
-                  this.setState({ value: id, press: true, resp: optionText });
-                  // console.log(this.state.optionText);
-                }}
-              >
-                <View style={[styles.Rsp1, added]}>
-                  <Text style={[styles.text_]}>{optionText}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+          {isMultiple ? (
+            <ScrollView>
+              {options.map(({ id, optionText }) => {
+                let added = this.state.valueList.includes(id)
+                  ? {
+                      borderColor: "#fff"
+                      //borderWidth: 3
+                      //shadowOpacity: 1
+                    }
+                  : {};
+                return (
+                  <TouchableOpacity
+                    key={id}
+                    onPress={() => {
+                      this.state.valueList.includes(id)
+                        ? this.setState({
+                            // valueList: [...this.state.valueList, id],
+                            press: true,
+                            resplist: [...this.state.resplist, optionText],
+                            valueList: this.state.valueList.filter(
+                              value => value !== id
+                            ),
+                            resplist: this.state.resplist.filter(
+                              value => value !== optionText
+                            )
+                          })
+                        : this.setState({
+                            valueList: [...this.state.valueList, id],
+                            press: true,
+                            resplist: [...this.state.resplist, optionText]
+                          });
+                      // console.log(this.state.optionText);
+                    }}
+                  >
+                    <View style={[styles.Rsp1, added]}>
+                      <Text style={[styles.text_]}>{optionText}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          ) : (
+            <ScrollView>
+              {options.map(({ id, optionText }) => {
+                let added =
+                  this.state.value === id
+                    ? {
+                        borderColor: "#fff"
+                        //borderWidth: 3
+                        //shadowOpacity: 1
+                      }
+                    : {};
+                return (
+                  <TouchableOpacity
+                    key={id}
+                    onPress={() => {
+                      this.setState({
+                        value: id,
+                        press: true,
+                        resp: optionText
+                      });
+                      // console.log(this.state.optionText);
+                    }}
+                  >
+                    <View style={[styles.Rsp1, added]}>
+                      <Text style={[styles.text_]}>{optionText}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          )}
         </View>
 
         <View style={styles.buttons}>
@@ -137,7 +198,7 @@ export default class Survey extends React.Component {
             <Mutation mutation={createMytask}>
               {(createMytask, { data }) => (
                 <Button
-                  onPress={() => this.click(createMytask)}
+                  onPress={() => this.click(createMytask, isMultiple)}
                   style={{ backgroundColor: "#E2A829" }}
                 >
                   <Text

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -11,26 +11,86 @@ import {
 } from "react-native";
 import { StatusBar } from "react-native";
 import { Platform } from "react-native";
-
+import gql from "graphql-tag";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 const survey = require("../assets/sur05.png");
 const other = require("../assets/vs03.png");
+import get from "lodash/get";
 const w = Dimensions.get("window").width;
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Accordion, Badge, Button } from "native-base";
+import Auth from "@aws-amplify/auth";
+const createVote = gql`
+  mutation createVote($username: String!, $taskId: ID!) {
+    createVote(
+      data: {
+        user: { connect: { username: $username } }
+        link: { connect: { id: $taskId } }
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+const deleteVote = gql`
+  mutation deleteVote($voteId: ID!) {
+    deleteVote(where: { id: $voteId }) {
+      id
+    }
+  }
+`;
+
 export default function Mymodal(props) {
-  let { name, description, type, taskScore } = props.navigation.getParam(
-    "taskinfo",
-    "null"
-  );
+  const [create, { data }] = useMutation(createVote);
+  const [deleteVot, { datadeleted }] = useMutation(deleteVote);
+  const [username, setusername] = useState("");
+  const [voteId, setVoteId] = useState("");
+  // console.log(get(data, "createVote.id", ""));
+
+  let {
+    id,
+    name,
+    description,
+    type,
+    taskScore,
+    votes
+  } = props.navigation.getParam("taskinfo", "null");
+
+  useEffect(() => {
+    setVoteId(get(data, "createVote.id", []));
+  }, [data]);
 
   [color, setcolor] = useState("white");
+  useEffect(() => {
+    async function loadUsername() {
+      await Auth.currentAuthenticatedUser().then(user => {
+        setusername(user.signInUserSession.accessToken.payload.username);
+        //
+      });
+    }
+    // Execute the created function directly
+    loadUsername();
+  }, []);
+  useEffect(() => {
+    setcolor(
+      votes.map(vote => vote.user.username).includes(username)
+        ? "#E2A829"
+        : "white"
+    );
+    votes.map(vote => {
+      if (vote.user.username == username) {
+        setVoteId(vote.id);
+      }
+    });
+  }, [username]);
   const dataArray = [
     {
       title: name,
       content: description
     }
   ];
-
+  console.log(props.navigation.getParam("taskinfo", "null"));
   return (
     <View style={styles.innerContainer}>
       <ImageBackground
@@ -83,7 +143,13 @@ export default function Mymodal(props) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setcolor(color == "white" ? "#E2A829" : "white")}
+              onPress={() => {
+                //create({ variables: { username: "anasio", taskId: id } });
+                setcolor(color == "white" ? "#E2A829" : "white");
+                color == "white"
+                  ? create({ variables: { username: "anasio", taskId: id } })
+                  : deleteVot({ variables: { voteId: voteId } });
+              }}
             >
               <Icon
                 style={[styles.icon, { color: color }]}

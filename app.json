@@ -9,14 +9,16 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.khdimatyApp.khdimatyApp"
+      "package": "com.khdimatyApp.khdimatyApp",
+      "versionCode":3
+
     },
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/khicon.png",
     "splash": {
