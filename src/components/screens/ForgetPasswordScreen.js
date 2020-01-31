@@ -10,7 +10,8 @@ import {
   Keyboard,
   View,
   Alert,
-  Animated
+  Animated,
+  TextInput
 } from "react-native";
 import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon } from "native-base";
@@ -89,89 +90,73 @@ export default class ForgetPasswordScreen extends React.Component {
           style={styles.container}
           behavior="padding"
           enabled
-          keyboardVerticalOffset={23}
         >
           <TouchableWithoutFeedback
             style={styles.container}
             onPress={Keyboard.dismiss}
           >
             <View style={styles.container}>
-              {/* Infos */}
-              <Container style={styles.infoContainer}>
-                <View style={styles.container}>
-                  {/* Username */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="person" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Nom d'utilisateur"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"email-address"}
-                      returnKeyType="go"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      onChangeText={value =>
-                        this.onChangeText("username", value)
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  <TouchableOpacity
-                    onPress={() => this.forgotPassword()}
-                    style={styles.submitButton}
-                  >
-                    <Text style={styles.submitButtonText}>Envoyer le code</Text>
-                  </TouchableOpacity>
-                  {/* the New password section  */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="lock" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Nouveau mot de passe"
-                      placeholderTextColor="#adb4bc"
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      onSubmitEditing={event => {
-                        this.refs.SecondInput._root.focus();
-                      }}
-                      onChangeText={value =>
-                        this.onChangeText("newPassword", value)
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/* Code confirmation section  */}
-                  <Item rounded style={styles.itemStyle}>
-                    <Icon active name="md-apps" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder="Code de confirmation"
-                      placeholderTextColor="#adb4bc"
-                      keyboardType={"numeric"}
-                      returnKeyType="done"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref="SecondInput"
-                      onChangeText={value =>
-                        this.onChangeText("authCode", value)
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  <TouchableOpacity
-                    onPress={() => this.forgotPasswordSubmit()}
-                    style={styles.submitButton}
-                  >
-                    <Text style={styles.submitButtonText}>Confirmer</Text>
-                  </TouchableOpacity>
-                </View>
-              </Container>
+              <View
+                style={{
+                  marginTop: 30,
+                  marginBottom: 30,
+                  alignItems: "center",
+                  alignContent: "center"
+                }}
+              >
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="Nom d'utilisateur"
+                  placeholderTextColor="#ffff"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={value => this.onChangeText("username", value)}
+                />
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => this.forgotPassword()}
+                >
+                  <Text style={styles.submitButtonText}>Envoyer le code</Text>
+                </TouchableOpacity>
+
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="Nouveau Mot de passe"
+                  placeholderTextColor="#ffff"
+                  autoCapitalize="none"
+                  returnKeyType="go"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref="SecondInput"
+                  onChangeText={value =>
+                    this.onChangeText("newPassword", value)
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="code de confirmation"
+                  placeholderTextColor="#ffff"
+                  autoCapitalize="none"
+                  returnKeyType="go"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref="SecondInput"
+                  onChangeText={value => this.onChangeText("authCode", value)}
+                />
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => this.forgotPasswordSubmit()}
+                >
+                  <Text style={styles.submitButtonText}>
+                    Confirmer le nouveau mot de passe
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -182,50 +167,11 @@ export default class ForgetPasswordScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 0,
     backgroundColor: "#4278A4",
     justifyContent: "center",
+    flexDirection: "column"
+  },
 
-    paddingBottom: 20
-  },
-  input: {
-    flex: 1,
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#4278A4"
-  },
-  infoContainer: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    height: 200,
-    bottom: 25,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30,
-    backgroundColor: "#4278A4"
-  },
-  itemStyle: {
-    marginBottom: 20
-  },
-  iconStyle: {
-    color: "#E2A829",
-    fontSize: 28,
-    marginLeft: 15
-  },
-  buttonStyle: {
-    alignItems: "center",
-    backgroundColor: "#667292",
-    padding: 14,
-    marginBottom: 20,
-    borderRadius: 24
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff"
-  },
   logoContainer: {
     position: "absolute",
     left: 0,
@@ -236,6 +182,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1
   },
+  Logo: {
+    height: 111,
+    alignSelf: "center"
+  },
+
+  images: {
+    width: 300,
+    height: 130
+  },
+  input: {
+    margin: 15,
+    fontSize: 16,
+    height: 52,
+    width: "80%",
+    paddingLeft: 20,
+    color: "#fff",
+
+    backgroundColor: "rgba(255,255,255,0.4)",
+    borderRadius: 10
+  },
   submitButton: {
     backgroundColor: "transparent",
     borderRadius: 10,
@@ -244,7 +210,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     margin: 30,
-
     height: 52,
     width: "80%",
     borderColor: "white"

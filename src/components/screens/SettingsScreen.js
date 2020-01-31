@@ -142,7 +142,7 @@ export default class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1D7B9D",
+    backgroundColor: "#4278A4",
     justifyContent: "center",
     flexDirection: "column"
   },

@@ -6,7 +6,8 @@ import {
   TouchableHighlight,
   ScrollView,
   StyleSheet,
-  Linking
+  Linking,
+  TextInput
 } from "react-native";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
@@ -90,6 +91,14 @@ export default class LoggedOut extends Component {
             textColor={colors.white}
             handleOnPress={() => this.props.navigation.navigate("SignUp")}
           />
+          <TouchableHighlight
+            style={styles.linkButton}
+            onPress={() => {
+              this.props.navigation.navigate("ForgetPassword");
+            }}
+          >
+            <Text style={styles.termsText}> mot de passe oublié?</Text>
+          </TouchableHighlight>
 
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsText}>
