@@ -11,7 +11,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   View,
-  Alert
+  Alert,
+  TextInput
 } from "react-native";
 import Auth from "@aws-amplify/auth";
 import { Container, Item, Input, Icon, Button } from "native-base";
@@ -79,26 +80,60 @@ export default class SettingsScreen extends React.Component {
           behavior="padding"
           enabled
         >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              paddingBottom: 100
-            }}
-          />
-          <TouchableOpacity
-            style={[
-              styles.buttonOutStyle,
-              {
-                flexDirection: "row",
-                justifyContent: "center"
-              }
-            ]}
-            onPress={this.signOutAlert}
+          <TouchableWithoutFeedback
+            style={styles.container}
+            onPress={Keyboard.dismiss}
           >
-            <Icon name="md-power" style={{ color: "#fff", paddingRight: 10 }} />
-            <Text style={styles.buttonText}>Sign out</Text>
-          </TouchableOpacity>
+            <View style={styles.container}>
+              <View
+                style={{
+                  marginTop: 30,
+                  marginBottom: 30,
+                  alignItems: "center",
+                  alignContent: "center"
+                }}
+              >
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="Ancien Mot de passe"
+                  placeholderTextColor="#ffff"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={value => this.onChangeText("password1", value)}
+                />
+
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="Nouveau Mot de passe"
+                  placeholderTextColor="#ffff"
+                  autoCapitalize="none"
+                  returnKeyType="go"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref="SecondInput"
+                  onChangeText={value => this.onChangeText("password2", value)}
+                />
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={this.changePassword}
+                >
+                  <Text style={styles.submitButtonText}>
+                    Changer le mot de passe{" "}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={this.signOutAlert}
+                >
+                  <Text style={styles.submitButtonText}>Se deconnecter </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -107,56 +142,11 @@ export default class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    flexDirection: "column",
-    marginVertical: 15
-  },
-  input: {
-    flex: 1,
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#1D7B9D"
-  },
-  infoContainer: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    height: 200,
-    bottom: 25,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30,
-    backgroundColor: "#fff"
-  },
-  itemStyle: {
-    marginBottom: 20
-  },
-  iconStyle: {
-    color: "#1D7B9D",
-    fontSize: 28,
-    marginLeft: 15
-  },
-  buttonStyle: {
-    alignItems: "center",
     backgroundColor: "#1D7B9D",
-    padding: 14,
-    marginBottom: 20,
-    borderRadius: 24
+    justifyContent: "center",
+    flexDirection: "column"
   },
-  buttonOutStyle: {
-    alignItems: "center",
-    backgroundColor: "#1D7B9D",
-    padding: 14,
-    marginBottom: 100,
-    borderRadius: 24
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff"
-  },
+
   logoContainer: {
     position: "absolute",
     left: 0,
@@ -166,5 +156,44 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1
+  },
+  Logo: {
+    height: 111,
+    alignSelf: "center"
+  },
+
+  images: {
+    width: 300,
+    height: 130
+  },
+  input: {
+    margin: 15,
+    fontSize: 16,
+    height: 52,
+    width: "80%",
+    paddingLeft: 20,
+    color: "#fff",
+
+    backgroundColor: "rgba(255,255,255,0.4)",
+    borderRadius: 10
+  },
+  submitButton: {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 10,
+    alignContent: "center",
+    alignItems: "center",
+    margin: 30,
+    height: 52,
+    width: "80%",
+    borderColor: "white"
+  },
+  submitButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "white",
+
+    paddingTop: 5
   }
 });

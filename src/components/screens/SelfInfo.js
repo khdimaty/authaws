@@ -12,11 +12,19 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Image,
-  TextInput
+  TextInput,
+  ScrollView
 } from "react-native";
 import gql from "graphql-tag";
 import { Mutation } from "@apollo/react-components";
 import RNPickerSelect from "react-native-picker-select";
+import MultiSelect from "react-native-multiple-select";
+import Modal from "react-native-modal";
+const userList = {
+  "123": "Tom",
+  "124": "Michael",
+  "125": "Christin"
+};
 const update = gql`
   mutation updateUser(
     $username: String!
@@ -39,7 +47,8 @@ export default class PersoInfo extends React.Component {
     password: "",
     sexe: "",
     token: "",
-    isHidden: false
+    isHidden: false,
+    selectedItems: []
   };
 
   componentDidMount = async () => {
@@ -66,7 +75,7 @@ export default class PersoInfo extends React.Component {
     })
       .then(() => {
         console.log("go");
-        this.props.navigation.navigate("SignIn");
+        this.props.navigation.navigate("Pref");
       })
       .catch(function(e) {
         console.log(e.message);
@@ -77,6 +86,10 @@ export default class PersoInfo extends React.Component {
   onChangeText(key, value) {
     this.setState({ [key]: value });
   }
+  onSelectedItemsChange = selectedItems => {
+    this.setState({ selectedItems });
+    //Set Selected Items
+  };
 
   render() {
     return (
@@ -85,102 +98,112 @@ export default class PersoInfo extends React.Component {
         style={styles.container}
         blurRadius={5}
       >
-        <SafeAreaView style={styles.container}>
-          <StatusBar />
-          <KeyboardAvoidingView
-            style={styles.container}
-            behavior="padding"
-            enabled
-          >
-            <TouchableWithoutFeedback
+        <ScrollView>
+          <SafeAreaView style={styles.container}>
+            <StatusBar />
+            <KeyboardAvoidingView
               style={styles.container}
-              onPress={Keyboard.dismiss}
+              behavior="padding"
+              enabled
             >
-              <View style={styles.container}>
-                <View style={styles.Logo}>
+              <TouchableWithoutFeedback
+                style={styles.container}
+                onPress={Keyboard.dismiss}
+              >
+                <View style={styles.container}>
+                  <View style={styles.Logo}>
+                    <View
+                      style={{
+                        flex: 1
+                      }}
+                    />
+                    <View
+                      style={{
+                        marginBottom: 6,
+                        marginLeft: 2,
+                        marginRight: 3
+                      }}
+                    >
+                      <Image
+                        source={require("./assets/khditt.png")}
+                        style={styles.images}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  </View>
+
                   <View
                     style={{
-                      flex: 1
-                    }}
-                  />
-                  <View
-                    style={{
-                      marginBottom: 6,
-                      marginLeft: 2,
-                      marginRight: 3
+                      marginTop: 30,
+                      marginBottom: 30,
+                      alignItems: "center",
+                      alignContent: "center"
                     }}
                   >
-                    <Image
-                      source={require("./assets/khditt.png")}
-                      style={styles.images}
-                      resizeMode="contain"
-                    />
-                  </View>
-                </View>
-
-                <View
-                  style={{
-                    marginTop: 30,
-                    marginBottom: 30,
-                    alignItems: "center",
-                    alignContent: "center"
-                  }}
-                >
-                  <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder="Age"
-                    keyboardType={"numeric"}
-                    placeholderTextColor="#ffff"
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onChangeText={value => this.onChangeText("username", value)}
-                  />
-
-                  <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder="Ville"
-                    placeholderTextColor="#ffff"
-                    autoCapitalize="none"
-                    returnKeyType="go"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    ref="SecondInput"
-                    onChangeText={value => this.onChangeText("password", value)}
-                  />
-                  <View style={[styles.input]}>
-                    <RNPickerSelect
-                      placeholder={{ label: "Sexe" }}
+                    <TextInput
+                      style={styles.input}
                       underlineColorAndroid="transparent"
+                      placeholder="Age"
+                      keyboardType={"numeric"}
                       placeholderTextColor="#ffff"
                       autoCapitalize="none"
-                      onValueChange={value => this.onChangeText("sexe", value)}
-                      items={[
-                        { label: "Homme", value: "Homme" },
-                        { label: "Femme", value: "Femme" }
-                      ]}
-                    ></RNPickerSelect>
-                  </View>
+                      returnKeyType="next"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      onChangeText={value =>
+                        this.onChangeText("username", value)
+                      }
+                    />
 
-                  <Mutation mutation={update}>
-                    {(updateUser, { data }) => (
-                      <TouchableOpacity
-                        style={styles.submitButton}
-                        onPress={() => this.signIn(updateUser)}
-                      >
-                        <Text style={styles.submitButtonText}>Bienvenue </Text>
-                      </TouchableOpacity>
-                    )}
-                  </Mutation>
+                    <TextInput
+                      style={styles.input}
+                      underlineColorAndroid="transparent"
+                      placeholder="Ville"
+                      placeholderTextColor="#ffff"
+                      autoCapitalize="none"
+                      returnKeyType="go"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      returnKeyType="next"
+                      ref="SecondInput"
+                      onChangeText={value =>
+                        this.onChangeText("password", value)
+                      }
+                    />
+                    <View style={[styles.input]}>
+                      <RNPickerSelect
+                        placeholder={{ label: "Sexe" }}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#ffff"
+                        autoCapitalize="none"
+                        onValueChange={value =>
+                          this.onChangeText("sexe", value)
+                        }
+                        items={[
+                          { label: "Homme", value: "Homme" },
+                          { label: "Femme", value: "Femme" }
+                        ]}
+                      ></RNPickerSelect>
+                    </View>
+
+                    <Mutation mutation={update}>
+                      {(updateUser, { data }) => (
+                        <TouchableOpacity
+                          style={styles.submitButton}
+                          onPress={() => this.signIn(updateUser)}
+                        >
+                          <Text style={styles.submitButtonText}>
+                            Bienvenue{" "}
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </Mutation>
+                  </View>
                 </View>
-              </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
+              </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </ScrollView>
       </ImageBackground>
     );
   }

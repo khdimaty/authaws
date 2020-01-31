@@ -21,6 +21,7 @@ import InfoPerso from "./src/components/screens/SelfInfo";
 import Rewards from "./src/components/screens/rewards/index";
 import Myrewards from "./src/components/screens/myreward";
 import Mymodal from "./src/components/screens/Home/components/modal";
+import Pref from "./src/components/screens/pref";
 
 //graphql client
 import ApolloClient from "apollo-boost";
@@ -100,6 +101,9 @@ const AuthStackNavigator = createStackNavigator({
       }
     })
   },
+  Pref: {
+    screen: Pref
+  },
   Myrewards: {
     screen: Myrewards,
     navigationOptions: () => ({
@@ -145,9 +149,10 @@ const AppTabNavigator = createBottomTabNavigator(
     },
     Profile: {
       screen: ProfileScreen
+    },
+    Settings: {
+      screen: SettingsScreen
     }
-
-    //Vs: { screen: Vs }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

@@ -6,25 +6,91 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
+  TouchableHighlight,
   TouchableOpacity,
   Alert
 } from "react-native";
 import Auth from "@aws-amplify/auth";
-import { Container, Header, Content, Icon, Picker, Form } from "native-base";
-const Havatar = require("./assets/Havatar.png");
-const Favatar = require("./assets/Favatar.png");
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Icon } from "native-base";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+
+import { Ionicons } from "@expo/vector-icons";
 
 import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
+
+import gql from "graphql-tag";
+import { Mutation } from "@apollo/react-components";
+
+import { Query } from "@apollo/react-components";
+
+const updateUser = gql`
+  mutation updateUser($username: String!, $imageUrl: String) {
+    updateUser(where: { username: $username }, data: { imageUrl: $imageUrl }) {
+      id
+    }
+  }
+`;
+const GetUser = gql`
+  query userinfo($username: String!) {
+    user(where: { username: $username }) {
+      imageUrl
+    }
+  }
+`;
+const Havatar = require("./assets/Havatar.png");
+const Favatar = require("./assets/Favatar.png");
+
 export default class Profile extends React.Component {
   constructor() {
     super();
     this.state = {
       selected: "key0",
-      image: null
+      image: null,
+      username: ""
     };
   }
+
+  componentDidMount = async () => {
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.setState({
+          username: user.username
+        });
+      })
+      .catch(err => console.log(err));
+    this.getPermissionAsync();
+  };
+
+  getPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      console.log(status);
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+    }
+  };
+
+  _pickImage = async update => {
+    console.log("clic");
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      //
+      update({
+        variables: { imageUrl: result.uri, username: this.state.username }
+      }).then(() => this.setState({ image: result.uri }));
+    }
+  };
+
   onValueChange(value) {
     console.log("walo");
   }
@@ -67,27 +133,56 @@ export default class Profile extends React.Component {
       myrewards,
       age
     } = this.props;
-    console.log(this.props.navigation);
+    let { image } = this.state;
+    //console.log(image);
+    // console.log(this.props.navigation);
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ alignSelf: "center", alignItems: "center" }}>
-            <View style={styles.profileImage}>
-              <Image
-                source={sex === "Femme" ? Favatar : Havatar}
-                style={styles.Image}
-                resizeMode="center"
-              ></Image>
-              <TouchableOpacity>
-                <View style={styles.edit}>
-                  <Ionicons
-                    name="ios-camera"
-                    size={30}
-                    color="#DFD8C8"
-                  ></Ionicons>
-                </View>
-              </TouchableOpacity>
-            </View>
+            <Mutation mutation={updateUser}>
+              {(update, { data }) => (
+                <TouchableOpacity onPress={() => this._pickImage(update)}>
+                  <View style={styles.profileImage}>
+                    <Query
+                      query={GetUser}
+                      variables={{ username: this.state.username }}
+                      onCompleted={data => {
+                        this.setState({ image: data.user.imageUrl });
+                      }}
+                    >
+                      {({ loading, error, data }) => {
+                        if (loading)
+                          return (
+                            <Image
+                              source={Havatar}
+                              style={styles.Image}
+                              //resizeMode="center"
+                            />
+                          );
+                        if (error) return `Error! ${error.message}`;
+
+                        return (
+                          <Image
+                            source={{ uri: image }}
+                            style={styles.Image}
+                            //resizeMode="center"
+                          />
+                        );
+                      }}
+                    </Query>
+
+                    <View style={styles.edit}>
+                      <Ionicons
+                        name="ios-camera"
+                        size={30}
+                        color="#DFD8C8"
+                      ></Ionicons>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            </Mutation>
           </View>
 
           <View style={styles.infoContainer}>
@@ -166,7 +261,7 @@ export default class Profile extends React.Component {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity
+            <TouchableHighlight
               style={[
                 styles.buttonOutStyle,
                 {
@@ -176,12 +271,14 @@ export default class Profile extends React.Component {
               ]}
               onPress={this.signOutAlert}
             >
-              <Icon
-                name="md-power"
-                style={{ color: "#000", paddingRight: 10 }}
-              />
-              <Text style={styles.buttonText}>Sign out</Text>
-            </TouchableOpacity>
+              <>
+                <Icon
+                  name="md-power"
+                  style={{ color: "#000", paddingRight: 10 }}
+                />
+                <Text style={styles.buttonText}>Sign out</Text>
+              </>
+            </TouchableHighlight>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -213,8 +310,8 @@ const styles = StyleSheet.create({
   },
   Image: {
     flex: 1,
-    width: undefined,
-    height: undefined
+    width: 120,
+    height: 120
   },
   titleBar: {
     flexDirection: "row",
