@@ -126,22 +126,12 @@ export default class Loading extends Component {
                               <View style={styles.like}>
                                 <AntDesign
                                   name="hearto"
-                                  size={22}
+                                  size={25}
                                   color={blue}
                                 />
-                                <Text style={[styles.text, { color: blue }]}>
-                                  105
-                                </Text>
-                              </View>
-                              <View style={styles.like}>
-                                <MaterialCommunityIcons
-                                  name="comment-processing-outline"
-                                  size={22}
-                                  color={blue}
-                                />
-                                <Text style={[styles.text, { color: blue }]}>
-                                  220
-                                </Text>
+                                <Text
+                                  style={[styles.text, { color: blue }]}
+                                ></Text>
                               </View>
 
                               <TouchableWithoutFeedback
@@ -150,12 +140,9 @@ export default class Loading extends Component {
                                 <View style={styles.like}>
                                   <MaterialCommunityIcons
                                     name="share-variant"
-                                    size={22}
+                                    size={25}
                                     color={gold}
                                   />
-                                  <Text style={[styles.text, { color: gold }]}>
-                                    32
-                                  </Text>
                                 </View>
                               </TouchableWithoutFeedback>
                             </View>
@@ -217,14 +204,13 @@ const styles = StyleSheet.create({
   },
   cardFooter: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     paddingTop: 15,
     paddingBottom: 0,
     paddingVertical: 7.5,
     paddingHorizontal: 0
   },
   cardImage: {
-    backgroundColor: "#fff",
     flex: 1,
     height: 235.5,
     width: w - 30,
@@ -250,8 +236,8 @@ const styles = StyleSheet.create({
   },
   /******** social bar ******************/
   socialBarContainer: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    // justifyContent: "flex-start",
+    //alignItems: "flex-start",
     flexDirection: "row",
     flex: 1
   },
@@ -273,17 +259,19 @@ const styles = StyleSheet.create({
   },
   icons: {
     flex: 1,
+
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
-    paddingHorizontal: 15
+    justifyContent: "center",
+    paddingHorizontal: 70
   },
   text: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: "bold"
   },
   like: {
     flex: 1,
+
     flexDirection: "row",
     // alignItems: "center",
     justifyContent: "space-around"

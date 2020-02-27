@@ -104,7 +104,8 @@ export default class Cards extends Component {
                 disabled={this.props.tobedisabl.includes(item.name)}
                 onPress={() =>
                   this.props.navigation.navigate("MyModal", {
-                    taskinfo: item
+                    taskinfo: item,
+                    username: this.props.username
                   })
                 }
               >
@@ -133,10 +134,15 @@ export default class Cards extends Component {
                               <View style={styles.like}>
                                 <AntDesign
                                   name="hearto"
-                                  size={22}
+                                  size={25}
                                   color={blue}
                                 />
-                                <Text style={[styles.text, { color: blue }]}>
+                                <Text
+                                  style={[
+                                    styles.text,
+                                    { marginLeft: 10, color: blue }
+                                  ]}
+                                >
                                   {item.votes.length}
                                 </Text>
                               </View>
@@ -152,12 +158,9 @@ export default class Cards extends Component {
                                 <View style={styles.like}>
                                   <MaterialCommunityIcons
                                     name="share-variant"
-                                    size={22}
+                                    size={25}
                                     color={gold}
                                   />
-                                  <Text style={[styles.text, { color: gold }]}>
-                                    32
-                                  </Text>
                                 </View>
                               </TouchableWithoutFeedback>
                             </View>
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
   },
   cardFooter: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     paddingTop: 15,
     paddingBottom: 0,
     paddingVertical: 7.5,
@@ -251,8 +254,8 @@ const styles = StyleSheet.create({
   },
   /******** social bar ******************/
   socialBarContainer: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    // justifyContent: "flex-start",
+    //alignItems: "flex-start",
     flexDirection: "row",
     flex: 1
   },
@@ -274,17 +277,19 @@ const styles = StyleSheet.create({
   },
   icons: {
     flex: 1,
+
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
-    paddingHorizontal: 15
+    justifyContent: "center",
+    paddingHorizontal: 70
   },
   text: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: "bold"
   },
   like: {
     flex: 1,
+
     flexDirection: "row",
     // alignItems: "center",
     justifyContent: "space-around"

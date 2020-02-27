@@ -42,10 +42,12 @@ const Tasks = gql`
 `;
 
 export default function HomeScreen(props) {
+  const [queryname, setqueryname] = useState(Tasks);
   const maper = { Nouveaux: "createdAt_DESC", Populaires: "taskScore_DESC" };
   let inputRef = React.createRef();
   const [value, setvalue] = useState("Nouveaux");
   const [dis, setdis] = useState([]);
+  const [username, setusername] = useState("");
   useEffect(() => {
     // Create an scoped async function in the hook
     async function loaddisabled() {
@@ -57,6 +59,7 @@ export default function HomeScreen(props) {
         token = "dis".concat(
           user.signInUserSession.accessToken.payload.username
         );
+        setusername(user.signInUserSession.accessToken.payload.username);
       });
       const value = await AsyncStorage.getItem(token);
       let final = JSON.parse(value).filter(onlyUnique);
@@ -68,7 +71,9 @@ export default function HomeScreen(props) {
   }, []);
   const [refreshing, setrefreshing] = useState(false);
   //console.log(disabled);
-
+  const pop = tasks => {
+    console.log(tasks);
+  };
   return (
     <View style={styles.container}>
       <Query
@@ -85,7 +90,7 @@ export default function HomeScreen(props) {
                 ref={inputRef}
               >
                 <View style={styles.Tabs}>
-                  {["Nouveaux", "Populaires", "Favoris"].map(elem => {
+                  {["Nouveaux", "Populaires"].map(elem => {
                     let added =
                       value === elem
                         ? {
@@ -100,7 +105,9 @@ export default function HomeScreen(props) {
                           setvalue(elem);
                         }}
                       >
-                        <Text style={[styles.text, added]}>{elem}</Text>
+                        <Text style={[styles.text, added]}>
+                          {elem == "Nouveaux" ? "Plus récentes" : "Plus notées"}
+                        </Text>
                       </TouchableWithoutFeedback>
                     );
                   })}
@@ -131,7 +138,7 @@ export default function HomeScreen(props) {
               }
             >
               <View style={styles.Tabs}>
-                {["Nouveaux", "Populaires", "Favoris"].map(elem => {
+                {["Nouveaux", "Populaires"].map(elem => {
                   let added =
                     value === elem
                       ? {
@@ -143,10 +150,15 @@ export default function HomeScreen(props) {
                       style={[styles.nav]}
                       key={elem}
                       onPress={() => {
+                        if (elem === "Favoris") {
+                          setqueryname(Tasks);
+                        }
                         setvalue(elem);
                       }}
                     >
-                      <Text style={[styles.text, added]}>{elem}</Text>
+                      <Text style={[styles.text, added]}>
+                        {elem == "Nouveaux" ? "Plus récentes" : "Plus notées"}
+                      </Text>
                     </TouchableWithoutFeedback>
                   );
                 })}
@@ -156,6 +168,7 @@ export default function HomeScreen(props) {
                 tasks={data}
                 tobedisabl={dis}
                 navigation={props.navigation}
+                username={username}
               />
             </ScrollView>
           );

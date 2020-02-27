@@ -20,6 +20,16 @@ const w = Dimensions.get("window").width;
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Accordion, Badge, Button } from "native-base";
 import Auth from "@aws-amplify/auth";
+// query : vote by user name and task name
+
+const votes = gql`
+  query votes($where: VoteWhereUniqueInput) {
+    votes(where: $where) {
+      id
+    }
+  }
+`;
+
 const createVote = gql`
   mutation createVote($username: String!, $taskId: ID!) {
     createVote(
@@ -147,7 +157,7 @@ export default function Mymodal(props) {
                 //create({ variables: { username: "anasio", taskId: id } });
                 setcolor(color == "white" ? "#E2A829" : "white");
                 color == "white"
-                  ? create({ variables: { username: "anasio", taskId: id } })
+                  ? create({ variables: { username: username, taskId: id } })
                   : deleteVot({ variables: { voteId: voteId } });
               }}
             >

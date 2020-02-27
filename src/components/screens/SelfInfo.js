@@ -74,8 +74,10 @@ export default class PersoInfo extends React.Component {
       }
     })
       .then(() => {
-        console.log("go");
-        this.props.navigation.navigate("Pref");
+        console.log(this.state.username);
+        this.props.navigation.navigate("Pref", {
+          username: this.state.token
+        });
       })
       .catch(function(e) {
         console.log(e.message);

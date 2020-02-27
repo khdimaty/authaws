@@ -102,7 +102,16 @@ const AuthStackNavigator = createStackNavigator({
     })
   },
   Pref: {
-    screen: Pref
+    screen: Pref,
+    navigationOptions: () => ({
+      headerStyle: {
+        backgroundColor: "#4278A4"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
   },
   Myrewards: {
     screen: Myrewards,
@@ -149,10 +158,10 @@ const AppTabNavigator = createBottomTabNavigator(
     },
     Profile: {
       screen: ProfileScreen
-    },
-    Settings: {
-      screen: SettingsScreen
     }
+    // Settings: {
+    // screen: SettingsScreen
+    //}
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

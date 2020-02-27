@@ -10,7 +10,7 @@
     },
     "android": {
       "package": "com.khdimatyApp.khdimatyApp",
-      "versionCode":3
+      "versionCode":4
 
     },
     "platforms": [

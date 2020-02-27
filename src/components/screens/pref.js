@@ -24,7 +24,12 @@ const update = gql`
     }
   }
 `;
-const preflist = ["test1", "test2", "test3"];
+const preflist = [
+  "Hobbies culturels",
+  "Loisirs sportifs",
+  "Centres d'intérêts créatifs",
+  "Loisirs technologiques"
+];
 export default class Pref extends React.Component {
   state = {
     questionNumber: 0,
@@ -36,10 +41,15 @@ export default class Pref extends React.Component {
     metadata: {},
     press: false,
     optionText: "",
-    userName: ""
+    userName: "",
+    tok: ""
   };
   componentDidMount = async () => {
     await this.loadUsername();
+    console.log(JSON.stringify(this.props.navigation.getParam("username")));
+    this.setState({
+      tok: this.props.navigation.getParam("username")
+    });
   };
   // Remember logged in users
   loadUsername = async () => {
@@ -48,13 +58,14 @@ export default class Pref extends React.Component {
         this.setState({
           userName: user.signInUserSession.accessToken.payload.username
         });
+        // console.log(userName);
       })
       .catch(err => console.log(err));
   };
   async click(mutation) {
     await mutation({
       variables: {
-        username: this.state.userName,
+        username: this.state.tok,
         preference: this.state.valueList
       }
     });
